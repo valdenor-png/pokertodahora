@@ -6,7 +6,22 @@
 <meta name="theme-color" content="#0a0f14" />
 <meta name="description" content="pokertodahora — Notícias, estratégias e bastidores para você jogar mais e melhor." />
 <title>pokertodahora — Notícias, estratégias e bastidores do poker</title>
-<link rel="icon" href="img/logo.jpg" />
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23076835'/%3E%3Ctext x='32' y='47' font-size='40' text-anchor='middle' fill='white'%3E%E2%99%A0%3C/text%3E%3C/svg%3E" />
+<link rel="apple-touch-icon" href="img/logo.webp" />
+<!-- Prévia ao compartilhar o link (WhatsApp, Facebook, X...) -->
+<meta property="og:type" content="website" />
+<meta property="og:locale" content="pt_BR" />
+<meta property="og:site_name" content="pokertodahora" />
+<meta property="og:title" content="pokertodahora — Notícias, estratégias e bastidores do poker" />
+<meta property="og:description" content="Notícias, estratégias e bastidores para você jogar mais e melhor." />
+<meta property="og:image" content="https://raw.githubusercontent.com/valdenor-png/pokertodahora/main/img/og-image.jpg" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta property="og:image:alt" content="Logo do pokertodahora" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:title" content="pokertodahora — Notícias, estratégias e bastidores do poker" />
+<meta name="twitter:description" content="Notícias, estratégias e bastidores para você jogar mais e melhor." />
+<meta name="twitter:image" content="https://raw.githubusercontent.com/valdenor-png/pokertodahora/main/img/og-image.jpg" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
@@ -510,7 +525,7 @@
 <header class="site-header">
   <div class="container">
     <a href="#/" class="brand" aria-label="pokertodahora — página inicial">
-      <img src="img/logo.jpg" alt="pokertodahora" />
+      <img src="img/logo.webp" alt="pokertodahora" width="184" height="92" />
       <span class="slogan">Notícias, estratégias e bastidores para você jogar mais e melhor</span>
     </a>
     <div class="header-cards">
@@ -542,7 +557,7 @@
 <!-- 3. MENU -->
 <nav class="mainnav" id="mainnav" aria-label="Menu principal">
   <div class="container">
-    <a href="#/" class="nav-brand" aria-label="pokertodahora"><img src="img/logo.jpg" alt="" /></a>
+    <a href="#/" class="nav-brand" aria-label="pokertodahora"><img src="img/logo.webp" alt="" width="68" height="34" /></a>
     <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
     <ul class="menu" id="menu">
       <li><a href="#/" data-key="home">Página inicial</a></li>
@@ -1264,8 +1279,9 @@ VIEWS.contato = () => `
           <div class="info-row"><span class="ic">⏱</span><div><b>Horário</b>Segunda a sexta, das 10h às 19h</div></div>
         </div>
         <div class="info-card">
-          <h3>Redes sociais</h3>
-          <div class="socials"><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">X</a><a href="#">TikTok</a></div>
+          <h3>Código do projeto</h3>
+          <p style="margin:0 0 12px;font-size:14.5px;color:#4b5561">O pokertodahora é um projeto acadêmico de código aberto. Veja o código-fonte no GitHub.</p>
+          <div class="socials"><a href="https://github.com/valdenor-png/pokertodahora" target="_blank" rel="noopener">GitHub ↗</a></div>
         </div>
         <div class="info-card faq">
           <h3>Perguntas frequentes</h3>
@@ -1484,13 +1500,19 @@ function lbShow(i) {
   $('#lbCap').innerHTML = `${esc(p.t)}<small>${p.cat} · ${lb.i + 1} de ${lb.list.length} · Foto: Unsplash</small>`;
 }
 function lbOpen(photoIndex) {
+  lb.opener = document.activeElement;
   lb.list = $$('.ph:not(.hidden)', app).map(el => +el.dataset.i);
   lb.el.classList.add('open');
   document.body.style.overflow = 'hidden';
   lbShow(lb.list.indexOf(photoIndex));
   $('.lb-close').focus();
 }
-function lbClose() { lb.el.classList.remove('open'); document.body.style.overflow = ''; }
+function lbClose() {
+  if (!lb.el.classList.contains('open')) return;
+  lb.el.classList.remove('open');
+  document.body.style.overflow = '';
+  lb.opener && document.contains(lb.opener) && lb.opener.focus();
+}
 lb.el.addEventListener('click', e => {
   const act = e.target.closest('[data-lb]')?.dataset.lb;
   if (act === 'close' || e.target === lb.el) lbClose();
@@ -1502,6 +1524,12 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape') lbClose();
   if (e.key === 'ArrowLeft') lbShow(lb.i - 1);
   if (e.key === 'ArrowRight') lbShow(lb.i + 1);
+  if (e.key === 'Tab') {
+    const btns = $$('.lb-btn', lb.el);
+    const i = btns.indexOf(document.activeElement);
+    e.preventDefault();
+    btns[(i + (e.shiftKey ? -1 : 1) + btns.length) % btns.length].focus();
+  }
 });
 
 SETUP.fotos = () => {
