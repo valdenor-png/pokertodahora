@@ -41,6 +41,26 @@
     --soft:#f5f6f4;
     --radius:6px;
     --shadow:0 10px 30px rgba(10,15,20,.12);
+    --heading:#0a0f14;
+    --text-2:#4b5561;
+    --surface:#ffffff;
+    --line-2:#cdd3da;
+    --nav-bg:rgba(255,255,255,.96);
+    --nav-bg-stuck:rgba(255,255,255,.78);
+    color-scheme:light;
+  }
+  /* Modo escuro: segue o sistema, ou a escolha feita no botão ☾/☀ */
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --bg:#0e1318;--surface:#151c23;--soft:#1a222b;--line:#27313c;--line-2:#34404c;
+      --text:#d5dbe1;--text-2:#aab4be;--muted:#8a95a1;--heading:#f1f4f7;--felt:#1a8f5a;--felt-2:#22a76a;
+      --nav-bg:rgba(14,19,24,.96);--nav-bg-stuck:rgba(14,19,24,.78);--shadow:0 10px 30px rgba(0,0,0,.45);color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#0e1318;--surface:#151c23;--soft:#1a222b;--line:#27313c;--line-2:#34404c;
+    --text:#d5dbe1;--text-2:#aab4be;--muted:#8a95a1;--heading:#f1f4f7;--felt:#1a8f5a;--felt-2:#22a76a;
+    --nav-bg:rgba(14,19,24,.96);--nav-bg-stuck:rgba(14,19,24,.78);--shadow:0 10px 30px rgba(0,0,0,.45);color-scheme:dark;
   }
   *,*::before,*::after{box-sizing:border-box}
   html{scroll-behavior:smooth}
@@ -71,7 +91,7 @@
   .search:focus-within{border-color:var(--gold)}
 
   /* ---------- 2. HEADER ---------- */
-  .site-header{background:#fff}
+  .site-header{background:var(--surface)}
   .site-header .container{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:24px;padding-bottom:24px}
   .brand{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
   .brand img{height:92px;width:auto;aspect-ratio:2/1;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(11,93,59,.25)}
@@ -83,16 +103,16 @@
   .hcard .ico svg{width:30px;height:30px}
   .ico.dark{background:var(--ink);color:var(--gold)}
   .ico.accent{background:var(--gold);color:var(--ink)}
-  .hcard strong{display:block;font-weight:900;font-size:15px;letter-spacing:.04em;color:var(--ink)}
+  .hcard strong{display:block;font-weight:900;font-size:15px;letter-spacing:.04em;color:var(--heading)}
   .hcard span{font-size:13px;color:var(--muted);line-height:1.4}
   .hcard:hover strong{color:var(--felt)}
 
   /* ---------- 3. MENU ---------- */
-  .mainnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .3s ease,box-shadow .3s ease}
-  .mainnav.is-stuck{background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 6px 20px rgba(10,15,20,.08)}
+  .mainnav{position:sticky;top:0;z-index:50;background:var(--nav-bg);border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .3s ease,box-shadow .3s ease}
+  .mainnav.is-stuck{background:var(--nav-bg-stuck);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 6px 20px rgba(10,15,20,.08)}
   .mainnav .container{display:flex;align-items:center;justify-content:space-between}
   .menu{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
-  .menu a{position:relative;display:block;padding:15px 15px;font-weight:800;font-size:14px;color:var(--ink);transition:color .2s}
+  .menu a{position:relative;display:block;padding:15px 11px;font-weight:800;font-size:14px;color:var(--heading);transition:color .2s}
   .menu a::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--felt);transform:scaleX(0);transition:transform .25s ease}
   .menu a:hover{color:var(--felt)}
   .menu a:hover::before{transform:scaleX(.5)}
@@ -112,9 +132,9 @@
   /* ---------- Genéricos ---------- */
   #app{min-height:60vh}
   section{padding:44px 0 8px;scroll-margin-top:60px}
-  .sec-title{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--ink)}
+  .sec-title{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--heading)}
   .sec-title::before{content:"";width:5px;height:24px;background:var(--felt);border-radius:1px;flex-shrink:0}
-  .sec-title::after{content:"";flex:1;border-top:2px dotted #cdd3da;margin-left:4px}
+  .sec-title::after{content:"";flex:1;border-top:2px dotted var(--line-2);margin-left:4px}
   .sec-title .suit{font-size:18px;line-height:1;color:var(--felt);opacity:.75}
   .sec-title .suit.red{color:var(--red)}
   .sec-title.sm{font-size:15px;margin-bottom:16px}
@@ -123,7 +143,7 @@
   .tag.gold{background:var(--gold);color:var(--ink)}
   .tag.red{background:var(--red)}
   .meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
-  .meta b{color:var(--ink);font-weight:700}
+  .meta b{color:var(--heading);font-weight:700}
   .media{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--felt),var(--felt-dark))}
   .media img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
   .media.noimg::after{content:"♠ ♥ ♦ ♣";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.25);font-size:28px;letter-spacing:.3em}
@@ -135,7 +155,7 @@
   .btn:active{transform:translateY(1px)}
   .btn.gold{background:var(--gold);color:var(--ink)}
   .btn.gold:hover{background:#e3c252}
-  .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+  .btn.ghost{background:transparent;color:var(--heading);box-shadow:inset 0 0 0 1.5px var(--line)}
   .btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--felt);color:var(--felt)}
   .btn.danger{background:transparent;color:var(--red);box-shadow:inset 0 0 0 1.5px rgba(200,16,46,.35)}
   .btn.danger:hover{background:var(--red);color:#fff}
@@ -185,15 +205,15 @@
   .card{display:flex;flex-direction:column;gap:12px}
   .card .media{aspect-ratio:16/10;border-radius:var(--radius)}
   .card .media .tag{position:absolute;left:12px;bottom:12px;z-index:1}
-  .card h3{font-size:19px;font-weight:800;color:var(--ink)}
+  .card h3{font-size:19px;font-weight:800;color:var(--heading)}
   .card:hover h3{color:var(--felt)}
-  .card p{margin:0;color:#4b5561;font-size:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+  .card p{margin:0;color:var(--text-2);font-size:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
   /* ---------- 8. LIFESTYLE ---------- */
   .list-2{display:grid;grid-template-columns:1fr 1fr;gap:22px 34px}
   .list-item{display:flex;gap:16px;align-items:center;padding-bottom:22px;border-bottom:1px solid var(--line)}
   .list-item .media{width:130px;height:92px;border-radius:var(--radius);flex-shrink:0}
-  .list-item h4{font-size:16.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .list-item h4{font-size:16.5px;font-weight:800;color:var(--heading);margin-bottom:6px}
   .list-item:hover h4{color:var(--felt)}
 
   /* ---------- PÁGINAS INTERNAS ---------- */
@@ -212,45 +232,45 @@
 
   /* Matéria */
   .article-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:48px;padding:18px 0 10px}
-  .post h1{font-size:clamp(28px,3.6vw,42px);font-weight:900;color:var(--ink);margin:14px 0 14px;letter-spacing:-.01em}
-  .post .lead{font-size:18.5px;color:#4b5561;margin:0 0 18px;line-height:1.5}
+  .post h1{font-size:clamp(28px,3.6vw,42px);font-weight:900;color:var(--heading);margin:14px 0 14px;letter-spacing:-.01em}
+  .post .lead{font-size:18.5px;color:var(--text-2);margin:0 0 18px;line-height:1.5}
   .byline{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:15px;flex-shrink:0;letter-spacing:.02em}
   .avatar.lg{width:84px;height:84px;font-size:26px}
   .post-cover{margin:24px 0 8px;border-radius:var(--radius);aspect-ratio:16/9}
   .post figcaption{font-size:12px;color:var(--muted);margin-bottom:26px}
-  .post-body{font-size:17.5px;line-height:1.75;color:#262e37}
+  .post-body{font-size:17.5px;line-height:1.75;color:var(--text)}
   .post-body > p:first-child::first-letter{float:left;font-size:62px;line-height:.9;font-weight:900;color:var(--felt);margin:6px 10px 0 0}
   .post-body p{margin:0 0 20px}
-  .post-body h2{font-size:24px;font-weight:900;color:var(--ink);margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+  .post-body h2{font-size:24px;font-weight:900;color:var(--heading);margin:34px 0 14px;display:flex;align-items:center;gap:10px}
   .post-body h2::before{content:"♠";color:var(--felt);font-size:18px}
   .post-body ul{margin:0 0 22px;padding-left:0;list-style:none}
   .post-body li{position:relative;padding-left:26px;margin-bottom:8px}
   .post-body li::before{content:"♦";position:absolute;left:0;top:0;color:var(--red);font-size:14px}
-  .post-body blockquote{margin:28px 0;padding:18px 24px;border-left:4px solid var(--gold);background:var(--soft);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);border-radius:0 var(--radius) var(--radius) 0}
-  .post-body strong{color:var(--ink)}
+  .post-body blockquote{margin:28px 0;padding:18px 24px;border-left:4px solid var(--gold);background:var(--soft);font-size:20px;font-weight:700;font-style:italic;color:var(--heading);border-radius:0 var(--radius) var(--radius) 0}
+  .post-body strong{color:var(--heading)}
   .share{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:30px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
   .share b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
   .share a,.share button{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:4px;font-weight:800;font-size:13px;color:#fff;border:0;cursor:pointer}
-  .share .wa{background:#1f9d55}.share .x{background:var(--ink)}.share .fb{background:#1c5bb8}.share .cp{background:var(--soft);color:var(--ink)}
+  .share .wa{background:#1f9d55}.share .x{background:var(--ink)}.share .fb{background:#1c5bb8}.share .cp{background:var(--soft);color:var(--heading)}
   .share a:hover,.share button:hover{filter:brightness(1.1)}
   .author-box{display:flex;gap:18px;align-items:flex-start;background:var(--soft);border-radius:var(--radius);padding:22px}
-  .author-box h4{font-size:17px;color:var(--ink)}
+  .author-box h4{font-size:17px;color:var(--heading)}
   .author-box small{color:var(--felt);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
-  .author-box p{margin:6px 0 0;font-size:14.5px;color:#4b5561}
+  .author-box p{margin:6px 0 0;font-size:14.5px;color:var(--text-2)}
   .sidebar{display:flex;flex-direction:column;gap:30px}
   .sidebar .sticky{position:sticky;top:76px;display:flex;flex-direction:column;gap:30px}
   .most-read{list-style:none;margin:0;padding:0;counter-reset:mr}
   .most-read li{counter-increment:mr;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
   .most-read li::before{content:counter(mr);font-size:30px;font-weight:900;line-height:1;color:var(--gold);min-width:26px}
-  .most-read a{font-weight:800;font-size:15px;color:var(--ink);line-height:1.35}
+  .most-read a{font-weight:800;font-size:15px;color:var(--heading);line-height:1.35}
   .most-read a:hover{color:var(--felt)}
   .widget-cta{background:var(--ink);color:#fff;border-radius:var(--radius);padding:24px;position:relative;overflow:hidden}
   .widget-cta::after{content:"♣";position:absolute;right:-8px;bottom:-34px;font-size:130px;color:rgba(255,255,255,.05)}
   .widget-cta h4{font-size:20px;font-weight:900;margin:12px 0 6px}
   .widget-cta p{margin:0 0 16px;color:#aab3bd;font-size:14px}
   .newsletter{border:1px solid var(--line);border-radius:var(--radius);padding:22px}
-  .newsletter p{margin:0 0 14px;font-size:14px;color:#4b5561}
+  .newsletter p{margin:0 0 14px;font-size:14px;color:var(--text-2)}
   .newsletter input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:4px;margin-bottom:10px;outline:0}
   .newsletter input:focus{border-color:var(--felt)}
   .newsletter .btn{width:100%}
@@ -271,10 +291,10 @@
   .trail a{display:flex;gap:14px;align-items:flex-start;height:100%;padding:18px;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .25s,box-shadow .25s,transform .25s}
   .trail a:hover{border-color:var(--felt);box-shadow:var(--shadow);transform:translateY(-3px)}
   .trail .n{width:38px;height:38px;border-radius:50%;background:var(--felt);color:#fff;font-weight:900;display:grid;place-items:center;flex-shrink:0}
-  .trail b{display:block;color:var(--ink);font-size:15.5px;line-height:1.3;margin-bottom:4px}
+  .trail b{display:block;color:var(--heading);font-size:15.5px;line-height:1.3;margin-bottom:4px}
   .trail small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);font-size:13px;line-height:1.45}
   .trail-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:30px 0 0}
-  .trail-nav a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);font-weight:800;color:var(--ink);font-size:15px;line-height:1.35;transition:border-color .2s,color .2s}
+  .trail-nav a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);font-weight:800;color:var(--heading);font-size:15px;line-height:1.35;transition:border-color .2s,color .2s}
   .trail-nav a:hover{border-color:var(--felt);color:var(--felt)}
   .trail-nav a.next{text-align:right;background:var(--soft)}
   .trail-nav small{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--felt);margin-bottom:4px}
@@ -282,27 +302,197 @@
   .study-cta h3{color:#fff;font-size:20px;margin-bottom:4px}
   .study-cta p{margin:0}
 
+  /* Tema e progresso */
+  .theme-toggle{background:var(--ink-2);border:1px solid #26303b;color:#d9dee4;width:34px;height:34px;border-radius:4px;cursor:pointer;font-size:16px;flex-shrink:0;display:grid;place-items:center}
+  .theme-toggle:hover{color:var(--gold);border-color:var(--gold)}
+  .read-progress{position:fixed;left:0;top:0;height:3px;width:100%;background:var(--gold);transform-origin:0 50%;transform:scaleX(0);z-index:80;transition:transform .1s linear}
+
+  /* Agenda */
+  .events{display:flex;flex-direction:column;gap:14px}
+  .event{display:flex;gap:18px;border:1px solid var(--line);border-radius:var(--radius);padding:18px;background:var(--surface)}
+  .events.past .event{opacity:.8}
+  .ev-date{width:66px;flex-shrink:0;text-align:center;border-radius:var(--radius);background:var(--felt);color:#fff;padding:8px 0;align-self:flex-start}
+  .ev-date b{display:block;font-size:26px;line-height:1;font-weight:900}
+  .ev-date span{font-size:12px;text-transform:uppercase;font-weight:800;letter-spacing:.08em}
+  .ev-body{flex:1;min-width:0}
+  .ev-top{display:flex;align-items:center;gap:10px;flex-wrap:wrap;margin-bottom:6px}
+  .ev-body h3{font-size:19px;color:var(--heading);margin-bottom:6px}
+  .ev-body p{margin:8px 0 0;color:var(--text-2);font-size:14.5px}
+  .ev-status{font-size:12px;font-weight:800}
+  .ev-status.live{color:var(--red)}
+  .ev-status.soon{color:var(--felt)}
+  .ev-status.done{color:var(--muted)}
+  .ev-links{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:13.5px;font-weight:800}
+  .ev-links a{color:var(--felt)}
+  .ev-links a:hover{text-decoration:underline}
+  .agenda-strip{display:grid;grid-template-columns:repeat(4,1fr);gap:14px}
+  .mini-ev{display:flex;gap:12px;align-items:center;border:1px solid var(--line);border-radius:var(--radius);padding:12px;transition:border-color .2s,transform .2s}
+  .mini-ev:hover{border-color:var(--felt);transform:translateY(-2px)}
+  .mini-ev .ev-date{width:54px;padding:6px 0}
+  .mini-ev .ev-date b{font-size:20px}
+  .mini-ev b{display:block;color:var(--heading);font-size:14.5px;line-height:1.3}
+  .mini-ev small{color:var(--muted);font-size:12.5px}
+
+  /* Jogadores */
+  .players{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .player-card{display:flex;gap:16px;align-items:center;border:1px solid var(--line);border-radius:var(--radius);padding:18px;transition:border-color .25s,box-shadow .25s,transform .25s}
+  .player-card:hover{border-color:var(--felt);box-shadow:var(--shadow);transform:translateY(-3px)}
+  .player-card h3{font-size:18px;color:var(--heading)}
+  .player-card small{color:var(--muted);font-size:13px}
+  .flag{font-size:.9em}
+  .pstats{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:8px}
+  .pstats span{font-size:12px;color:var(--muted);line-height:1.3}
+  .pstats b{display:block;font-size:17px;color:var(--felt);font-weight:900}
+  .pstats.big{gap:14px;margin:22px 0 30px}
+  .pstats.big span{background:var(--soft);border-radius:var(--radius);padding:14px 18px;font-size:13px}
+  .pstats.big b{font-size:26px}
+  .avatar.xl{width:110px;height:110px;font-size:36px}
+  .profile{max-width:860px;padding:18px 0 0}
+  .profile-head{display:flex;gap:24px;align-items:center}
+  .profile-head h1{font-size:clamp(28px,4vw,40px);font-weight:900;color:var(--heading)}
+  .profile-head .lead{color:var(--muted);font-weight:700;margin:6px 0 8px}
+  .profile-head p{margin:0;color:var(--text-2)}
+  .timeline{list-style:none;margin:0;padding:0 0 0 18px;border-left:3px solid var(--line)}
+  .timeline li{position:relative;padding:0 0 16px 14px;color:var(--text)}
+  .timeline li::before{content:"";position:absolute;left:-26px;top:5px;width:13px;height:13px;border-radius:50%;background:var(--gold);box-shadow:0 0 0 3px var(--bg)}
+  .timeline strong{color:var(--heading)}
+
+  /* Ferramentas */
+  .tools{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+  .tools.compact{grid-template-columns:repeat(4,1fr)}
+  .tool{display:flex;flex-direction:column;gap:6px;border:1px solid var(--line);border-radius:var(--radius);padding:22px;transition:border-color .25s,box-shadow .25s,transform .25s;background:var(--surface)}
+  .tool:hover{border-color:var(--felt);box-shadow:var(--shadow);transform:translateY(-4px)}
+  .tool .ti{font-size:30px;line-height:1}
+  .tool h3{font-size:17px;color:var(--heading);margin-top:6px}
+  .tool p{margin:0;color:var(--text-2);font-size:14px}
+  .tool .go{margin-top:auto;padding-top:8px;color:var(--felt);font-weight:800;font-size:13.5px}
+  .small{font-size:13px;color:var(--muted)}
+
+  /* Cartas (calculadora e quiz) */
+  .pc{display:inline-flex;flex-direction:column;align-items:center;justify-content:center;width:44px;height:62px;border-radius:6px;background:#fff;color:#0a0f14;font-weight:900;font-size:17px;line-height:1;box-shadow:0 2px 6px rgba(0,0,0,.18);border:1px solid #d9dee4}
+  .pc small{font-size:19px;margin-top:2px}
+  .pc.red{color:#c8102e}
+  .pc.empty{background:transparent;border:2px dashed var(--line-2);box-shadow:none}
+  .calc{display:grid;grid-template-columns:minmax(0,1fr) 400px;gap:28px;align-items:start}
+  .calc-players{display:grid;grid-template-columns:repeat(auto-fill,minmax(min(200px,100%),1fr));gap:14px;margin-bottom:14px}
+  .cplayer{border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:var(--surface)}
+  .cp-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;color:var(--heading)}
+  .slots{display:flex;gap:8px;flex-wrap:wrap}
+  .slot{padding:0;border:0;background:none;cursor:pointer;border-radius:8px;outline-offset:2px}
+  .slot.active .pc{outline:3px solid var(--gold);outline-offset:2px}
+  .cp-res{margin-top:12px;min-height:44px}
+  .eq-bar{height:8px;border-radius:8px;background:var(--soft);overflow:hidden}
+  .eq-bar span{display:block;height:100%;background:linear-gradient(90deg,var(--felt),var(--felt-2));border-radius:8px}
+  .eq-num{font-size:13px;margin-top:6px;color:var(--text-2)}
+  .eq-num b{font-size:20px;color:var(--heading)}
+  .eq-num.muted{color:var(--muted)}
+  .hn{display:inline-block;margin-top:6px;font-size:12px;font-weight:800;color:var(--felt);background:var(--soft);padding:2px 8px;border-radius:20px}
+  .calc-board{margin-top:20px;border:1px solid var(--line);border-radius:var(--radius);padding:14px;background:radial-gradient(ellipse at 50% 0,#0e7a4d,#0b5d3b 60%,#073d27)}
+  .calc-board h3{color:#fff;font-size:15px;margin-bottom:10px}
+  .calc-board h3 small{color:rgba(255,255,255,.7);font-weight:600}
+  .calc-board .pc.empty{border-color:rgba(255,255,255,.35)}
+  .calc-actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:18px}
+  .calc-progress{height:6px;background:var(--soft);border-radius:6px;margin-top:14px;overflow:hidden}
+  .calc-progress span{display:block;height:100%;width:0;background:var(--gold)}
+  .calc-msg{font-size:13.5px;color:var(--muted);min-height:20px;margin:10px 0 0}
+  .picker{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:4px;margin:10px 0}
+  .pick{padding:0;border:0;background:none;cursor:pointer}
+  .pick .pc{width:100%;height:auto;aspect-ratio:5/7;font-size:12px;border-radius:4px}
+  .pick .pc small{font-size:12px}
+  .pick:hover .pc{outline:2px solid var(--gold)}
+  .pick.used{opacity:.2;cursor:not-allowed}
+
+  /* Ranges */
+  .range-wrap{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:28px;align-items:start}
+  .range-grid{display:grid;grid-template-columns:repeat(13,minmax(0,1fr));gap:3px;max-width:680px}
+  .rc{aspect-ratio:1;border:0;border-radius:3px;font-size:11px;font-weight:800;cursor:default;padding:0;color:var(--muted);background:var(--soft);transition:background .15s,color .15s}
+  .range-grid.editable .rc{cursor:pointer}
+  .rc.on.c-pair{background:#c8102e;color:#fff}
+  .rc.on.c-s{background:var(--felt);color:#fff}
+  .rc.on.c-o{background:#d4af37;color:#0a0f14}
+  .range-grid.editable .rc:hover{outline:2px solid var(--gold)}
+  .range-pct b{display:block;font-size:40px;font-weight:900;color:var(--heading);line-height:1}
+  .range-pct span{font-size:13px;color:var(--muted)}
+  .range-side p{color:var(--text-2);font-size:14.5px}
+  .range-notation{font-family:ui-monospace,Consolas,monospace;font-size:12.5px !important;background:var(--soft);padding:10px;border-radius:4px;word-break:break-word}
+  .legend{list-style:none;padding:0;margin:12px 0;display:flex;flex-direction:column;gap:6px;font-size:13px;color:var(--text-2)}
+  .legend i{display:inline-block;width:14px;height:14px;border-radius:3px;margin-right:8px;vertical-align:-2px}
+  .legend .c-pair{background:#c8102e}.legend .c-s{background:var(--felt)}.legend .c-o{background:#d4af37}
+
+  /* Quiz */
+  .quiz{max-width:720px;margin:0 auto;padding:26px}
+  .q-top{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);font-weight:700;margin-bottom:10px}
+  .quiz h3{font-size:22px;color:var(--heading);margin-bottom:16px}
+  .q-board{background:radial-gradient(ellipse at 50% 0,#0e7a4d,#0b5d3b 60%,#073d27);border-radius:var(--radius);padding:14px;margin-bottom:14px}
+  .q-board small,.q-hand small{display:block;font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px}
+  .q-board small{color:rgba(255,255,255,.75)}
+  .q-board div,.q-hand div{display:flex;gap:6px;flex-wrap:wrap}
+  .q-hands{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:12px}
+  .q-hand{border:2px solid var(--line);background:var(--surface);border-radius:var(--radius);padding:14px;cursor:pointer;text-align:left;color:var(--heading);transition:border-color .2s}
+  .q-hand:hover:not(:disabled),.q-opt:hover:not(:disabled){border-color:var(--felt)}
+  .q-opts{display:flex;flex-direction:column;gap:10px}
+  .q-opt{border:2px solid var(--line);background:var(--surface);color:var(--heading);border-radius:var(--radius);padding:13px 16px;font-weight:700;text-align:left;cursor:pointer;transition:border-color .2s}
+  .q-hand.right,.q-opt.right,.q-tie.right{border-color:var(--felt) !important;background:rgba(11,93,59,.12)}
+  .q-hand.wrong,.q-opt.wrong,.q-tie.wrong{border-color:var(--red) !important;background:rgba(200,16,46,.1)}
+  .q-feedback p{margin:14px 0 0;color:var(--text-2)}
+  .q-feedback p.ok{color:var(--felt);font-weight:900;font-size:18px}
+  .q-feedback p.no{color:var(--red);font-weight:900;font-size:18px}
+  .q-feedback a{color:var(--felt);font-weight:800}
+  .q-feedback .btn{margin-top:16px}
+  .q-end{text-align:center;padding:10px 0}
+  .q-score{font-size:72px;font-weight:900;color:var(--felt);line-height:1}
+  .q-score small{font-size:28px;color:var(--muted)}
+  .q-end p{color:var(--text-2)}
+
+  /* Glossário */
+  .gl-tools{position:sticky;top:56px;z-index:5;background:var(--bg);padding:10px 0 12px;border-bottom:1px solid var(--line);margin-bottom:10px}
+  .gl-tools input{width:100%;max-width:420px;padding:11px 13px;border:1.5px solid var(--line);border-radius:4px;background:var(--surface);color:var(--text);outline:0}
+  .gl-tools input:focus{border-color:var(--felt)}
+  .gl-letters{display:flex;flex-wrap:wrap;gap:4px;margin-top:10px}
+  .gl-letters a{min-width:30px;text-align:center;padding:4px 6px;border-radius:4px;font-weight:800;font-size:13px;color:var(--heading);background:var(--soft)}
+  .gl-letters a:hover{background:var(--felt);color:#fff}
+  .gl-letter{font-size:30px;font-weight:900;color:var(--felt);margin:26px 0 8px;scroll-margin-top:170px}
+  .gl-group dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:10px 30px}
+  .gl-item{padding:12px 0;border-bottom:1px solid var(--line);scroll-margin-top:170px;border-radius:4px;transition:background .6s}
+  .gl-item.hl{background:rgba(212,175,55,.18);padding:12px}
+  .gl-item dt{font-weight:900;color:var(--heading);font-size:16px}
+  .gl-item dd{margin:4px 0 0;color:var(--text-2);font-size:14.5px}
+  .gl-item dd a{color:var(--felt);font-weight:800;white-space:nowrap}
+  .gl-chips{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:26px 0 0;padding:16px 18px;border:1px dashed var(--line-2);border-radius:var(--radius)}
+  .gl-chips b{width:100%;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted)}
+  .gl-chips a{font-size:13px;font-weight:800;padding:4px 10px;border-radius:20px;background:var(--soft);color:var(--felt)}
+  .gl-chips a:hover{background:var(--felt);color:#fff}
+
+  /* Newsletter na home */
+  .nl-band{display:flex;align-items:center;justify-content:space-between;gap:30px;background:radial-gradient(ellipse at 10% 0,#0e7a4d,#0b5d3b 50%,#073d27);color:#fff;border-radius:var(--radius);padding:32px 34px;position:relative;overflow:hidden}
+  .nl-band::after{content:"♠ ♥";position:absolute;right:-10px;bottom:-40px;font-size:130px;color:rgba(255,255,255,.05);pointer-events:none}
+  .nl-band .kicker{color:var(--gold);font-weight:900;letter-spacing:.14em;font-size:12px;text-transform:uppercase}
+  .nl-band h2{font-size:clamp(20px,2.4vw,26px);font-weight:900;margin:6px 0}
+  .nl-band p{margin:0;color:rgba(255,255,255,.82)}
+  .nl-fields{display:flex;gap:10px;flex-shrink:0;position:relative;z-index:1}
+  .nl-fields input{padding:12px 14px;border-radius:4px;border:0;min-width:240px;font-size:15px;color:#0a0f14;background:#fff}
+
   /* Quem somos */
   .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
-  .about-grid .text p{font-size:17px;line-height:1.75;margin:0 0 18px;color:#2d3640}
+  .about-grid .text p{font-size:17px;line-height:1.75;margin:0 0 18px;color:var(--text)}
   .about-grid .media{border-radius:var(--radius);aspect-ratio:4/3}
   .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:10px}
   .stat{background:var(--soft);border-radius:var(--radius);padding:22px;border-top:3px solid var(--felt)}
-  .stat strong{display:block;font-size:32px;font-weight:900;color:var(--ink);line-height:1.1}
+  .stat strong{display:block;font-size:32px;font-weight:900;color:var(--heading);line-height:1.1}
   .stat span{font-size:13px;color:var(--muted);font-weight:600}
   .values{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
   .value{border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:border-color .25s,transform .25s,box-shadow .25s}
   .value:hover{border-color:var(--felt);transform:translateY(-4px);box-shadow:var(--shadow)}
   .value .suit-ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:var(--felt);color:#fff;margin-bottom:16px}
   .value .suit-ico.red{background:var(--red)}
-  .value h3{font-size:18px;margin-bottom:8px;color:var(--ink)}
-  .value p{margin:0;color:#4b5561;font-size:14.5px}
+  .value h3{font-size:18px;margin-bottom:8px;color:var(--heading)}
+  .value p{margin:0;color:var(--text-2);font-size:14.5px}
   .team{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
   .member{text-align:center;padding:24px 14px;border-radius:var(--radius);background:var(--soft)}
   .member .avatar{margin:0 auto 14px}
-  .member h4{font-size:16px;color:var(--ink)}
+  .member h4{font-size:16px;color:var(--heading)}
   .member small{display:block;color:var(--felt);font-weight:800;font-size:12px;margin:4px 0 8px}
-  .member p{margin:0;font-size:13px;color:#4b5561}
+  .member p{margin:0;font-size:13px;color:var(--text-2)}
   .responsible{display:flex;gap:20px;align-items:center;background:var(--ink);color:#d9dee4;border-radius:var(--radius);padding:26px 28px}
   .responsible .age{width:64px;height:64px;border-radius:50%;border:3px solid var(--red);display:grid;place-items:center;font-weight:900;font-size:20px;color:#fff;flex-shrink:0}
   .responsible h3{color:#fff;font-size:19px;margin-bottom:4px}
@@ -312,14 +502,14 @@
   .contact-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
   .form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
   .form .full{grid-column:1 / -1}
-  .field label{display:block;font-weight:800;font-size:13px;margin-bottom:6px;color:var(--ink)}
-  .field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:4px;background:#fff;outline:0;transition:border-color .2s,box-shadow .2s;color:var(--text)}
+  .field label{display:block;font-weight:800;font-size:13px;margin-bottom:6px;color:var(--heading)}
+  .field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:4px;background:var(--surface);outline:0;transition:border-color .2s,box-shadow .2s;color:var(--text)}
   .field textarea{min-height:150px;resize:vertical}
   .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--felt);box-shadow:0 0 0 3px rgba(11,93,59,.12)}
   .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--red)}
   .field .err{display:none;color:var(--red);font-size:12.5px;font-weight:700;margin-top:5px}
   .field.invalid .err{display:block}
-  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#4b5561}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--text-2)}
   .check input{margin-top:4px;accent-color:var(--felt)}
   .form-error{display:none;margin:0;background:#fdecef;border:1px solid #f3b8c3;color:#9d0c23;border-radius:var(--radius);padding:12px 14px;font-size:14px;font-weight:700}
   .form-error.show{display:block}
@@ -328,25 +518,25 @@
   .form-success.show{display:block}
   .form-success h3{color:var(--felt);margin-bottom:6px}
   .info-card{background:var(--soft);border-radius:var(--radius);padding:24px;margin-bottom:18px}
-  .info-card h3{font-size:16px;margin-bottom:12px;color:var(--ink)}
+  .info-card h3{font-size:16px;margin-bottom:12px;color:var(--heading)}
   .info-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed #d6dbe0;font-size:14.5px}
   .info-row:last-child{border-bottom:0}
   .info-row .ic{width:34px;height:34px;border-radius:8px;background:var(--felt);color:#fff;display:grid;place-items:center;flex-shrink:0;font-size:15px}
-  .info-row b{display:block;color:var(--ink)}
+  .info-row b{display:block;color:var(--heading)}
   .info-row a:hover{color:var(--felt)}
   .socials{display:flex;gap:10px;flex-wrap:wrap}
   .socials a{padding:8px 14px;border-radius:4px;background:var(--ink);color:#fff;font-weight:800;font-size:13px}
   .socials a:hover{background:var(--felt)}
   .faq details{border-bottom:1px solid var(--line);padding:14px 0}
-  .faq summary{cursor:pointer;font-weight:800;color:var(--ink);list-style:none;display:flex;justify-content:space-between;gap:12px}
+  .faq summary{cursor:pointer;font-weight:800;color:var(--heading);list-style:none;display:flex;justify-content:space-between;gap:12px}
   .faq summary::-webkit-details-marker{display:none}
   .faq summary::after{content:"+";color:var(--felt);font-size:20px;line-height:1;transition:transform .2s}
   .faq details[open] summary::after{transform:rotate(45deg)}
-  .faq details p{margin:10px 0 0;color:#4b5561;font-size:15px}
+  .faq details p{margin:10px 0 0;color:var(--text-2);font-size:15px}
 
   /* Filtros (fotos/vídeos) */
   .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
-  .filters button{border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:8px 16px;border-radius:40px;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s}
+  .filters button{border:1.5px solid var(--line);background:var(--surface);color:var(--heading);padding:8px 16px;border-radius:40px;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s}
   .filters button:hover{border-color:var(--felt);color:var(--felt)}
   .filters button.on{background:var(--felt);border-color:var(--felt);color:#fff}
 
@@ -383,20 +573,20 @@
   .player.sm .play{width:52px;height:52px}
   .player.sm .play::before{border-left-width:15px;border-top-width:9px;border-bottom-width:9px;margin-left:4px}
   .lang{position:absolute;top:10px;right:10px;background:rgba(10,15,20,.8);color:#fff;font-size:11px;font-weight:900;padding:3px 7px;border-radius:3px;letter-spacing:.06em}
-  .video-feature h2{font-size:clamp(22px,2.6vw,30px);font-weight:900;color:var(--ink);margin:12px 0 10px}
-  .video-feature p{color:#4b5561;margin:0 0 16px}
+  .video-feature h2{font-size:clamp(22px,2.6vw,30px);font-weight:900;color:var(--heading);margin:12px 0 10px}
+  .video-feature p{color:var(--text-2);margin:0 0 16px}
   .vcard{display:flex;flex-direction:column;gap:10px}
-  .vcard h3{font-size:16.5px;color:var(--ink)}
+  .vcard h3{font-size:16.5px;color:var(--heading)}
   .vcard .yt{font-size:12.5px;font-weight:800;color:var(--muted)}
   .vcard .yt:hover{color:var(--red)}
   .vcard.hidden{display:none}
 
   /* Minha Banca */
   .banca-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:26px}
-  .kpi{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;position:relative;overflow:hidden}
+  .kpi{background:var(--surface);border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;position:relative;overflow:hidden}
   .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--felt)}
   .kpi small{display:block;font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
-  .kpi strong{display:block;font-size:21px;font-weight:900;color:var(--ink);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpi strong{display:block;font-size:21px;font-weight:900;color:var(--heading);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
   .kpi.pos strong{color:var(--felt)}
   .kpi.neg strong{color:var(--red)}
   .kpi.neg::before{background:var(--red)}
@@ -405,7 +595,7 @@
   .kpi.hl strong{color:var(--gold)}
   .kpi.hl::before{background:var(--gold)}
   .banca-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
-  .panel{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:#fff}
+  .panel{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:var(--surface)}
   .panel + .panel{margin-top:22px}
   .chart-wrap{position:relative;height:300px}
   .chart-wrap canvas{width:100%;height:100%;display:block}
@@ -413,12 +603,15 @@
   .banca-form .full{grid-column:1 / -1}
   .banca-form .field input,.banca-form .field select{padding:10px 11px}
   .tip{margin-top:16px;padding:14px;border-radius:var(--radius);background:#fbf6e3;border:1px solid #efe0a8;font-size:13.5px;color:#5a4a12}
+  [data-theme="dark"] .tip{background:#2a2410;border-color:#4a3f17;color:#e6d9a8}
+  [data-theme="dark"] .tip b{color:#f3e6b3}
+  @media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .tip{background:#2a2410;border-color:#4a3f17;color:#e6d9a8}:root:not([data-theme="light"]) .tip b{color:#f3e6b3}}
   .tip b{color:#3d3208}
   .table-wrap{overflow-x:auto}
   table{width:100%;border-collapse:collapse;font-size:14px}
   th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;padding:10px;border-bottom:2px solid var(--line);white-space:nowrap}
   td{padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
-  td.name{white-space:normal;font-weight:700;color:var(--ink);min-width:160px}
+  td.name{white-space:normal;font-weight:700;color:var(--heading);min-width:160px}
   td.num{text-align:right;font-variant-numeric:tabular-nums}
   th.num{text-align:right}
   td .pill{font-size:11px;font-weight:800;padding:2px 7px;border-radius:20px;background:var(--soft);color:var(--muted)}
@@ -436,7 +629,7 @@
   .empty-page{text-align:center;padding:70px 0 40px}
   .empty-page .cards{font-size:64px;letter-spacing:.1em;color:var(--felt)}
   .empty-page .cards .r{color:var(--red)}
-  .empty-page h1{font-size:34px;font-weight:900;margin:10px 0 8px;color:var(--ink)}
+  .empty-page h1{font-size:34px;font-weight:900;margin:10px 0 8px;color:var(--heading)}
   .empty-page p{color:var(--muted);margin:0 0 22px}
 
   /* ---------- 9. FOOTER ---------- */
@@ -478,7 +671,7 @@
   @media (max-width:1024px){
     .header-cards{gap:18px}
     .hcard{max-width:240px}
-    .menu a{padding:15px 11px}
+    .menu a{padding:15px 8px;font-size:13px}
     .article-grid{grid-template-columns:minmax(0,1fr) 280px;gap:32px}
     .banca-grid{grid-template-columns:1fr}
   }
@@ -489,8 +682,8 @@
     .burger{display:block}
     .nav-brand{display:flex}
     .mainnav .container{min-height:56px}
-    .menu{position:absolute;left:0;right:0;top:100%;flex-direction:column;flex-wrap:nowrap;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 14px 24px rgba(10,15,20,.1);max-height:0;overflow:hidden;transition:max-height .35s ease}
-    .menu.open{max-height:520px}
+    .menu{position:absolute;left:0;right:0;top:100%;flex-direction:column;flex-wrap:nowrap;background:var(--surface);border-bottom:1px solid var(--line);box-shadow:0 14px 24px rgba(10,15,20,.1);max-height:0;overflow:hidden;transition:max-height .35s ease}
+    .menu.open{max-height:80vh;overflow-y:auto}
     .menu a{padding:13px 16px;border-top:1px solid var(--line)}
     .menu a::before{top:0;bottom:0;right:auto;width:3px;height:auto;transform:scaleY(0)}
     .menu a.active::before{transform:scaleY(1)}
@@ -503,12 +696,16 @@
     .stats{grid-template-columns:1fr 1fr}
     .values{grid-template-columns:1fr}
     .trail{grid-template-columns:1fr 1fr}
+    .players,.tools{grid-template-columns:1fr 1fr}
+    .tools.compact,.agenda-strip{grid-template-columns:1fr 1fr}
+    .calc,.range-wrap{grid-template-columns:1fr}
+    .nl-band{flex-direction:column;align-items:flex-start}
     .page-hero .chip3d{display:none}
   }
   @media (max-width:640px){
     .topbar .container{flex-wrap:wrap;padding-top:8px;padding-bottom:8px;gap:10px}
     .ticker{flex-basis:calc(100% - 120px)}
-    .search{width:100%}
+    .search{flex:1 1 calc(100% - 50px);width:auto}
     .search input{width:100%;flex:1}
     .brand img{height:76px}
     .grid-2x2,.grid-3,.list-2,.form,.banca-form{grid-template-columns:1fr}
@@ -523,7 +720,13 @@
     .team{grid-template-columns:1fr 1fr}
     .post-body{font-size:16.5px}
     .author-box,.responsible,.study-cta{flex-direction:column;align-items:flex-start}
-    .trail,.trail-nav{grid-template-columns:1fr}
+    .trail,.trail-nav,.players,.tools,.tools.compact,.agenda-strip,.gl-group dl,.q-hands{grid-template-columns:1fr}
+    .nl-fields{flex-direction:column;width:100%}
+    .nl-fields input{min-width:0}
+    .profile-head{flex-direction:column;align-items:flex-start}
+    .event{flex-direction:column}
+    .rc{font-size:8px}
+    .pick .pc,.pick .pc small{font-size:10px}
     .lightbox{padding:60px 10px}
     .lb-prev,.lb-next{top:auto;bottom:14px;transform:none}
     .page-hero{padding:40px 0 38px}
@@ -547,8 +750,10 @@
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
       </button>
     </form>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="Ativar modo escuro">☾</button>
   </div>
 </div>
+<div class="read-progress" id="readProgress" aria-hidden="true"></div>
 
 <!-- 2. HEADER -->
 <header class="site-header">
@@ -597,6 +802,9 @@
       <li><a href="#/videos" data-key="videos">Vídeos</a></li>
       <li><a href="#/torneios" data-key="torneios">Torneios</a></li>
       <li><a href="#/estrategia" data-key="estrategia">Estratégia</a></li>
+      <li><a href="#/agenda" data-key="agenda">Agenda</a></li>
+      <li><a href="#/jogadores" data-key="jogadores">Jogadores</a></li>
+      <li><a href="#/ferramentas" data-key="ferramentas">Ferramentas</a></li>
     </ul>
   </div>
 </nav>
@@ -621,6 +829,10 @@
       <li><a href="#/videos">Vídeos</a></li>
       <li><a href="#/torneios">Torneios</a></li>
       <li><a href="#/estrategia">Estratégia</a></li>
+      <li><a href="#/agenda">Agenda</a></li>
+      <li><a href="#/jogadores">Jogadores</a></li>
+      <li><a href="#/ferramentas">Ferramentas</a></li>
+      <li><a href="#/glossario">Glossário</a></li>
       <li><a href="#/minha-banca">Minha Banca</a></li>
     </ul>
   </div>
@@ -1448,6 +1660,13 @@ VIEWS.home = () => {
   <section id="torneios"><div class="container">
     <h2 class="sec-title reveal">Torneios <span class="suit">♠</span></h2>
     <div class="grid-2x2">${inSection('torneios').map(a => featCard(a)).join('')}</div>
+    <p class="more-link reveal"><a class="btn ghost" href="#/torneios">Ver todas as notícias de torneios →</a></p>
+  </div></section>
+  <section id="agenda-home"><div class="container">
+    <h2 class="sec-title reveal">Próximos torneios <span class="suit red">♦</span></h2>
+    <div class="agenda-strip">${EVENTS.filter(e => parseDate(e.end) >= new Date(new Date().setHours(0, 0, 0, 0))).sort((a, b) => a.start.localeCompare(b.start)).slice(0, 4).map(e => { const d = parseDate(e.start); return `
+      <a class="mini-ev reveal" href="${e.link || '#/agenda'}"><span class="ev-date"><b>${d.getDate()}</b><span>${MONTHS[d.getMonth()]}</span></span><span><b>${e.n}</b><small>${e.place}</small></span></a>`; }).join('')}</div>
+    <p class="more-link reveal"><a class="btn ghost" href="#/agenda">Ver agenda completa →</a></p>
   </div></section>
   <section id="estrategia"><div class="container">
     <h2 class="sec-title reveal">Estratégia <span class="suit red">♥</span></h2>
@@ -1457,10 +1676,21 @@ VIEWS.home = () => {
   <section id="internacional"><div class="container">
     <h2 class="sec-title reveal">Internacional <span class="suit red">♦</span></h2>
     <div class="grid-3">${inSection('internacional').map(a => card(a, true)).join('')}</div>
+    <p class="more-link reveal"><a class="btn ghost" href="#/internacional">Ver todas as notícias internacionais →</a></p>
+  </div></section>
+  <section id="ferramentas-home"><div class="container">
+    <h2 class="sec-title reveal">Ferramentas <span class="suit">♣</span></h2>
+    <div class="tools compact">${TOOLS.slice(0, 4).map(([r, i, t, d]) => `<a class="tool reveal" href="#/${r}"><span class="ti">${i}</span><h3>${t}</h3><p>${d}</p></a>`).join('')}</div>
   </div></section>
   <section id="lifestyle"><div class="container">
     <h2 class="sec-title reveal">Lifestyle <span class="suit">♣</span></h2>
     <div class="list-2">${inSection('lifestyle').map(listItem).join('')}</div>
+  </div></section>
+  <section><div class="container">
+    <form class="nl-band reveal" data-newsletter>
+      <div><span class="kicker">Newsletter</span><h2>O melhor do poker no seu e-mail, toda sexta</h2><p>Resumo das notícias, um tutorial e uma mão comentada. Grátis.</p></div>
+      <div class="nl-fields"><label class="sr-only" for="nlHome">Seu e-mail</label><input id="nlHome" type="email" placeholder="seu@email.com" required /><button class="btn gold" type="submit">Quero receber</button></div>
+    </form>
   </div></section>`;
 };
 
@@ -1526,6 +1756,7 @@ VIEWS.materia = slug => {
           <figcaption>${a.cards ? "Ilustração: pokertodahora" : esc(a.alt) + " · Foto: Unsplash"}</figcaption>
         </figure>
         <div class="post-body">${renderBody(a.body)}</div>
+        ${a.cat === 'Estratégia' && glossaryFor(a).length ? `<div class="gl-chips"><b>Termos deste artigo</b>${glossaryFor(a).map(([t]) => `<a href="#/glossario/${slugify(t)}">${t}</a>`).join('')}</div>` : ''}
         ${a.step ? trailNav(a) : ''}
         ${a.sources ? `<div class="sources"><b>Fontes</b><ul>${a.sources.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${t} ↗</a></li>`).join('')}</ul></div>` : ''}
         <div class="share">
@@ -2014,7 +2245,7 @@ function drawChart() {
   ctx.font = `600 11.5px ${font}`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
   for (let k = 0; k <= 4; k++) {
     const v = min + (max - min) * k / 4, y = Y(v);
-    ctx.strokeStyle = '#eef0f2'; ctx.lineWidth = 1;
+    ctx.strokeStyle = getComputedStyle(document.documentElement).getPropertyValue('--line').trim() || '#eef0f2'; ctx.lineWidth = 1;
     ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
     ctx.fillStyle = '#8a939e'; ctx.fillText('R$ ' + Math.round(v).toLocaleString('pt-BR'), pad.l - 10, y);
   }
@@ -2100,6 +2331,683 @@ window.addEventListener('resize', () => { if (current.view === 'minha-banca') dr
 /* =====================================================================
    ROTEADOR (troca de páginas dentro do mesmo arquivo)
    ===================================================================== */
+/* =====================================================================
+   DADOS: AGENDA, JOGADORES E GLOSSÁRIO
+   ===================================================================== */
+const EVENTS = [
+  { n: 'WSOP Online 2026', tour: 'WSOP', place: 'Online · GGPoker', start: '2026-08-16', end: '2026-09-29', info: '33 braceletes. Main Event de US$ 5.000 com US$ 25 milhões garantidos.', link: '#/materia/brasil-domina-wsop-online-2026', src: 'https://www.pokernews.com/news/2026/08/ggpoker-unveils-2026-wsop-online-schedule-33-bracelets-52081.htm' },
+  { n: 'BSOP Millions', tour: 'BSOP', place: 'São Paulo · WTC Sheraton', start: '2026-11-13', end: '2026-11-28', info: '103 torneios. Main Event de R$ 5.000 com R$ 10 milhões garantidos.', link: '#/materia/bsop-millions-2026', src: 'https://bsop.com.br/bsop-millions/' },
+  { n: 'WPT World Championship Festival', tour: 'WPT', place: 'Las Vegas · Wynn', start: '2026-11-27', end: '2026-12-21', info: 'Mais de 85 eventos e US$ 20 milhões garantidos. O Championship, de US$ 10.400, vai de 13 a 20 de dezembro.', src: 'https://www.cardplayer.com/poker-news/1747756-schedule-revealed-for-2026-wpt-world-championships-at-wynn-las-vegas' },
+  { n: 'WSOP Paradise', tour: 'WSOP', place: 'Bahamas · Baha Mar', start: '2026-12-02', end: '2026-12-17', info: '20 braceletes e US$ 120 milhões garantidos. Super Main Event de US$ 25.000 a partir de 10 de dezembro.', link: '#/materia/wsop-paradise-2026', src: 'https://www.pokernews.com/news/2026/08/the-2026-wsop-paradise-schedule-120m-guaranteed-52183.htm' },
+  { n: 'EPT Praga', tour: 'EPT', place: 'Praga · King’s Resort', start: '2026-12-02', end: '2026-12-13', info: 'Última etapa do European Poker Tour em 2026. O Main Event vai de 7 a 13 de dezembro.', src: 'https://www.pokerstarslive.com/ept/prague/' },
+  { n: 'Triton Super High Roller Series Jeju II', tour: 'Triton', place: 'Jeju · Coreia do Sul', start: '2026-09-04', end: '2026-09-17', info: 'Pedro Padilha venceu o evento de US$ 50 mil e levou US$ 1,4 milhão.', link: '#/materia/triton-jeju-pedro-padilha' },
+  { n: 'BSOP Floripa', tour: 'BSOP', place: 'Florianópolis · Costão do Santinho', start: '2026-09-04', end: '2026-09-08', info: '26 torneios e a volta do BSOP a Santa Catarina depois de oito anos.', src: 'https://bsop.com.br/bsop-floripa/' },
+  { n: 'EPT Barcelona', tour: 'EPT', place: 'Barcelona · Espanha', start: '2026-08-16', end: '2026-08-29', info: 'Manuel Ferrari venceu o Main Event, que teve 1.823 entradas.', link: '#/materia/ept-barcelona-2026-ferrari' },
+  { n: 'WSOP 2026 — Main Event', tour: 'WSOP', place: 'Las Vegas · Horseshoe e Paris', start: '2026-07-02', end: '2026-08-05', info: '9.208 entradas. Lucas Jumalon, de 22 anos, foi o campeão.', link: '#/materia/wsop-2026-main-event-jumalon' }
+];
+
+const PLAYERS = [
+  {
+    slug: 'yuri-martins', name: 'Yuri Martins', full: 'Yuri Martins Dzivielevski', flag: '🇧🇷', country: 'Brasil', from: 'Curitiba (PR)', born: '27/11/1991', color: '#0b5d3b',
+    stats: [['6', 'braceletes da WSOP'], ['US$ 2,84 mi', 'maior prêmio (2026)']],
+    bio: 'Um dos jogadores mais completos do mundo, com títulos em Omaha, jogos mistos e, desde 2026, também em No-Limit Hold’em.',
+    highlights: [
+      '<strong>2026:</strong> campeão do High Roller de US$ 100 mil da WSOP (US$ 2.841.432), o 6º bracelete.',
+      '<strong>2024:</strong> bracelete no US$ 3.000 Nine Game Mix.',
+      '<strong>2023:</strong> braceletes no US$ 1.500 H.O.R.S.E. e no US$ 10.000 PLO Championship da WSOP Online.',
+      '<strong>2022:</strong> campeão do € 25.000 NLH no EPT Monte Carlo (€ 448.515) e vice do Poker Players Championship de US$ 50 mil.',
+      '<strong>2020:</strong> bracelete no US$ 400 Plossus da WSOP Online.',
+      '<strong>2019:</strong> primeiro bracelete, no US$ 2.500 Omaha/Stud Hi-Lo.',
+      '<strong>2015:</strong> campeão do LAPT Brasil Grand Final (R$ 652.509).'
+    ],
+    articles: ['yuri-martins-sexto-bracelete', 'joao-simao-quarto-bracelete'],
+    sources: [['Wikipédia — Yuri Dzivielevski', 'https://en.wikipedia.org/wiki/Yuri_Dzivielevski'], ['PokerNews — Yuri vence o US$ 100K High Roller', 'https://www.pokernews.com/news/2026/06/yuri-dzivielevski-wins-wsop-event-36-100-000-high-roller-51532.htm']]
+  },
+  {
+    slug: 'joao-simao', name: 'João Simão', full: 'João Pires Simão', flag: '🇧🇷', country: 'Brasil', from: 'Belo Horizonte (MG)', born: '11/11/1988', color: '#c8102e',
+    stats: [['4', 'braceletes da WSOP'], ['US$ 20 mi+', 'em prêmios de torneios']],
+    bio: 'O brasileiro com mais prêmios em torneios de poker na história. Antes do poker, competiu no futebol e no jiu-jitsu em Belo Horizonte.',
+    highlights: [
+      '<strong>2026:</strong> campeão do High Roller de PLO de US$ 50 mil da WSOP (US$ 1.368.700), o 4º bracelete.',
+      '<strong>2025:</strong> campeão do Triton de US$ 150 mil na WSOP Paradise (US$ 3.067.000), em um pódio 100% brasileiro.',
+      '<strong>2022:</strong> bracelete no US$ 5.000 Mixed NLH/PLO, em Las Vegas.',
+      '<strong>2021:</strong> primeiro bracelete, no Caesars Cares Charity Event da WSOP Online (US$ 228.946).'
+    ],
+    articles: ['joao-simao-quarto-bracelete', 'triton-jeju-pedro-padilha'],
+    sources: [['PokerNews — João Simão vence o US$ 50K PLO', 'https://www.pokernews.com/news/2026/06/joao-simao-wins-wsop-event-55-50000-high-roller-plo-51620.htm'], ['PokerNews Brasil — Pódio brasileiro de US$ 6,6 milhões', 'https://br.pokernews.com/noticias/2026/05/podio-bracelete-6-milhoes-vitoria-insana-brasil-wsop-65922.htm'], ['PokerNews Brasil — Perfil', 'https://br.pokernews.com/jogadores-de-poker/joao-simao/']]
+  },
+  {
+    slug: 'pedro-padilha', name: 'Pedro Padilha', full: 'Pedro Padilha', flag: '🇧🇷', country: 'Brasil', from: 'Brasil', color: '#8a6d12',
+    stats: [['1', 'título da Triton'], ['US$ 1,4 mi', 'maior prêmio (2026)']],
+    bio: 'Regular dos torneios de apostas mais altas do mundo, virou em 2026 o quarto brasileiro campeão da Triton.',
+    highlights: [
+      '<strong>Setembro de 2026:</strong> campeão do evento de US$ 50 mil da Triton Jeju II, com US$ 1,4 milhão.',
+      '<strong>Dezembro de 2025:</strong> vice-campeão do Main Event da Triton de US$ 100 mil, na WSOP Paradise.'
+    ],
+    articles: ['triton-jeju-pedro-padilha'],
+    sources: [['PokerNews — Pedro Padilha vence na Triton Jeju', 'https://www.pokernews.com/news/2026/09/pedro-padilha-wins-50k-nlh-triton-jeju-ii-52358.htm']]
+  },
+  {
+    slug: 'nilson-junior', name: 'Nilson Junior', full: 'Nilson Junior', flag: '🇧🇷', country: 'Brasil', from: 'Brasil', color: '#1c5bb8',
+    stats: [['1', 'bracelete da WSOP Online'], ['US$ 113 mil', 'prêmio (2026)']],
+    bio: 'Campeão do quinto bracelete brasileiro na WSOP Online 2026, em uma decisão entre dois brasileiros.',
+    highlights: [
+      '<strong>2026:</strong> campeão do US$ 250 Beat the Pros Bounty da WSOP Online (US$ 113.245), vencendo Fabricio Nociolini no heads-up.',
+      'Ganhou também um Super Pass de US$ 30 mil para o Super Main Event da WSOP Paradise.'
+    ],
+    articles: ['brasil-domina-wsop-online-2026', 'wsop-paradise-2026'],
+    sources: [['PokerNews — Brazilians continue WSOP Online domination', 'https://www.pokernews.com/news/2026/09/brazilians-continue-2026-wsop-online-domination-52381.htm']]
+  },
+  {
+    slug: 'felipe-boianovsky', name: 'Felipe Boianovsky', full: 'Felipe Boianovsky', flag: '🇧🇷', country: 'Brasil', from: 'Brasil', color: '#0a0f14',
+    stats: [['US$ 2,13 mi', 'vice no Triton de US$ 150 mil']],
+    bio: 'Fez parte do pódio 100% brasileiro no Triton de US$ 150 mil da WSOP Paradise 2025.',
+    highlights: [
+      '<strong>Dezembro de 2025:</strong> vice-campeão do Triton de US$ 150 mil 8-Handed na WSOP Paradise (US$ 2.131.000), atrás de João Simão e à frente de Yuri Martins.'
+    ],
+    articles: ['joao-simao-quarto-bracelete'],
+    sources: [['PokerNews Brasil — Pódio brasileiro de US$ 6,6 milhões', 'https://br.pokernews.com/noticias/2026/05/podio-bracelete-6-milhoes-vitoria-insana-brasil-wsop-65922.htm']]
+  },
+  {
+    slug: 'kristen-foxen', name: 'Kristen Foxen', full: 'Kristen Foxen', flag: '🇨🇦', country: 'Canadá', from: 'Niagara (Ontário)', color: '#c8102e',
+    stats: [['6', 'braceletes da WSOP'], ['US$ 1,77 mi', 'maior prêmio ao vivo']],
+    bio: 'A mulher com mais braceletes da história da WSOP, com o dobro de qualquer outra jogadora.',
+    highlights: [
+      '<strong>2026:</strong> campeã do High Roller de US$ 25 mil (US$ 1.773.083), o 6º bracelete. Primeira mulher a vencer esse evento.'
+    ],
+    articles: ['kristen-foxen-sexto-bracelete'],
+    sources: [['WSOP.com — Kristen Foxen conquista o sexto bracelete', 'https://www.wsop.com/news/kristen-foxen-wins-sixth-wsop-bracelet-in-25-k-high-roller/']]
+  },
+  {
+    slug: 'lucas-jumalon', name: 'Lucas Jumalon', full: 'Lucas Jumalon', flag: '🇺🇸', country: 'Estados Unidos', from: 'Spokane (Washington)', color: '#0b5d3b',
+    stats: [['US$ 10 mi', 'campeão do Main Event 2026'], ['22 anos', 'idade no título']],
+    bio: 'Recém-formado na faculdade, liderou a mesa final do Main Event de 2026 do começo ao fim.',
+    highlights: [
+      '<strong>2026:</strong> campeão do Main Event da WSOP (9.208 entradas), com US$ 10 milhões.'
+    ],
+    articles: ['wsop-2026-main-event-jumalon'],
+    sources: [['WSOP.com — Lucas Jumalon vence o Main Event', 'https://www.wsop.com/news/22-year-old-lucas-jumalon-wins-the-2026-wsop-main-event/']]
+  }
+];
+
+// Glossário: [termo, definição, matéria relacionada (opcional)]
+const GLOSSARY = [
+  ['3-bet', 'Reaumento antes do flop, feito depois que alguém já deu raise.', 'quando-dar-3-bet'],
+  ['All-in', 'Apostar todas as fichas que você tem na mesa.', 'push-or-fold-stack-curto'],
+  ['Ante', 'Pequena aposta obrigatória, além dos blinds, comum nos níveis mais altos dos torneios.'],
+  ['Bad beat', 'Perder uma mão em que você era grande favorito, por causa de uma carta de sorte do adversário.'],
+  ['Bankroll', 'O dinheiro separado só para jogar poker. É a sua banca.', 'gestao-de-banca-erro'],
+  ['Big blind', 'A maior das duas apostas obrigatórias, feita pelo segundo jogador à esquerda do botão.', 'regras-texas-holdem'],
+  ['Blefe', 'Apostar com uma mão fraca para fazer o adversário largar uma mão melhor.', 'blefe-e-semiblefe'],
+  ['Blinds', 'As apostas obrigatórias (small blind e big blind) que iniciam cada mão.', 'regras-texas-holdem'],
+  ['Board', 'As cinco cartas comunitárias abertas na mesa.'],
+  ['Bolha', 'O momento do torneio logo antes de todos os jogadores restantes entrarem na premiação.', 'icm-e-bolha'],
+  ['Bracelete', 'O troféu dado aos campeões dos eventos da WSOP.'],
+  ['Button', 'A posição do dealer. É a melhor posição da mesa, porque age por último depois do flop.', 'posicoes-na-mesa'],
+  ['Buy-in', 'O valor pago para entrar em um torneio.'],
+  ['C-bet', 'Aposta de continuação: quem deu raise antes do flop aposta de novo no flop.', 'continuation-bet'],
+  ['Call', 'Pagar, ou seja, igualar a aposta de outro jogador.', 'regras-texas-holdem'],
+  ['Cash game', 'Modalidade em que as fichas valem dinheiro e você pode entrar e sair quando quiser.'],
+  ['Check', 'Passar a vez sem apostar, quando ninguém apostou antes na rodada.', 'regras-texas-holdem'],
+  ['Cutoff', 'A posição imediatamente à direita do botão.', 'posicoes-na-mesa'],
+  ['Equity', 'A sua fatia do pote de acordo com a chance de vencer a mão.', 'pot-odds-e-outs'],
+  ['Field', 'O conjunto de jogadores inscritos em um torneio.'],
+  ['Flop', 'As três primeiras cartas comunitárias, abertas de uma vez.', 'regras-texas-holdem'],
+  ['Flush', 'Cinco cartas do mesmo naipe.', 'ranking-de-maos'],
+  ['Fold', 'Desistir da mão e largar as cartas.', 'regras-texas-holdem'],
+  ['Fold equity', 'A chance de o adversário largar diante da sua aposta.', 'push-or-fold-stack-curto'],
+  ['Full house', 'Uma trinca e um par na mesma mão.', 'ranking-de-maos'],
+  ['GTO', 'Game Theory Optimal: estratégia teórica equilibrada, que não pode ser explorada.'],
+  ['Gutshot', 'Projeto de sequência que precisa de uma carta do meio, com 4 outs.', 'pot-odds-e-outs'],
+  ['Heads-up', 'Mão ou partida disputada entre apenas dois jogadores.'],
+  ['High roller', 'Torneio com buy-in alto, normalmente disputado pelos melhores profissionais.'],
+  ['ICM', 'Independent Chip Model: modelo que converte fichas de torneio em valor real de prêmio.', 'icm-e-bolha'],
+  ['ITM', 'In the money: estar dentro da zona de premiação do torneio.'],
+  ['Kicker', 'A carta que desempata mãos com a mesma combinação.', 'ranking-de-maos'],
+  ['Limp', 'Apenas pagar o big blind antes do flop, sem aumentar.'],
+  ['Main Event', 'O torneio principal de uma série, como o de US$ 10 mil da WSOP.'],
+  ['Mesa final', 'A última mesa de um torneio, onde se decide o campeão.'],
+  ['Nuts', 'A melhor mão possível naquele board.'],
+  ['Outs', 'As cartas que ainda podem sair e melhorar a sua mão.', 'pot-odds-e-outs'],
+  ['Overbet', 'Aposta maior que o tamanho do pote.'],
+  ['Pot odds', 'A relação entre o tamanho do pote e o valor que você precisa pagar.', 'pot-odds-e-outs'],
+  ['Prize pool', 'O total de prêmios distribuídos em um torneio.'],
+  ['Push or fold', 'Estratégia de stack curto: ir all-in ou largar, sem jogadas intermediárias.', 'push-or-fold-stack-curto'],
+  ['Raise', 'Aumentar a aposta atual.', 'regras-texas-holdem'],
+  ['Range', 'O conjunto de mãos que um jogador pode ter, ou joga, em uma situação.', 'ranges-pre-flop-iniciantes'],
+  ['Reentrada', 'Comprar uma nova entrada no torneio depois de ser eliminado.'],
+  ['River', 'A quinta e última carta comunitária.', 'regras-texas-holdem'],
+  ['ROI', 'Retorno sobre o investimento: quanto você lucra em relação ao que gastou em buy-ins.', 'gestao-de-banca-erro'],
+  ['Satélite', 'Torneio mais barato que dá como prêmio a vaga em um torneio maior.'],
+  ['Semiblefe', 'Apostar com um projeto que ainda pode virar a melhor mão.', 'blefe-e-semiblefe'],
+  ['Set', 'Trinca formada com um par na mão e uma carta igual na mesa.', 'pares-baixos-torneios'],
+  ['Showdown', 'O momento em que as cartas são mostradas para decidir o vencedor.', 'regras-texas-holdem'],
+  ['Slowplay', 'Jogar passivamente uma mão muito forte para atrair apostas.'],
+  ['Small blind', 'A menor das duas apostas obrigatórias, feita pelo jogador à esquerda do botão.', 'regras-texas-holdem'],
+  ['Stack', 'A pilha de fichas de um jogador.'],
+  ['Straight', 'Sequência: cinco cartas em ordem, de naipes variados.', 'ranking-de-maos'],
+  ['Tilt', 'Estado emocional em que o jogador perde o controle e passa a tomar más decisões.', 'meditacao-contra-tilt'],
+  ['Turn', 'A quarta carta comunitária.', 'regras-texas-holdem'],
+  ['UTG', 'Under the gun: o primeiro jogador a agir antes do flop.', 'posicoes-na-mesa']
+];
+const slugify = s => normalize(s).replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+const glossaryFor = a => {
+  const text = normalize(stripTags(a.body.flat().join(' ')));
+  return GLOSSARY.filter(([t]) => new RegExp(`(^|[^a-z0-9])${normalize(t).replace(/[-]/g, '\\-')}([^a-z0-9]|$)`).test(text)).slice(0, 10);
+};
+
+/* =====================================================================
+   BARALHO E AVALIADOR DE MÃOS (usado pela calculadora e pelo quiz)
+   ===================================================================== */
+const RANK_CHARS = '23456789TJQKA';
+const RANK_LABEL = ['2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K', 'A'];
+const SUIT_SYM = ['♠', '♥', '♦', '♣'];
+const HAND_NAMES = ['Carta alta', 'Um par', 'Dois pares', 'Trinca', 'Sequência', 'Flush', 'Full house', 'Quadra', 'Straight flush'];
+const cardHTML = (id, cls = '') => id == null ? `<span class="pc empty ${cls}"></span>`
+  : `<span class="pc ${(id & 3) === 1 || (id & 3) === 2 ? 'red' : ''} ${cls}">${RANK_LABEL[id >> 2]}<small>${SUIT_SYM[id & 3]}</small></span>`;
+
+function straightHigh(m) {
+  for (let h = 12; h >= 4; h--) { const need = 0x1F << (h - 4); if ((m & need) === need) return h; }
+  return (m & 0x100F) === 0x100F ? 3 : -1;
+}
+function packScore(cat, arr) { let v = cat; for (let i = 0; i < 5; i++) v = v * 16 + (arr[i] == null ? 0 : arr[i]); return v; }
+function evalHand(cs) {
+  const rc = new Array(13).fill(0), sc = [0, 0, 0, 0], sm = [0, 0, 0, 0];
+  let m = 0;
+  for (const c of cs) { const r = c >> 2, s = c & 3; rc[r]++; sc[s]++; sm[s] |= 1 << r; m |= 1 << r; }
+  const kick = (excl, n) => { const out = []; for (let r = 12; r >= 0 && out.length < n; r--) if (rc[r] && !excl.includes(r)) out.push(r); return out; };
+  for (let s = 0; s < 4; s++) if (sc[s] >= 5) {
+    const sf = straightHigh(sm[s]);
+    if (sf >= 0) return packScore(8, [sf]);
+    const top = []; for (let r = 12; r >= 0 && top.length < 5; r--) if (sm[s] & (1 << r)) top.push(r);
+    return packScore(5, top);
+  }
+  const quads = [], trips = [], pairs = [];
+  for (let r = 12; r >= 0; r--) { if (rc[r] === 4) quads.push(r); else if (rc[r] === 3) trips.push(r); else if (rc[r] === 2) pairs.push(r); }
+  if (quads.length) return packScore(7, [quads[0], ...kick([quads[0]], 1)]);
+  if (trips.length && (trips.length > 1 || pairs.length)) return packScore(6, [trips[0], Math.max(trips[1] ?? -1, pairs[0] ?? -1)]);
+  const st = straightHigh(m);
+  if (st >= 0) return packScore(4, [st]);
+  if (trips.length) return packScore(3, [trips[0], ...kick([trips[0]], 2)]);
+  if (pairs.length >= 2) return packScore(2, [pairs[0], pairs[1], ...kick([pairs[0], pairs[1]], 1)]);
+  if (pairs.length) return packScore(1, [pairs[0], ...kick([pairs[0]], 3)]);
+  return packScore(0, kick([], 5));
+}
+const handName = score => {
+  const cat = Math.floor(score / 16 ** 5);
+  if (cat === 8 && Math.floor(score / 16 ** 4) % 16 === 12) return 'Royal flush';
+  return HAND_NAMES[cat];
+};
+const randInt = n => Math.floor(Math.random() * n);
+
+/* =====================================================================
+   PÁGINAS NOVAS
+   ===================================================================== */
+const CATS = {
+  noticias: { title: 'Notícias', kicker: 'Últimas', text: 'Tudo o que aconteceu no poker do Brasil e do mundo, com as fontes de cada informação.', filter: a => ['Notícias', 'Torneios', 'Internacional'].includes(a.cat) && !a.level },
+  torneios: { title: 'Torneios', kicker: 'Circuito', text: 'BSOP, WSOP, EPT, Triton e as principais séries do calendário.', filter: a => a.cat === 'Torneios' },
+  internacional: { title: 'Internacional', kicker: 'Mundo', text: 'Os destaques do poker fora do Brasil e os brasileiros que brilham lá fora.', filter: a => a.cat === 'Internacional' },
+  lifestyle: { title: 'Lifestyle', kicker: 'Além das mesas', text: 'Viagens, rotina, bem-estar e a vida de quem vive o poker.', filter: a => a.cat === 'Lifestyle' }
+};
+VIEWS.categoria = key => {
+  const c = CATS[key];
+  const list = byDate(ARTICLES.filter(c.filter));
+  return `
+  ${pageHero(c.kicker, c.title, c.text)}
+  <section><div class="container">
+    <div class="grid-3">${list.map(a => card(a, true)).join('')}</div>
+  </div></section>`;
+};
+
+const parseDate = iso => { const [y, m, d] = iso.split('-').map(Number); return new Date(y, m - 1, d); };
+const DAY = 864e5;
+VIEWS.agenda = () => {
+  const today = new Date(); today.setHours(0, 0, 0, 0);
+  const up = EVENTS.filter(e => parseDate(e.end) >= today).sort((a, b) => a.start.localeCompare(b.start));
+  const past = EVENTS.filter(e => parseDate(e.end) < today).sort((a, b) => b.end.localeCompare(a.end));
+  const range = e => { const s = parseDate(e.start), f = parseDate(e.end); return s.getMonth() === f.getMonth() ? `${s.getDate()} a ${f.getDate()} de ${MONTHS[s.getMonth()]}` : `${s.getDate()} ${MONTHS[s.getMonth()]} a ${f.getDate()} ${MONTHS[f.getMonth()]}`; };
+  const status = e => {
+    const s = parseDate(e.start), f = parseDate(e.end);
+    if (today >= s && today <= f) { const left = Math.round((f - today) / DAY); return `<span class="ev-status live">● Em andamento${left ? ` · termina em ${left} ${left === 1 ? 'dia' : 'dias'}` : ' · último dia'}</span>`; }
+    if (today < s) { const d = Math.round((s - today) / DAY); return `<span class="ev-status soon">Começa em ${d} ${d === 1 ? 'dia' : 'dias'}</span>`; }
+    return '<span class="ev-status done">Encerrado</span>';
+  };
+  const row = e => { const s = parseDate(e.start); return `
+    <article class="event reveal">
+      <div class="ev-date"><b>${s.getDate()}</b><span>${MONTHS[s.getMonth()]}</span></div>
+      <div class="ev-body">
+        <div class="ev-top"><span class="tag">${e.tour}</span>${status(e)}</div>
+        <h3>${e.n}</h3>
+        <div class="meta"><span>📍 ${e.place}</span><span>🗓 ${range(e)}</span></div>
+        <p>${e.info}</p>
+        <div class="ev-links">${e.link ? `<a href="${e.link}">Ler a matéria →</a>` : ''}${e.src ? `<a href="${e.src}" target="_blank" rel="noopener">Site oficial / fonte ↗</a>` : ''}</div>
+      </div>
+    </article>`; };
+  return `
+  ${pageHero('Calendário', 'Agenda de torneios', 'As próximas grandes séries de poker, com datas, locais e contagem regressiva.')}
+  <section><div class="container">
+    <h2 class="sec-title reveal">Próximos e em andamento <span class="suit">♠</span></h2>
+    <div class="events">${up.map(row).join('') || '<p class="empty">Nenhum evento futuro cadastrado.</p>'}</div>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Encerrados recentemente <span class="suit red">♥</span></h2>
+    <div class="events past">${past.map(row).join('')}</div>
+  </div></section>`;
+};
+
+const playerCard = p => `
+  <a class="player-card reveal" href="#/jogador/${p.slug}">
+    <span class="avatar lg" style="background:${p.color}">${initials(p.name)}</span>
+    <div><h3>${p.name}</h3><small>${p.country}${p.from !== p.country ? ' · ' + p.from : ''}</small>
+    <div class="pstats">${p.stats.map(([v, l]) => `<span><b>${v}</b>${l}</span>`).join('')}</div></div>
+  </a>`;
+VIEWS.jogadores = () => `
+  ${pageHero('Perfis', 'Jogadores', 'Os nomes que estão fazendo história no poker, com títulos e números tirados de fontes oficiais.')}
+  <section><div class="container">
+    <h2 class="sec-title reveal">Brasileiros <span class="suit">♠</span></h2>
+    <div class="players">${PLAYERS.filter(p => p.country === 'Brasil').map(playerCard).join('')}</div>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Internacionais <span class="suit red">♦</span></h2>
+    <div class="players">${PLAYERS.filter(p => p.country !== 'Brasil').map(playerCard).join('')}</div>
+  </div></section>`;
+VIEWS.jogador = slug => {
+  const p = PLAYERS.find(x => x.slug === slug);
+  if (!p) return VIEWS.notFound();
+  return `
+  <div class="container">
+    <nav class="crumbs"><a href="#/">Início</a><span class="sep">›</span><a href="#/jogadores">Jogadores</a><span class="sep">›</span><span>${p.name}</span></nav>
+    <div class="profile">
+      <div class="profile-head">
+        <span class="avatar xl" style="background:${p.color}">${initials(p.name)}</span>
+        <div>
+          <h1>${p.name}</h1>
+          <p class="lead">${p.full !== p.name ? p.full + ' · ' : ''}${p.country}${p.from !== p.country ? ', ' + p.from : ''}${p.born ? ' · nascido em ' + p.born : ''}</p>
+          <p>${p.bio}</p>
+        </div>
+      </div>
+      <div class="pstats big">${p.stats.map(([v, l]) => `<span><b>${v}</b>${l}</span>`).join('')}</div>
+      <h2 class="sec-title">Principais conquistas <span class="suit">♠</span></h2>
+      <ul class="timeline">${p.highlights.map(h => `<li>${h}</li>`).join('')}</ul>
+      <div class="sources"><b>Fontes</b><ul>${p.sources.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${t} ↗</a></li>`).join('')}</ul></div>
+    </div>
+    <section style="padding-top:36px">
+      <h2 class="sec-title">Matérias relacionadas <span class="suit red">♥</span></h2>
+      <div class="grid-3">${p.articles.map(bySlug).filter(Boolean).map(a => card(a)).join('')}</div>
+    </section>
+  </div>`;
+};
+
+const TOOLS = [
+  ['calculadora', '🧮', 'Calculadora de odds', 'Escolha as cartas e veja a chance de vitória de cada mão.'],
+  ['ranges', '🟩', 'Tabela de ranges', 'As mãos para abrir em cada posição, na grade 13×13.'],
+  ['quiz', '❓', 'Quiz de poker', 'Descubra qual mão ganha e teste seus conhecimentos.'],
+  ['glossario', '📖', 'Glossário', 'Mais de 50 termos do poker explicados de A a Z.'],
+  ['minha-banca', '💰', 'Minha Banca', 'Registre torneios e acompanhe lucro, ROI e evolução.'],
+  ['agenda', '🗓', 'Agenda de torneios', 'Datas e contagem regressiva das próximas séries.']
+];
+VIEWS.ferramentas = () => `
+  ${pageHero('Ferramentas', 'Ferramentas de poker', 'Calculadora, tabela de ranges, quiz, glossário e controle de banca. Tudo grátis e direto no navegador.')}
+  <section><div class="container">
+    <div class="tools">${TOOLS.map(([r, i, t, d]) => `<a class="tool reveal" href="#/${r}"><span class="ti">${i}</span><h3>${t}</h3><p>${d}</p><span class="go">Abrir →</span></a>`).join('')}</div>
+  </div></section>`;
+
+VIEWS.glossario = () => {
+  const letters = [...new Set(GLOSSARY.map(([t]) => /[0-9]/.test(t[0]) ? '#' : normalize(t[0]).toUpperCase()))];
+  const groups = letters.map(L => [L, GLOSSARY.filter(([t]) => (/[0-9]/.test(t[0]) ? '#' : normalize(t[0]).toUpperCase()) === L)]);
+  return `
+  ${pageHero('Ferramentas', 'Glossário de poker', 'Os termos que você encontra nas mesas, nas transmissões e nas nossas matérias.')}
+  <section><div class="container">
+    <div class="gl-tools">
+      <input type="search" id="glSearch" placeholder="Buscar termo..." aria-label="Buscar termo no glossário" />
+      <nav class="gl-letters">${letters.map(L => `<a href="#" data-letter="${L}">${L}</a>`).join('')}</nav>
+    </div>
+    <div id="glList">${groups.map(([L, items]) => `
+      <div class="gl-group" data-group="${L}"><h2 class="gl-letter" id="gl-letter-${L}">${L}</h2>
+      <dl>${items.map(([t, d, s]) => `<div class="gl-item" id="g-${slugify(t)}" data-term="${esc(normalize(t + ' ' + d))}"><dt>${t}</dt><dd>${d}${s && bySlug(s) ? ` <a href="#/materia/${s}">Saiba mais →</a>` : ''}</dd></div>`).join('')}</dl></div>`).join('')}
+    </div>
+    <p class="empty" id="glEmpty" hidden>Nenhum termo encontrado.</p>
+  </div></section>`;
+};
+SETUP.glossario = term => {
+  const input = $('#glSearch');
+  input.addEventListener('input', () => {
+    const q = normalize(input.value.trim());
+    let any = false;
+    $$('.gl-group', app).forEach(g => {
+      let vis = 0;
+      $$('.gl-item', g).forEach(it => { const ok = !q || it.dataset.term.includes(q); it.hidden = !ok; if (ok) vis++; });
+      g.hidden = !vis; if (vis) any = true;
+    });
+    $('#glEmpty').hidden = any;
+  });
+  $('.gl-letters').addEventListener('click', e => {
+    const a = e.target.closest('[data-letter]');
+    if (!a) return;
+    e.preventDefault();
+    document.getElementById('gl-letter-' + a.dataset.letter).scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+  if (term) {
+    const el = document.getElementById('g-' + term);
+    if (el) setTimeout(() => { el.scrollIntoView({ block: 'center' }); el.classList.add('hl'); }, 60);
+  }
+};
+
+/* ---------- Tabela de ranges ---------- */
+const RANGE_DEFS = {
+  UTG: '77+, AJs+, KQs, AQo+',
+  MP: '55+, A9s+, KJs+, QJs, JTs, AJo+, KQo',
+  CO: '22+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, ATo+, KJo+',
+  BTN: '22+, A2s+, K5s+, Q8s+, J8s+, T8s+, 97s+, 86s+, 75s+, 64s+, 54s, A7o+, K9o+, Q9o+, J9o+, T9o',
+  SB: '22+, A2s+, K7s+, Q8s+, J8s+, T8s+, 98s, 87s, 76s, 65s, A8o+, KTo+, QTo+, JTo'
+};
+const POS_INFO = { UTG: 'Primeiro a agir, com muitos jogadores atrás. Abra só mãos fortes.', MP: 'Ainda há vários jogadores para agir: range apertado, com alguns suitados.', CO: 'Perto do botão, dá para abrir bem mais mãos.', BTN: 'A melhor posição: abra um range largo e tenha posição o resto da mão.', SB: 'Só o big blind para agir. Jogue agressivo, mas lembre que ficará fora de posição.' };
+function parseRange(str) {
+  const set = new Set(), idx = c => RANK_CHARS.indexOf(c);
+  str.split(',').map(t => t.trim()).filter(Boolean).forEach(t => {
+    let m = t.match(/^([2-9TJQKA])\1(\+)?$/);
+    if (m) { const r = idx(m[1]); for (let i = r; i <= (m[2] ? 12 : r); i++) set.add(RANK_CHARS[i] + RANK_CHARS[i]); return; }
+    m = t.match(/^([2-9TJQKA])([2-9TJQKA])([so])(\+)?$/);
+    if (m) { const hi = idx(m[1]), lo = idx(m[2]); for (let k = lo; k <= (m[4] ? hi - 1 : lo); k++) set.add(m[1] + RANK_CHARS[k] + m[3]); }
+  });
+  return set;
+}
+const combos = h => h.length === 2 ? 6 : h[2] === 's' ? 4 : 12;
+VIEWS.ranges = () => `
+  ${pageHero('Ferramentas', 'Tabela de ranges pré-flop', 'As mãos para abrir (open-raise) em cada posição de uma mesa de 9 jogadores, quando ninguém entrou no pote antes de você.')}
+  <section><div class="container">
+    <div class="range-wrap">
+      <div>
+        <div class="filters" id="posTabs">${Object.keys(RANGE_DEFS).map((p, i) => `<button type="button" class="${i ? '' : 'on'}" data-pos="${p}">${p}</button>`).join('')}<button type="button" data-pos="livre">✎ Montar o meu</button></div>
+        <div class="range-grid" id="rangeGrid"></div>
+      </div>
+      <aside class="panel range-side">
+        <h2 class="sec-title sm">Resumo <span class="suit">♣</span></h2>
+        <div class="range-pct"><b id="rPct">0%</b><span id="rCombos">0 combinações</span></div>
+        <p id="rInfo"></p>
+        <p class="range-notation" id="rNotation"></p>
+        <ul class="legend"><li><i class="c-pair"></i>Pares</li><li><i class="c-s"></i>Suitados (mesmo naipe)</li><li><i class="c-o"></i>Offsuit (naipes diferentes)</li><li><i></i>T = 10 · s = suited · o = offsuit</li></ul>
+        <p class="small">Ranges de referência para iniciantes. Ajuste conforme a mesa: mais apertado contra jogadores agressivos, mais largo contra mesas passivas.</p>
+        <a class="btn ghost sm" href="#/materia/ranges-pre-flop-iniciantes">Ler o tutorial de ranges</a>
+      </aside>
+    </div>
+  </div></section>`;
+SETUP.ranges = () => {
+  const grid = $('#rangeGrid');
+  const R = [...RANK_CHARS].reverse();
+  let current = 'UTG', custom = new Set();
+  const handAt = (i, j) => i === j ? R[i] + R[j] : i < j ? R[i] + R[j] + 's' : R[j] + R[i] + 'o';
+  function draw() {
+    const set = current === 'livre' ? custom : parseRange(RANGE_DEFS[current]);
+    let html = '';
+    for (let i = 0; i < 13; i++) for (let j = 0; j < 13; j++) {
+      const h = handAt(i, j), type = i === j ? 'pair' : i < j ? 's' : 'o';
+      html += `<button type="button" class="rc c-${type} ${set.has(h) ? 'on' : ''}" data-h="${h}" ${current === 'livre' ? '' : 'tabindex="-1"'}>${h}</button>`;
+    }
+    grid.innerHTML = html;
+    grid.classList.toggle('editable', current === 'livre');
+    const n = [...set].reduce((s, h) => s + combos(h), 0);
+    $('#rPct').textContent = (n / 1326 * 100).toFixed(1).replace('.', ',') + '%';
+    $('#rCombos').textContent = `${n} de 1.326 combinações`;
+    $('#rInfo').textContent = current === 'livre' ? 'Clique nas mãos para montar o seu próprio range.' : POS_INFO[current];
+    $('#rNotation').textContent = current === 'livre' ? '' : RANGE_DEFS[current];
+  }
+  $('#posTabs').addEventListener('click', e => {
+    const b = e.target.closest('[data-pos]');
+    if (!b) return;
+    if (b.dataset.pos === 'livre' && current !== 'livre') custom = parseRange(RANGE_DEFS[current] || '');
+    current = b.dataset.pos;
+    $$('#posTabs button').forEach(x => x.classList.toggle('on', x === b));
+    draw();
+  });
+  grid.addEventListener('click', e => {
+    const c = e.target.closest('[data-h]');
+    if (!c || current !== 'livre') return;
+    const h = c.dataset.h;
+    custom.has(h) ? custom.delete(h) : custom.add(h);
+    draw();
+  });
+  draw();
+};
+
+/* ---------- Calculadora de odds ---------- */
+VIEWS.calculadora = () => `
+  ${pageHero('Ferramentas', 'Calculadora de odds', 'Escolha as cartas de cada jogador e, se quiser, as da mesa. A calculadora simula milhares de mãos e mostra a chance de vitória de cada um.')}
+  <section><div class="container">
+    <div class="calc">
+      <div class="calc-main">
+        <div id="cPlayers" class="calc-players"></div>
+        <button type="button" class="btn ghost sm" id="cAdd">+ Adicionar jogador</button>
+        <div class="calc-board">
+          <h3>Mesa <small>(opcional: 3, 4 ou 5 cartas)</small></h3>
+          <div class="slots" id="cBoard"></div>
+        </div>
+        <div class="calc-actions">
+          <button type="button" class="btn" id="cRun">Calcular</button>
+          <button type="button" class="btn ghost" id="cRandom">Mãos aleatórias</button>
+          <button type="button" class="btn danger" id="cClear">Limpar</button>
+        </div>
+        <div class="calc-progress" id="cProg" hidden><span></span></div>
+        <p class="calc-msg" id="cMsg" role="status"></p>
+      </div>
+      <aside class="panel">
+        <h2 class="sec-title sm">Escolha a carta <span class="suit red">♥</span></h2>
+        <p class="small">Clique em um espaço vazio e depois na carta. Clique em uma carta já escolhida para removê-la.</p>
+        <div class="picker" id="cPicker"></div>
+        <p class="small">Jogador sem cartas recebe uma mão aleatória a cada simulação.</p>
+      </aside>
+    </div>
+  </div></section>`;
+SETUP.calculadora = () => {
+  const st = { players: [[null, null], [null, null]], board: [null, null, null, null, null], active: { t: 'p', i: 0, j: 0 }, res: null };
+  const used = () => new Set([...st.players.flat(), ...st.board].filter(c => c != null));
+  const slot = (id, t, i, j) => {
+    const act = st.active && st.active.t === t && st.active.i === i && st.active.j === j;
+    return `<button type="button" class="slot ${act ? 'active' : ''}" data-t="${t}" data-i="${i}" data-j="${j}" aria-label="${id == null ? 'Espaço vazio' : 'Remover carta'}">${cardHTML(id)}</button>`;
+  };
+  function render() {
+    const board = st.board.filter(c => c != null);
+    $('#cPlayers').innerHTML = st.players.map((p, i) => {
+      const r = st.res && st.res[i];
+      const known = p[0] != null && p[1] != null;
+      const hn = known && board.length >= 3 ? handName(evalHand([...p, ...board])) : '';
+      return `<div class="cplayer">
+        <div class="cp-head"><b>Jogador ${i + 1}</b>${st.players.length > 2 ? `<button type="button" class="del" data-rm="${i}" aria-label="Remover jogador">×</button>` : ''}</div>
+        <div class="slots">${slot(p[0], 'p', i, 0)}${slot(p[1], 'p', i, 1)}</div>
+        <div class="cp-res">${r ? `<div class="eq-bar"><span style="width:${r.eq.toFixed(1)}%"></span></div>
+          <div class="eq-num"><b>${r.win.toFixed(1).replace('.', ',')}%</b> vitória · ${r.tie.toFixed(1).replace('.', ',')}% empate</div>` : `<div class="eq-num muted">${known ? 'Pronto' : p[0] == null && p[1] == null ? 'Mão aleatória' : 'Falta 1 carta'}</div>`}
+          ${hn ? `<div class="hn">${hn}</div>` : ''}</div>
+      </div>`;
+    }).join('');
+    $('#cBoard').innerHTML = st.board.map((c, j) => slot(c, 'b', 0, j)).join('');
+    const u = used();
+    let pk = '';
+    for (let s = 0; s < 4; s++) for (let r = 12; r >= 0; r--) { const id = r * 4 + s; pk += `<button type="button" class="pick ${u.has(id) ? 'used' : ''}" data-c="${id}" ${u.has(id) ? 'disabled' : ''}>${cardHTML(id)}</button>`; }
+    $('#cPicker').innerHTML = pk;
+    $('#cAdd').hidden = st.players.length >= 6;
+  }
+  function nextEmpty() {
+    for (let i = 0; i < st.players.length; i++) for (let j = 0; j < 2; j++) if (st.players[i][j] == null) return { t: 'p', i, j };
+    for (let j = 0; j < 5; j++) if (st.board[j] == null) return { t: 'b', i: 0, j };
+    return null;
+  }
+  const setAt = (a, v) => { if (a.t === 'p') st.players[a.i][a.j] = v; else st.board[a.j] = v; };
+  const getAt = a => a.t === 'p' ? st.players[a.i][a.j] : st.board[a.j];
+  const reset = () => { st.res = null; $('#cMsg').textContent = ''; };
+
+  app.querySelector('.calc').addEventListener('click', e => {
+    const s = e.target.closest('.slot'), pk = e.target.closest('.pick'), rm = e.target.closest('[data-rm]');
+    if (rm) { st.players.splice(+rm.dataset.rm, 1); st.active = nextEmpty(); reset(); render(); return; }
+    if (s) {
+      const a = { t: s.dataset.t, i: +s.dataset.i, j: +s.dataset.j };
+      if (getAt(a) != null) setAt(a, null);
+      st.active = a; reset(); render(); return;
+    }
+    if (pk && !pk.disabled) {
+      if (!st.active) st.active = nextEmpty();
+      if (!st.active) { $('#cMsg').textContent = 'Todos os espaços estão preenchidos. Clique em uma carta escolhida para trocar.'; return; }
+      setAt(st.active, +pk.dataset.c);
+      st.active = nextEmpty(); reset(); render();
+    }
+  });
+  $('#cAdd').addEventListener('click', () => { st.players.push([null, null]); st.active = nextEmpty(); reset(); render(); });
+  $('#cClear').addEventListener('click', () => { st.players = st.players.map(() => [null, null]); st.board = [null, null, null, null, null]; st.active = { t: 'p', i: 0, j: 0 }; reset(); render(); });
+  $('#cRandom').addEventListener('click', () => {
+    const deck = [...Array(52).keys()].sort(() => Math.random() - .5);
+    st.players = st.players.map(() => [deck.pop(), deck.pop()]);
+    st.board = [null, null, null, null, null]; st.active = null; reset(); render();
+  });
+  $('#cRun').addEventListener('click', () => {
+    const board = st.board.filter(c => c != null);
+    if (st.players.some(p => (p[0] == null) !== (p[1] == null))) { $('#cMsg').textContent = 'Cada jogador precisa ter 2 cartas ou nenhuma (mão aleatória).'; return; }
+    if (board.length === 1 || board.length === 2) { $('#cMsg').textContent = 'A mesa precisa ter 0, 3, 4 ou 5 cartas.'; return; }
+    if (st.players.every(p => p[0] == null)) { $('#cMsg').textContent = 'Escolha as cartas de pelo menos um jogador.'; return; }
+    run(board);
+  });
+
+  function run(board) {
+    const n = st.players.length, win = new Array(n).fill(0), tie = new Array(n).fill(0);
+    const known = st.players.map(p => p[0] != null);
+    const u = used(), deck = [...Array(52).keys()].filter(c => !u.has(c));
+    const need = 5 - board.length, randomP = known.filter(k => !k).length;
+    const exact = randomP === 0 && need <= 2;
+    let total = 0;
+    const scoreRound = (brd, hands) => {
+      const sc = hands.map(h => evalHand([...h, ...brd]));
+      const best = Math.max(...sc), w = sc.map((v, i) => v === best ? i : -1).filter(i => i >= 0);
+      if (w.length === 1) win[w[0]]++; else w.forEach(i => tie[i] += 1 / w.length);
+      total++;
+    };
+    const finish = () => {
+      // a barra mostra a equity total (vitórias + parte dos potes divididos)
+      st.res = st.players.map((_, i) => ({ win: win[i] / total * 100, tie: tie[i] / total * 100, eq: (win[i] + tie[i]) / total * 100 }));
+      $('#cProg').hidden = true;
+      $('#cMsg').textContent = exact ? `Cálculo exato: ${total.toLocaleString('pt-BR')} combinações de cartas.` : `Simulação com ${total.toLocaleString('pt-BR')} mãos.`;
+      render();
+    };
+    if (exact) {
+      const hands = st.players;
+      if (need === 0) scoreRound(board, hands);
+      else if (need === 1) deck.forEach(c => scoreRound([...board, c], hands));
+      else for (let a = 0; a < deck.length; a++) for (let b = a + 1; b < deck.length; b++) scoreRound([...board, deck[a], deck[b]], hands);
+      finish();
+      return;
+    }
+    const ITERS = 40000, CHUNK = 4000, d = deck.slice(), k = need + randomP * 2;
+    const prog = $('#cProg'), bar = prog.querySelector('span');
+    prog.hidden = false; $('#cMsg').textContent = 'Calculando...';
+    const step = () => {
+      for (let it = 0; it < CHUNK; it++) {
+        for (let x = 0; x < k; x++) { const y = x + randInt(d.length - x); const t = d[x]; d[x] = d[y]; d[y] = t; }
+        let p = 0;
+        const brd = board.concat(d.slice(0, need)); p = need;
+        const hands = st.players.map(h => h[0] != null ? h : [d[p++], d[p++]]);
+        scoreRound(brd, hands);
+      }
+      bar.style.width = (total / ITERS * 100) + '%';
+      if (total < ITERS) setTimeout(step, 0); else finish();
+    };
+    step();
+  }
+  render();
+};
+
+/* ---------- Quiz ---------- */
+const QUIZ_QUESTIONS = [
+  { q: 'Qual mão é mais forte?', o: ['Flush', 'Full house', 'Sequência'], a: 1, e: 'O full house (trinca + par) ganha do flush, que ganha da sequência.', s: 'ranking-de-maos' },
+  { q: 'Com um projeto de flush no flop, quantas outs você tem?', o: ['4', '8', '9', '13'], a: 2, e: 'São 13 cartas de cada naipe. Você já vê 4, então restam 9.', s: 'pot-odds-e-outs' },
+  { q: 'Pela regra do 2 e do 4, qual a chance aproximada de completar 8 outs do flop até o river?', o: ['16%', '24%', '32%', '50%'], a: 2, e: 'No flop, multiplique as outs por 4: 8 × 4 = 32%.', s: 'pot-odds-e-outs' },
+  { q: 'O pote tem 100 e o adversário aposta 50. Qual a chance mínima de vitória para o call empatar no longo prazo?', o: ['20%', '25%', '33%', '50%'], a: 1, e: 'Você paga 50 para disputar um total de 200: 50 ÷ 200 = 25%.', s: 'pot-odds-e-outs' },
+  { q: 'Qual é a melhor posição da mesa?', o: ['Big blind', 'UTG', 'Button', 'Small blind'], a: 2, e: 'O button age por último em todas as rodadas depois do flop.', s: 'posicoes-na-mesa' },
+  { q: 'O que é uma c-bet?', o: ['Um all-in antes do flop', 'A aposta no flop de quem deu raise antes do flop', 'Pagar o big blind sem aumentar', 'Uma aposta maior que o pote'], a: 1, e: 'É a aposta de continuação: quem mostrou força antes continua apostando no flop.', s: 'continuation-bet' },
+  { q: 'Pela regra dos 100 buy-ins, com R$ 5.000 de banca, qual o maior buy-in recomendado em torneios?', o: ['R$ 50', 'R$ 100', 'R$ 250', 'R$ 500'], a: 0, e: 'R$ 5.000 ÷ 100 = R$ 50 por torneio.', s: 'gestao-de-banca-erro' },
+  { q: 'Com menos de 15 big blinds, qual costuma ser a estratégia padrão?', o: ['Dar limp e ver o flop', 'All-in ou fold', 'Raise pequeno com qualquer mão', 'Esperar só por ases'], a: 1, e: 'Com stack curto, o push or fold usa toda a sua equity e a fold equity.', s: 'push-or-fold-stack-curto' },
+  { q: 'Perto da bolha, com stack médio, o que acontece com o seu range de call contra all-ins?', o: ['Fica mais largo', 'Fica igual', 'Fica mais apertado', 'Você deve pagar tudo'], a: 2, e: 'Pelo ICM, perder fichas perto da premiação custa mais: pague com mais cautela.', s: 'icm-e-bolha' },
+  { q: 'No Texas Hold’em, o naipe desempata duas mãos iguais?', o: ['Sim, espadas vale mais', 'Sim, copas vale mais', 'Não, o pote é dividido'], a: 2, e: 'Nenhum naipe vale mais que outro. Mãos idênticas dividem o pote.', s: 'ranking-de-maos' }
+];
+VIEWS.quiz = () => `
+  ${pageHero('Ferramentas', 'Quiz de poker', 'Dois desafios: descubra qual mão ganha em situações sorteadas ou teste o que você aprendeu nos tutoriais.')}
+  <section><div class="container">
+    <div class="filters" id="qMode"><button type="button" class="on" data-m="maos">🃏 Qual mão ganha?</button><button type="button" data-m="teoria">🎓 Teste de estratégia</button></div>
+    <div class="quiz panel" id="quiz"></div>
+  </div></section>`;
+SETUP.quiz = () => {
+  const box = $('#quiz');
+  let mode = 'maos', n = 0, score = 0, cur = null, answered = false;
+  const TOTAL = 10;
+  const bestKey = m => 'pth-quiz-best-' + m;
+  function dealRound() {
+    const d = [...Array(52).keys()];
+    const draw = () => d.splice(randInt(d.length), 1)[0];
+    const A = [draw(), draw()], B = [draw(), draw()], board = [draw(), draw(), draw(), draw(), draw()];
+    const sa = evalHand([...A, ...board]), sb = evalHand([...B, ...board]);
+    return { A, B, board, sa, sb, ans: sa > sb ? 0 : sb > sa ? 1 : 2 };
+  }
+  function start() { n = 0; score = 0; next(); }
+  function next() {
+    answered = false;
+    if (n >= TOTAL) return end();
+    n++;
+    if (mode === 'maos') {
+      cur = dealRound();
+      box.innerHTML = `
+        <div class="q-top"><span>Pergunta ${n} de ${TOTAL}</span><span>Acertos: <b>${score}</b></span></div>
+        <h3>Qual mão ganha?</h3>
+        <div class="q-board"><small>Mesa</small><div>${cur.board.map(c => cardHTML(c)).join('')}</div></div>
+        <div class="q-hands">
+          <button type="button" class="q-hand" data-a="0"><small>Jogador A</small><div>${cur.A.map(c => cardHTML(c)).join('')}</div></button>
+          <button type="button" class="q-hand" data-a="1"><small>Jogador B</small><div>${cur.B.map(c => cardHTML(c)).join('')}</div></button>
+        </div>
+        <button type="button" class="btn ghost sm q-tie" data-a="2">Empate</button>
+        <div class="q-feedback" id="qFb"></div>`;
+    } else {
+      cur = QUIZ_QUESTIONS[(n - 1) % QUIZ_QUESTIONS.length];
+      box.innerHTML = `
+        <div class="q-top"><span>Pergunta ${n} de ${TOTAL}</span><span>Acertos: <b>${score}</b></span></div>
+        <h3>${cur.q}</h3>
+        <div class="q-opts">${cur.o.map((o, i) => `<button type="button" class="q-opt" data-a="${i}">${o}</button>`).join('')}</div>
+        <div class="q-feedback" id="qFb"></div>`;
+    }
+  }
+  function answer(a) {
+    if (answered) return;
+    answered = true;
+    const right = mode === 'maos' ? cur.ans : cur.a;
+    const ok = a === right;
+    if (ok) score++;
+    $$('[data-a]', box).forEach(b => { b.disabled = true; const v = +b.dataset.a; if (v === right) b.classList.add('right'); else if (v === a) b.classList.add('wrong'); });
+    const expl = mode === 'maos'
+      ? `Jogador A: <b>${handName(cur.sa)}</b> · Jogador B: <b>${handName(cur.sb)}</b>.${cur.ans === 2 ? ' As duas mãos têm o mesmo valor, então o pote é dividido.' : ''}`
+      : `${cur.e} <a href="#/materia/${cur.s}">Ler o tutorial →</a>`;
+    $('#qFb').innerHTML = `<p class="${ok ? 'ok' : 'no'}">${ok ? '✔ Acertou!' : '✘ Não foi dessa vez.'}</p><p>${expl}</p><button type="button" class="btn" id="qNext">${n >= TOTAL ? 'Ver resultado' : 'Próxima'}</button>`;
+    $('#qNext').focus();
+  }
+  function end() {
+    const best = Math.max(score, store.get(bestKey(mode), 0));
+    store.set(bestKey(mode), best);
+    const msg = score >= 9 ? 'Nível profissional! 🏆' : score >= 7 ? 'Muito bem! Você está no caminho.' : score >= 5 ? 'Bom começo. Vale revisar os tutoriais.' : 'Que tal começar pela trilha para iniciantes?';
+    box.innerHTML = `<div class="q-end"><div class="q-score">${score}<small>/${TOTAL}</small></div><h3>${msg}</h3><p>Seu recorde neste modo: <b>${best}/${TOTAL}</b></p>
+      <div class="calc-actions" style="justify-content:center"><button type="button" class="btn" id="qAgain">Jogar de novo</button><a class="btn ghost" href="#/estrategia">Ver tutoriais</a></div></div>`;
+    $('#qAgain').addEventListener('click', start);
+  }
+  box.addEventListener('click', e => {
+    if (e.target.id === 'qNext') return next();
+    const b = e.target.closest('[data-a]');
+    if (b) answer(+b.dataset.a);
+  });
+  $('#qMode').addEventListener('click', e => {
+    const b = e.target.closest('[data-m]');
+    if (!b) return;
+    mode = b.dataset.m;
+    $$('#qMode button').forEach(x => x.classList.toggle('on', x === b));
+    start();
+  });
+  start();
+};
+
+/* =====================================================================
+   ROTEADOR (continuação)
+   ===================================================================== */
 const HOME_SECTIONS = ['noticias', 'torneios', 'internacional', 'lifestyle'];
 const SPY_SECTIONS = ['noticias', 'torneios', 'estrategia', 'internacional', 'lifestyle'];
 const current = { view: null, arg: null };
@@ -2144,8 +3052,10 @@ function route() {
   let scrollTo = null, key = view || 'home';
 
   if (!view) view = 'home';
-  else if (HOME_SECTIONS.includes(view)) { scrollTo = view; view = 'home'; }
+  else if (CATS[view]) { arg = view; view = 'categoria'; }
   else if (view === 'materia') { key = CAT_ROUTE[bySlug(arg)?.cat] || null; }
+  else if (view === 'jogador') key = 'jogadores';
+  else if (['calculadora', 'ranges', 'quiz', 'glossario', 'minha-banca'].includes(view)) key = 'ferramentas';
   else if (!VIEWS[view] || view === 'notFound') { view = 'notFound'; key = null; }
 
   const sameView = current.view === view && current.arg === arg;
@@ -2166,7 +3076,8 @@ function route() {
 
   const target = scrollTo && document.getElementById(scrollTo);
   if (target) target.scrollIntoView({ behavior: sameView ? 'smooth' : 'auto' });
-  else if (!sameView) window.scrollTo({ top: 0, behavior: 'instant' });
+  else if (!sameView && !(view === 'glossario' && arg)) window.scrollTo({ top: 0, behavior: 'instant' });
+  updateProgress();
 }
 window.addEventListener('hashchange', route);
 
@@ -2222,14 +3133,57 @@ $('#searchForm').addEventListener('submit', e => {
 });
 
 // Newsletter (em qualquer página)
-document.addEventListener('submit', e => {
-  if (!e.target.matches('[data-newsletter]')) return;
+document.addEventListener('submit', async e => {
+  const form = e.target;
+  if (!form.matches('[data-newsletter]')) return;
   e.preventDefault();
-  const email = $('input[type=email]', e.target).value;
-  const list = store.get('pth-newsletter', []);
-  if (!list.includes(email)) list.push(email);
-  store.set('pth-newsletter', list);
-  e.target.innerHTML = '<h3 class="sec-title sm">Newsletter <span class="suit">♣</span></h3><p style="margin:0"><b>Inscrição confirmada!</b> Na sexta você recebe a primeira edição.</p>';
+  const email = $('input[type=email]', form).value.trim();
+  const btn = $('button[type=submit]', form);
+  btn.disabled = true;
+  btn.textContent = 'Enviando...';
+  try {
+    const res = await fetch(CONTACT_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      body: JSON.stringify({ email, origem: document.title, _subject: '[pokertodahora] Nova inscrição na newsletter', _template: 'table', _captcha: 'false' })
+    });
+    const json = await res.json().catch(() => ({}));
+    if (!res.ok || String(json.success) === 'false') throw new Error();
+    form.innerHTML = '<div><span class="kicker">Newsletter</span><h3 style="margin:6px 0">Inscrição confirmada! ✔</h3><p style="margin:0">Na sexta você recebe a primeira edição em ' + esc(email) + '.</p></div>';
+  } catch {
+    btn.disabled = false;
+    btn.textContent = 'Quero receber';
+    toast('Não foi possível concluir a inscrição agora. Tente de novo em instantes.');
+  }
+});
+
+// Barra de progresso de leitura (só nas matérias)
+const progress = $('#readProgress');
+function updateProgress() {
+  const post = current.view === 'materia' && $('.post', app);
+  if (!post) { progress.style.transform = 'scaleX(0)'; return; }
+  const r = post.getBoundingClientRect();
+  const total = r.height - window.innerHeight * .6;
+  const done = Math.min(1, Math.max(0, -r.top / Math.max(1, total)));
+  progress.style.transform = `scaleX(${done})`;
+}
+window.addEventListener('scroll', updateProgress, { passive: true });
+
+// Modo escuro
+const themeBtn = $('#themeToggle');
+function applyTheme(t) {
+  if (t) document.documentElement.dataset.theme = t; else delete document.documentElement.dataset.theme;
+  const dark = t ? t === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  themeBtn.textContent = dark ? '☀' : '☾';
+  themeBtn.setAttribute('aria-label', dark ? 'Ativar modo claro' : 'Ativar modo escuro');
+  if (current.view === 'minha-banca') drawChart();
+}
+applyTheme(store.get('pth-theme', null));
+themeBtn.addEventListener('click', () => {
+  const dark = document.documentElement.dataset.theme ? document.documentElement.dataset.theme === 'dark' : matchMedia('(prefers-color-scheme: dark)').matches;
+  const t = dark ? 'light' : 'dark';
+  store.set('pth-theme', t);
+  applyTheme(t);
 });
 
 $('#year').textContent = new Date().getFullYear();
