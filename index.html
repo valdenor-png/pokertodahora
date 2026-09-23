@@ -279,6 +279,9 @@
   .field.invalid .err{display:block}
   .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#4b5561}
   .check input{margin-top:4px;accent-color:var(--felt)}
+  .form-error{display:none;margin:0;background:#fdecef;border:1px solid #f3b8c3;color:#9d0c23;border-radius:var(--radius);padding:12px 14px;font-size:14px;font-weight:700}
+  .form-error.show{display:block}
+  .btn[disabled]{opacity:.65;cursor:wait}
   .form-success{display:none;background:#e9f5ef;border:1px solid #b9dfca;color:var(--felt-dark);border-radius:var(--radius);padding:22px;font-weight:600}
   .form-success.show{display:block}
   .form-success h3{color:var(--felt);margin-bottom:6px}
@@ -595,6 +598,9 @@
 /* =====================================================================
    DADOS DO SITE — edite aqui para trocar textos, fotos e matérias
    ===================================================================== */
+
+// E-mail que recebe as mensagens do formulário de Contato (via FormSubmit)
+const CONTACT_ENDPOINT = 'https://formsubmit.co/ajax/valdenorneto681@gmail.com';
 
 // Integrantes do grupo que desenvolveu o site
 const GROUP = ['Valdenor Neto', 'Leon Oliveira', 'Artur Santos', 'Claudyney Martins', 'Janilson Carvalho'];
@@ -1230,6 +1236,7 @@ VIEWS.contato = () => `
         <form class="form" id="contactForm" novalidate>
           <div class="field"><label for="cNome">Nome</label><input id="cNome" name="nome" autocomplete="name" required /><span class="err">Informe seu nome.</span></div>
           <div class="field"><label for="cEmail">E-mail</label><input id="cEmail" name="email" type="email" autocomplete="email" required /><span class="err">Informe um e-mail válido.</span></div>
+          <div class="field full"><label for="cTel">Telefone / WhatsApp <small style="color:var(--muted);font-weight:600">(opcional)</small></label><input id="cTel" name="telefone" type="tel" autocomplete="tel" placeholder="(91) 90000-0000" /><span class="err">Informe um telefone válido ou deixe em branco.</span></div>
           <div class="field full"><label for="cAssunto">Assunto</label>
             <select id="cAssunto" name="assunto" required>
               <option value="">Selecione...</option>
@@ -1241,7 +1248,9 @@ VIEWS.contato = () => `
               <option>Outro</option>
             </select><span class="err">Escolha um assunto.</span></div>
           <div class="field full"><label for="cMsg">Mensagem</label><textarea id="cMsg" name="mensagem" required minlength="10"></textarea><span class="err">Escreva pelo menos 10 caracteres.</span></div>
-          <label class="check full"><input type="checkbox" id="cNews" /> Quero receber a newsletter semanal do pokertodahora.</label>
+          <label class="check full"><input type="checkbox" id="cNews" name="newsletter" /> Quero receber a newsletter semanal do pokertodahora.</label>
+          <input type="text" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true" style="position:absolute;left:-9999px" />
+          <p class="form-error full" id="contactErr" role="alert"></p>
           <div class="full"><button class="btn" type="submit">Enviar mensagem</button></div>
         </form>
         <div class="form-success" id="contactOk"></div>
@@ -1393,27 +1402,60 @@ SETUP.materia = () => {
 SETUP.contato = () => {
   const form = $('#contactForm');
   const ok = $('#contactOk');
+  const err = $('#contactErr');
+  const btn = $('button[type=submit]', form);
   const check = f => {
     const el = $('input,select,textarea', f);
-    const valid = el.checkValidity() && el.value.trim().length >= (el.minLength > 0 ? el.minLength : 1);
-    f.classList.toggle('invalid', !valid);
-    return valid;
+    const optional = !el.required;
+    const valid = el.checkValidity() && (optional || el.value.trim().length >= (el.minLength > 0 ? el.minLength : 1));
+    const telOk = el.type !== 'tel' || !el.value.trim() || el.value.replace(/\D/g, '').length >= 10;
+    f.classList.toggle('invalid', !(valid && telOk));
+    return valid && telOk;
   };
   $$('.field', form).forEach(f => $('input,select,textarea', f).addEventListener('blur', () => check(f)));
-  form.addEventListener('submit', e => {
+  form.addEventListener('submit', async e => {
     e.preventDefault();
-    const fields = $$('.field', form);
-    const allValid = fields.map(check).every(Boolean);
+    err.classList.remove('show');
+    const allValid = $$('.field', form).map(check).every(Boolean);
     if (!allValid) { $('.field.invalid input, .field.invalid select, .field.invalid textarea', form).focus(); return; }
-    // Para receber as mensagens de verdade, conecte o formulário a um serviço (ex.: Formspree) ou ao seu servidor aqui.
-    const nome = form.nome.value.trim().split(' ')[0];
-    const inbox = store.get('pth-contatos', []);
-    inbox.push({ nome: form.nome.value, email: form.email.value, assunto: form.assunto.value, mensagem: form.mensagem.value, data: new Date().toISOString() });
-    store.set('pth-contatos', inbox);
-    form.style.display = 'none';
-    ok.innerHTML = `<h3>Obrigado, ${esc(nome)}!</h3>Recebemos sua mensagem sobre “${esc(form.assunto.value)}”. Nossa equipe responde em até dois dias úteis no e-mail ${esc(form.email.value)}.<p style="margin:14px 0 0"><button class="btn sm" type="button" id="cAgain">Enviar outra mensagem</button></p>`;
-    ok.classList.add('show');
-    $('#cAgain').addEventListener('click', () => { form.reset(); form.style.display = ''; ok.classList.remove('show'); });
+    if (form._honey.value) return; // robô de spam
+
+    const data = {
+      nome: form.nome.value.trim(),
+      email: form.email.value.trim(),
+      telefone: form.telefone.value.trim() || '—',
+      assunto: form.assunto.value,
+      mensagem: form.mensagem.value.trim(),
+      newsletter: form.newsletter.checked ? 'Sim' : 'Não',
+      _subject: `[pokertodahora] ${form.assunto.value} — ${form.nome.value.trim()}`,
+      _replyto: form.email.value.trim(),
+      _template: 'table',
+      _captcha: 'false'
+    };
+
+    btn.disabled = true;
+    btn.textContent = 'Enviando...';
+    try {
+      const res = await fetch(CONTACT_ENDPOINT, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+        body: JSON.stringify(data)
+      });
+      const json = await res.json().catch(() => ({}));
+      if (!res.ok || String(json.success) === 'false') throw new Error(json.message || 'Falha no envio');
+
+      const nome = data.nome.split(' ')[0];
+      form.style.display = 'none';
+      ok.innerHTML = `<h3>Obrigado, ${esc(nome)}!</h3>Recebemos sua mensagem sobre “${esc(data.assunto)}”. Nossa equipe responde em até dois dias úteis no e-mail ${esc(data.email)}.<p style="margin:14px 0 0"><button class="btn sm" type="button" id="cAgain">Enviar outra mensagem</button></p>`;
+      ok.classList.add('show');
+      $('#cAgain').addEventListener('click', () => { form.reset(); form.style.display = ''; ok.classList.remove('show'); });
+    } catch {
+      err.innerHTML = 'Não foi possível enviar agora. Verifique sua conexão e tente de novo, ou escreva direto para <a href="mailto:contato@pokertodahora.com.br" style="text-decoration:underline">contato@pokertodahora.com.br</a>.';
+      err.classList.add('show');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Enviar mensagem';
+    }
   });
 };
 
