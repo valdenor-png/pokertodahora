@@ -255,6 +255,33 @@
   .newsletter input:focus{border-color:var(--felt)}
   .newsletter .btn{width:100%}
 
+  .sources{margin:26px 0 0;padding:18px 20px;background:var(--soft);border-radius:var(--radius);font-size:14px}
+  .sources b{display:block;font-size:12px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin-bottom:8px}
+  .sources ul{margin:0;padding-left:18px}
+  .sources li{margin:4px 0}
+  .sources a{color:var(--felt);font-weight:700}
+  .sources a:hover{text-decoration:underline}
+  .lvl{display:inline-block;font-size:11px;font-weight:800;padding:2px 8px;border-radius:20px;background:var(--soft);color:var(--muted);letter-spacing:.02em;vertical-align:middle}
+  .lvl-0{background:#e9f5ef;color:var(--felt)}
+  .lvl-1{background:#fbf3d9;color:#7a5f0c}
+  .lvl-2{background:#fdecef;color:#9d0c23}
+  .more-link{text-align:center;margin:26px 0 0}
+  .card.hidden{display:none}
+  .trail{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+  .trail a{display:flex;gap:14px;align-items:flex-start;height:100%;padding:18px;border:1px solid var(--line);border-radius:var(--radius);transition:border-color .25s,box-shadow .25s,transform .25s}
+  .trail a:hover{border-color:var(--felt);box-shadow:var(--shadow);transform:translateY(-3px)}
+  .trail .n{width:38px;height:38px;border-radius:50%;background:var(--felt);color:#fff;font-weight:900;display:grid;place-items:center;flex-shrink:0}
+  .trail b{display:block;color:var(--ink);font-size:15.5px;line-height:1.3;margin-bottom:4px}
+  .trail small{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);font-size:13px;line-height:1.45}
+  .trail-nav{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:30px 0 0}
+  .trail-nav a{display:block;padding:16px 18px;border:1px solid var(--line);border-radius:var(--radius);font-weight:800;color:var(--ink);font-size:15px;line-height:1.35;transition:border-color .2s,color .2s}
+  .trail-nav a:hover{border-color:var(--felt);color:var(--felt)}
+  .trail-nav a.next{text-align:right;background:var(--soft)}
+  .trail-nav small{display:block;font-size:11.5px;text-transform:uppercase;letter-spacing:.08em;color:var(--felt);margin-bottom:4px}
+  .study-cta{display:flex;align-items:center;justify-content:space-between;gap:20px;background:var(--ink);color:#d9dee4;border-radius:var(--radius);padding:26px 28px}
+  .study-cta h3{color:#fff;font-size:20px;margin-bottom:4px}
+  .study-cta p{margin:0}
+
   /* Quem somos */
   .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
   .about-grid .text p{font-size:17px;line-height:1.75;margin:0 0 18px;color:#2d3640}
@@ -475,6 +502,7 @@
     .sidebar .sticky{position:static}
     .stats{grid-template-columns:1fr 1fr}
     .values{grid-template-columns:1fr}
+    .trail{grid-template-columns:1fr 1fr}
     .page-hero .chip3d{display:none}
   }
   @media (max-width:640px){
@@ -494,7 +522,8 @@
     .banca-stats{grid-template-columns:1fr 1fr}
     .team{grid-template-columns:1fr 1fr}
     .post-body{font-size:16.5px}
-    .author-box,.responsible{flex-direction:column}
+    .author-box,.responsible,.study-cta{flex-direction:column;align-items:flex-start}
+    .trail,.trail-nav{grid-template-columns:1fr}
     .lightbox{padding:60px 10px}
     .lb-prev,.lb-next{top:auto;bottom:14px;transform:none}
     .page-hero{padding:40px 0 38px}
@@ -627,6 +656,7 @@ const AUTHORS = {
   camila:  { name: 'Camila Duarte',   role: 'Repórter internacional', color: '#c8102e', bio: 'Acompanha o circuito high stakes e já cobriu etapas em Las Vegas, Barcelona e Melbourne.' },
   bruno:   { name: 'Bruno Azevedo',   role: 'Repórter de torneios', color: '#0a0f14', bio: 'Especialista no circuito nacional, está em todas as etapas do BSOP com o bloco de notas na mão.' },
   leticia: { name: 'Letícia Prado',   role: 'Estratégia e mental game', color: '#8a6d12', bio: 'Coach de poker e psicóloga esportiva. Escreve sobre decisão, tilt e evolução de jogo.' },
+  redacao: { name: 'Redação pokertodahora', ini: '♠', staff: false, role: 'Equipe do site', color: '#0b5d3b', bio: 'Notícias apuradas a partir de fontes oficiais e dos principais portais de poker, com os links ao fim de cada matéria. Tutoriais revisados pela equipe.' },
   thiago:  { name: 'Thiago Nunes',    role: 'Lifestyle e viagens', color: '#1c5bb8', bio: 'Roda o mundo atrás de boas mesas, bons pratos e boas histórias para contar.' }
 };
 
@@ -638,127 +668,166 @@ const IMG = (id, w = 900, extra = '') => `https://images.unsplash.com/photo-${id
    body: cada item é um parágrafo; "## " vira subtítulo, "> " vira citação e [array] vira lista */
 const ARTICLES = [
   {
-    slug: 'wsop-2026-guia-completo', section: 'hero-main', cat: 'Notícias', tag: 'Destaque', tagClass: 'gold',
-    title: 'WSOP 2026: o guia completo da maior série de poker do mundo',
-    excerpt: 'Datas, buy-ins, estruturas e os brasileiros que chegaram mais longe em Las Vegas. Tudo o que você precisa saber em um só lugar.',
-    img: '1511193311914-0346f16efe90', alt: 'Cartas e fichas sobre mesa de feltro verde', author: 'rafael', date: '2026-09-23',
+    slug: 'wsop-2026-main-event-jumalon', section: 'hero-main', cat: 'Notícias', tag: 'Destaque', tagClass: 'gold',
+    title: 'Lucas Jumalon, de 22 anos, vence o Main Event da WSOP 2026 e leva US$ 10 milhões',
+    excerpt: 'O jovem de Spokane, nos EUA, liderou a mesa final do começo ao fim e superou 9.208 entradas no torneio mais famoso do poker. A série bateu recorde de público.',
+    img: '1511193311914-0346f16efe90', alt: 'Cartas e fichas sobre mesa de feltro verde', author: 'redacao', date: '2026-08-06',
     body: [
-      'Todo verão, Las Vegas vira a capital mundial do poker. A World Series of Poker de 2026 teve <strong>99 eventos com bracelete</strong>, mais de 240 mil entradas somadas e premiação total acima de US$ 460 milhões. Para quem sonha em jogar a série um dia — ou só quer entender o que acontece por lá — reunimos o essencial.',
-      '## Quando e onde',
-      'A série acontece entre o fim de maio e meados de julho, dividida entre os salões do Horseshoe e do Paris Las Vegas, na Strip. O Main Event, de US$ 10.000, começa sempre no início de julho e tem vários Dias 1 para acomodar o field gigante.',
-      '## Quanto custa jogar',
+      'O americano <strong>Lucas Jumalon</strong>, de 22 anos, é o campeão do Main Event da World Series of Poker 2026. Em 5 de agosto, em Las Vegas, ele venceu o finlandês Lauri Saaskilahti no heads-up e ficou com o bracelete de campeão mundial e o prêmio de <strong>US$ 10 milhões</strong>. Saaskilahti, de 39 anos, levou US$ 6 milhões.',
+      '## Um campeão que não largou a liderança',
+      'Recém-formado na faculdade e natural de Spokane, no estado de Washington, Jumalon assumiu a liderança em fichas no meio do Dia 8 e não a perdeu mais. Na mesa final, eliminou três adversários e chegou ao heads-up com vantagem de cerca de 3 para 2 em fichas. Com a vitória, ficou perto de se tornar o campeão mais jovem da história do evento.',
+      '> “Ele é um jogador fenomenal e não tem medo de nada. Tenho muito respeito pelo jogo dele.” — Lucas Jumalon, sobre o vice-campeão',
+      '## O Main Event em números',
       [
-        '<strong>Eventos de entrada:</strong> buy-ins a partir de US$ 300, com fields que passam de 20 mil jogadores.',
-        '<strong>Faixa intermediária:</strong> US$ 1.500 a US$ 5.000, onde fica a maioria dos braceletes disputados por brasileiros.',
-        '<strong>High rollers:</strong> de US$ 25.000 a US$ 250.000, com mesas cheias de profissionais de elite.',
-        '<strong>Main Event:</strong> US$ 10.000, estrutura lenta e blinds de duas horas.'
+        '<strong>9.208 entradas</strong>, o quarto maior field da história do torneio.',
+        '<strong>Prize pool:</strong> US$ 85.634.400.',
+        '<strong>431 mulheres</strong> no field, o maior número já registrado (4,7% do total).',
+        '<strong>111 países</strong> representados.',
+        '<strong>Duração:</strong> começou em 2 de julho; a mesa final foi de 3 a 5 de agosto.'
       ],
-      '## Como os brasileiros foram',
-      'O Brasil fechou 2026 com três braceletes e mais de 900 premiações. O destaque ficou para o título do mineiro Lucas Andrade no evento de US$ 5.000 6-Max, e para a campanha histórica de dois brasileiros entre os 50 primeiros do Main Event.',
-      '> “A diferença hoje é que o brasileiro chega a Las Vegas estudado. Não é mais só coragem, é preparo.”',
-      '## Dicas para quem vai pela primeira vez',
-      'Chegue com a banca separada da viagem, jogue satélites online antes para reduzir o custo dos buy-ins maiores e escolha poucos eventos com estrutura boa em vez de tentar jogar tudo. E não subestime o cansaço: os dias de torneio passam fácil das 12 horas.'
+      '## A série bateu recorde',
+      'A 57ª edição da WSOP teve 100 eventos com bracelete e <strong>251.899 entradas</strong>, o maior número da história. Foram distribuídos US$ 469.975.059 em prêmios, o segundo maior total já registrado, com 41 premiações acima de US$ 1 milhão. O torneio de US$ 1.000 Mystery Millions reuniu 22.811 entradas, recorde para um evento desse buy-in.',
+      '## O Brasil em Las Vegas',
+      'Os brasileiros também deixaram sua marca: <a href="#/materia/yuri-martins-sexto-bracelete" style="color:var(--felt);font-weight:800">Yuri Martins</a> venceu o High Roller de US$ 100 mil, <a href="#/materia/joao-simao-quarto-bracelete" style="color:var(--felt);font-weight:800">João Simão</a> conquistou o High Roller de PLO de US$ 50 mil, e a dupla Breno Drumond e Henrique Lessa venceu o Tag Team de US$ 1.000, com prêmio de US$ 184.769.'
+    ],
+    sources: [
+      ['WSOP.com — Lucas Jumalon vence o Main Event da WSOP 2026', 'https://www.wsop.com/news/22-year-old-lucas-jumalon-wins-the-2026-wsop-main-event/'],
+      ['ESPN — Mesa final do Main Event da WSOP 2026', 'https://www.espn.com/espn/betting/story/_/id/49247958/world-series-poker-main-event-wsop-2026'],
+      ['CardPlayer — Os números da WSOP 2026', 'https://www.cardplayer.com/poker-news/1684562-record-entries-of-more-than-250000-headline-staggering-stats-for-2026-world-series-of-poker'],
+      ['PokerBrasil — Brasileiros vencem o US$ 1.000 Tag Team', 'https://pokerbrasil.com.br/wsop-brasileiros-tag-team/']
     ]
   },
   {
-    slug: 'mineiro-fatura-bracelete-wsop', section: 'hero-side', cat: 'Notícias', tag: 'Em Alta',
-    title: 'Mineiro de 27 anos fatura bracelete e entra para a história da WSOP',
-    excerpt: 'Lucas Andrade venceu o evento de US$ 5.000 6-Max após mais de 14 horas de mesa final e levou US$ 1,2 milhão.',
-    img: '1596451190630-186aff535bf2', alt: 'Jogador conferindo as cartas com fichas na mesa', author: 'camila', date: '2026-09-22',
+    slug: 'brasil-domina-wsop-online-2026', section: 'hero-side', cat: 'Notícias', tag: 'Em Alta',
+    title: 'Brasil lidera a WSOP Online 2026 com cinco braceletes em 20 torneios',
+    excerpt: 'Nilson Junior venceu o Beat the Pros Bounty e reforçou o Brasil como o país com mais títulos e mais prêmios na série do GGPoker.',
+    img: '1596451190630-186aff535bf2', alt: 'Jogador conferindo as cartas com fichas na mesa', author: 'redacao', date: '2026-09-14',
     body: [
-      'Foram mais de 14 horas de mesa final até o último all-in. Quando o river confirmou o straight, o mineiro Lucas Andrade, de 27 anos, levantou os braços e virou o primeiro jogador de Belo Horizonte a conquistar um bracelete da WSOP, com um prêmio de <strong>US$ 1,2 milhão</strong>.',
-      '## A campanha',
-      'Lucas chegou à mesa final em quarto lugar em fichas, mas cresceu no momento certo. Com uma sequência de 3-bets agressivos, eliminou dois adversários em menos de uma hora e chegou ao heads-up com vantagem de quase três para um.',
-      '> “Eu estudei muito spot de 6-max nos últimos meses. Quando chegou a hora, parecia que eu já tinha jogado aquela mão mil vezes.”',
-      '## Quem é o campeão',
-      'Formado em engenharia, Lucas começou no online em 2018 e migrou para o ao vivo há três anos. Antes do título, seu maior resultado tinha sido uma mesa final no BSOP Millions. Ele contou que vai reinvestir parte do prêmio em estudo e em uma agenda de torneios na Europa em 2027.'
-    ]
-  },
-  {
-    slug: 'bsop-sp-recorde-inscritos', section: 'hero-side', cat: 'Torneios', tag: 'Em Alta',
-    title: 'BSOP São Paulo bate recorde com 4.812 inscritos no Main Event',
-    excerpt: 'A etapa paulista superou todas as marcas do circuito nacional e distribuiu mais de R$ 11 milhões em prêmios.',
-    img: '1517232115160-ff93364542dd', alt: 'Mesa de cassino cheia de fichas', author: 'bruno', date: '2026-09-21',
-    body: [
-      'O Main Event do BSOP São Paulo terminou com <strong>4.812 entradas</strong>, o maior número da história do circuito. A premiação total passou de R$ 11 milhões, com R$ 1,65 milhão reservados ao campeão.',
-      '## Por que bateu recorde',
-      'A organização apostou em mais Dias 1, incluindo um turbo no domingo, e em satélites online que classificaram quase mil jogadores. O salão foi ampliado para 260 mesas, mas mesmo assim houve fila para as reentradas no último dia de inscrição.',
+      'A WSOP Online 2026, disputada no GGPoker, tem 33 eventos com bracelete. Nos <strong>20 primeiros torneios</strong> concluídos, os brasileiros somaram <strong>cinco títulos</strong>, cinco vice-campeonatos e cinco terceiros lugares, e lideram o ranking de prêmios por país com <strong>US$ 2.618.133</strong>.',
+      '## Final 100% brasileira',
+      'O quinto bracelete veio com <strong>Nilson Junior</strong>, campeão do Beat the Pros Bounty de US$ 250. O torneio teve 5.755 entradas e um prize pool de US$ 1.323.650. No heads-up, Nilson derrotou outro brasileiro, Fabricio Nociolini, e levou US$ 113.245, o bracelete e um Super Pass de US$ 30 mil para o Super Main Event da WSOP Paradise, em dezembro.',
+      '## Outros destaques',
       [
-        'Maior field da história do BSOP',
-        '690 jogadores premiados',
-        'Jogadores de 23 estados e 11 países',
-        'Mais de 60% dos inscritos vieram de satélites'
+        '<strong>Raphael Caixeta</strong> está entre os brasileiros que já conquistaram bracelete nesta edição.',
+        '<strong>Paulo “VFORGE I” Silva</strong> foi terceiro no Ultra Stack de US$ 600, com US$ 96.790. O título ficou com o vietnamita “BananaTilt”.',
+        'No GGMasters Freezeout Championship de US$ 1.500, oito brasileiros estavam entre os 46 que avançaram ao Dia 2.'
       ],
-      '> “O poker brasileiro nunca esteve tão forte. A gente vê gente nova chegando e os veteranos continuam aqui.”',
-      'A mesa final será transmitida ao vivo com cartas abertas e narração em português. Acompanhe a cobertura completa aqui no pokertodahora.'
+      'Com 13 eventos ainda por disputar, o Brasil tem boas chances de terminar a série na liderança.'
+    ],
+    sources: [
+      ['PokerNews — Brazilians continue 2026 WSOP Online domination', 'https://www.pokernews.com/news/2026/09/brazilians-continue-2026-wsop-online-domination-52381.htm'],
+      ['SuperPoker — Raphael Caixeta conquista bracelete da WSOP Online 2026', 'https://superpoker.com.br/noticias/raphael-caixeta-conquista-primeiro-bracelete-da-wsop-online-2026']
     ]
   },
   {
-    slug: 'bsop-sao-paulo-etapa', section: 'torneios', cat: 'Torneios', tag: 'BSOP',
-    title: 'BSOP São Paulo: tudo sobre a etapa que parou a capital',
-    excerpt: 'Doze dias de torneios, 58 eventos e um público que lotou o salão do primeiro ao último dia.',
-    img: '1543059080-f9b1272213d5', alt: 'Vista de São Paulo', author: 'bruno', date: '2026-09-20',
+    slug: 'yuri-martins-sexto-bracelete', section: 'hero-side', cat: 'Notícias', tag: 'Em Alta',
+    title: 'Yuri Martins vence High Roller de US$ 100 mil e conquista o sexto bracelete',
+    excerpt: 'Com US$ 2,84 milhões, o brasileiro fez o maior resultado da carreira e virou o 27º jogador da história com seis braceletes.',
+    img: '1517232115160-ff93364542dd', alt: 'Mesa de cassino cheia de fichas', author: 'redacao', date: '2026-06-13',
     body: [
-      'Foram doze dias de poker quase sem parar. A etapa paulista do BSOP teve <strong>58 eventos</strong>, de torneios de R$ 300 a um High Roller de R$ 25 mil, e confirmou São Paulo como a casa do poker ao vivo no Brasil.',
-      '## Os destaques',
+      'Yuri Dzivielevski, o <strong>Yuri Martins</strong>, venceu em 13 de junho o Evento #36 da WSOP, o High Roller de No-Limit Hold’em de <strong>US$ 100 mil</strong>. O brasileiro superou 115 entradas, em um prize pool de US$ 11.040.000, e levou <strong>US$ 2.841.432</strong>, o maior prêmio da carreira.',
+      '## Virada no heads-up',
+      'Na decisão contra o holandês Teun Mulder, que ficou com US$ 1.894.282, Yuri chegou a ter apenas um quinto das fichas em jogo, mas não se abalou e virou a partida. A mesa final tinha nomes como Alex Kulev, Alexandros Theologis, Alex Foxen e Martin Kabrhel.',
+      '> “Essa foi muito emocionante. Este é o jogo ao qual eu dedico a minha vida inteira. Esse é o motivo das lágrimas.” — Yuri Martins',
+      'O brasileiro contou que estava em Las Vegas sem a família e que a esposa está grávida: “Todas essas coisas juntas me fizeram chorar e ficar muito, muito emocionado, mais do que o normal.”',
+      '## Seis braceletes',
+      'Foi o sexto bracelete de Yuri na WSOP e o primeiro em No-Limit Hold’em, já que os anteriores vieram em outras modalidades. Com ele, o brasileiro se tornou o 27º jogador da história a chegar a seis braceletes.'
+    ],
+    sources: [
+      ['PokerNews — Yuri Dzivielevski Wins 2026 WSOP $100K High Roller', 'https://www.pokernews.com/news/2026/06/yuri-dzivielevski-wins-wsop-event-36-100-000-high-roller-51532.htm'],
+      ['CardPlayer — Yuri Dzivielevski triumphs in WSOP $100K for sixth bracelet', 'https://www.cardplayer.com/poker-news/1672223-yuri-dzivielevski-triumphs-in-wsop-100k-for-sixth-bracelet-and-2-8-million']
+    ]
+  },
+  {
+    slug: 'bsop-millions-2026', section: 'torneios', cat: 'Torneios', tag: 'BSOP',
+    title: 'BSOP Millions 2026 terá 103 torneios e Main Event com R$ 10 milhões garantidos',
+    excerpt: 'A última e maior etapa do Campeonato Brasileiro de Poker acontece de 13 a 28 de novembro, no WTC Sheraton, em São Paulo.',
+    img: '1543059080-f9b1272213d5', alt: 'Vista de São Paulo', author: 'redacao', date: '2026-09-22',
+    body: [
+      'O Campeonato Brasileiro de Poker encerra a temporada com o <strong>BSOP Millions</strong>, de <strong>13 a 28 de novembro</strong>, no complexo WTC Sheraton, em São Paulo. Serão 16 dias de festival e <strong>103 torneios</strong>, além de cash games.',
+      '## Os principais torneios',
       [
-        '<strong>Main Event:</strong> recorde histórico de 4.812 entradas.',
-        '<strong>High Roller:</strong> 212 jogadores e prêmio de R$ 1,1 milhão para o campeão.',
-        '<strong>Ladies Event:</strong> 318 inscritas, o maior da história do circuito.',
-        '<strong>PLO:</strong> os torneios de Omaha cresceram 40% em relação a 2025.'
+        '<strong>Main Event:</strong> buy-in de R$ 5.000 e <strong>R$ 10 milhões garantidos</strong>, com vários Dias 1 (1A a 1J).',
+        '<strong>BSOP Championship:</strong> buy-in de R$ 25.000 e R$ 15 milhões garantidos.',
+        '<strong>Millionaire Maker:</strong> buy-in de R$ 1.200 e R$ 5 milhões garantidos.',
+        '<strong>Super High Roller Series:</strong> de 14 a 23 de novembro, com um Main Event de R$ 500 mil de buy-in.',
+        'Torneios de Omaha, jogos mistos (8-Game, HORSE), Ladies e Seniors.'
       ],
-      '## Infraestrutura',
-      'O novo layout do salão, com áreas separadas para cash game e torneios, reduziu o barulho e melhorou o fluxo. A praça de alimentação funcionou 24 horas e o aplicativo oficial avisava sobre mudanças de mesa em tempo real.',
-      'A próxima etapa do circuito acontece em novembro, com o BSOP Millions encerrando a temporada.'
+      '## A etapa anterior',
+      'A penúltima parada da temporada foi o <strong>BSOP Floripa</strong>, de 4 a 8 de setembro, no resort Costão do Santinho. A etapa marcou a volta do circuito a Santa Catarina depois de oito anos, com 26 torneios e buy-ins de R$ 500 a R$ 25 mil.',
+      '> Dica: há satélites online para o BSOP no PokerStars, uma forma de jogar o Main Event pagando bem menos que o buy-in.'
+    ],
+    sources: [
+      ['BSOP — BSOP Millions', 'https://bsop.com.br/bsop-millions/'],
+      ['BSOP — Após oito anos, Campeonato Brasileiro de Poker retorna a Floripa', 'https://bsop.com.br/apos-oito-anos-campeonato-brasileiro-de-poker-retorna-a-florianopolis-saiba-tudo-sobre-a-etapa/']
     ]
   },
   {
-    slug: 'ept-barcelona-inscricoes', section: 'torneios', cat: 'Torneios', tag: 'EPT',
-    title: 'EPT Barcelona abre inscrições com garantido de € 5 milhões',
-    excerpt: 'A etapa espanhola do European Poker Tour terá 98 eventos e promete mais uma vez o maior field da Europa.',
-    img: '1583422409516-2895a77efded', alt: 'Vista aérea de Barcelona', author: 'camila', date: '2026-09-18',
+    slug: 'ept-barcelona-2026-ferrari', section: 'torneios', cat: 'Torneios', tag: 'EPT',
+    title: 'Italiano Manuel Ferrari vence o Main Event do EPT Barcelona 2026',
+    excerpt: 'O torneio de € 5.300 reuniu 1.823 entradas e distribuiu € 8,8 milhões. Ferrari levou € 1.002.488 depois de um acordo a três.',
+    img: '1583422409516-2895a77efded', alt: 'Vista aérea de Barcelona', author: 'redacao', date: '2026-08-30',
     body: [
-      'O European Poker Tour confirmou o calendário da etapa de Barcelona, que volta ao Casino Barcelona com <strong>98 eventos</strong> e um Main Event de € 5.300 com garantido de € 5 milhões.',
-      '## Por que Barcelona é especial',
-      'A etapa catalã é, há anos, a mais cheia do circuito europeu. O clima, a cidade e a estrutura atraem desde recreativos até os maiores nomes do high stakes. Em 2025, o Main Event passou de 2.500 entradas.',
-      '## Como se classificar',
-      'Os satélites online já estão abertos, com entradas a partir de € 5. Há pacotes que incluem buy-in, hotel e ajuda de custo para a viagem — uma boa porta de entrada para quem quer jogar o primeiro torneio internacional.',
-      '> Dica: brasileiros não precisam de visto para a Espanha em viagens de turismo de até 90 dias.'
+      'O italiano <strong>Manuel Ferrari</strong> é o campeão do Main Event do European Poker Tour em Barcelona. O torneio de € 5.300, disputado de 24 a 29 de agosto, teve <strong>1.823 entradas</strong> e um prize pool de <strong>€ 8.841.550</strong>.',
+      '## Acordo na reta final',
+      'Com três jogadores restantes, a mesa final fez um acordo para dividir o prêmio. Ferrari ficou com <strong>€ 1.002.488</strong> e o troféu. O holandês Lukas van Eeden foi o vice, com € 927.420.',
+      '> “Ainda não caiu a ficha. Estou muito, muito feliz. Ganhar um EPT sempre foi um sonho desde que eu era muito novo.” — Manuel Ferrari',
+      '## E os brasileiros?',
+      'A mesa final teve jogadores da Itália, Holanda, Espanha, China, Irlanda e Líbano, mas nenhum brasileiro entre os oito finalistas. Mesmo assim, a decisão teve transmissão com narração em português pelo canal PokerStars Brasil. O vídeo está na nossa página de <a href="#/videos" style="color:var(--felt);font-weight:800">Vídeos</a>.'
+    ],
+    sources: [
+      ['PokerNews — €5,300 EPT Main Event, EPT Barcelona 2026', 'https://www.pokernews.com/tours/ept/2026-pokerstars-ept-barcelona/5300-ept-main-event/'],
+      ['PokerListings — Manuel Ferrari wins EPT Barcelona Main Event', 'https://www.pokerlistings.com/news/manuel-ferrari-wins-ept-barcelona-main-event-2026']
     ]
   },
   {
-    slug: 'wsop-las-vegas-numeros-2026', section: 'torneios', cat: 'Torneios', tag: 'WSOP',
-    title: 'WSOP Las Vegas: os números finais da edição 2026',
-    excerpt: 'Premiação recorde, Main Event gigante e o Brasil entre os cinco países com mais premiações.',
-    img: '1581351721010-8cf859cb14a4', alt: 'Las Vegas à noite', author: 'rafael', date: '2026-09-15',
+    slug: 'wsop-paradise-2026', section: 'torneios', cat: 'Torneios', tag: 'WSOP',
+    title: 'WSOP Paradise 2026 terá 20 braceletes e US$ 120 milhões garantidos nas Bahamas',
+    excerpt: 'A última série de braceletes do ano acontece de 2 a 17 de dezembro, no Baha Mar, com Super Main Event de US$ 50 milhões garantidos.',
+    img: '1566073771259-6a8506099945', alt: 'Piscina de resort à beira-mar', author: 'redacao', date: '2026-09-18',
     body: [
-      'A WSOP 2026 fechou as contas e os números impressionam. Foram <strong>99 eventos</strong>, mais de 240 mil entradas e premiação total superior a US$ 460 milhões — mais uma vez um recorde.',
-      '## Os números que importam',
+      'A World Series of Poker volta às Bahamas para fechar o ano. A <strong>WSOP Paradise 2026</strong> será de <strong>2 a 17 de dezembro</strong>, no Baha Mar Hotel & Resort, com <strong>20 eventos com bracelete</strong> e US$ 120 milhões em garantidos, US$ 50 milhões a mais que em 2025.',
+      '## Os destaques da grade',
       [
-        '<strong>Main Event:</strong> mais de 10.300 inscritos, o segundo maior da história.',
-        '<strong>Maior prêmio:</strong> US$ 10 milhões para o campeão do Main Event.',
-        '<strong>Brasil:</strong> 3 braceletes, mais de 900 premiações e US$ 14 milhões em prêmios.',
-        '<strong>Países representados:</strong> 118.'
+        '<strong>Super Main Event:</strong> buy-in de US$ 25.000 e <strong>US$ 50 milhões garantidos</strong>, com início em 10 de dezembro.',
+        '<strong>GGMillion$ Championship:</strong> buy-in de US$ 10.000, com garantido dobrado de US$ 10 para US$ 20 milhões.',
+        '<strong>Super High Roller NLHE:</strong> US$ 10 milhões garantidos.',
+        '<strong>Evento #1, Circuit Championship Mystery Bounty:</strong> US$ 5 milhões garantidos.'
       ],
-      '## O que vem por aí',
-      'A organização já confirmou que a edição de 2027 manterá os dois cassinos da Strip e deve ampliar o número de eventos de PLO, que cresceram mais de 30% neste ano.'
+      '## Como foi em 2025',
+      'O Super Main Event do ano passado teve 2.891 entradas e um prize pool de US$ 72.275.000. O campeão, Bernhard Binder, levou US$ 10 milhões.',
+      '## Brasileiro já garantido',
+      'Pelo menos um brasileiro já tem vaga: <a href="#/materia/brasil-domina-wsop-online-2026" style="color:var(--felt);font-weight:800">Nilson Junior</a> ganhou um Super Pass de US$ 30 mil para o Super Main Event ao vencer um evento da WSOP Online.'
+    ],
+    sources: [
+      ['PokerNews — The 2026 WSOP Paradise schedule', 'https://www.pokernews.com/news/2026/08/the-2026-wsop-paradise-schedule-120m-guaranteed-52183.htm'],
+      ['Pokerfuse — WSOP Paradise 2026 reveals 20-event schedule', 'https://pokerfuse.com/latest-news/2026/8/wsop-paradise-2026-reveals-20-event-schedule/']
     ]
   },
   {
-    slug: 'lapt-rio-novembro', section: 'torneios', cat: 'Torneios', tag: 'LAPT',
-    title: 'LAPT confirma retorno ao Rio de Janeiro em novembro',
-    excerpt: 'O Latin American Poker Tour volta à cidade maravilhosa com Main Event de R$ 5 mil e cronograma de dez dias.',
-    img: '1483729558449-99ef09a8c325', alt: 'Rio de Janeiro visto do alto', author: 'bruno', date: '2026-09-12',
+    slug: 'joao-simao-quarto-bracelete', section: 'torneios', cat: 'Torneios', tag: 'WSOP',
+    title: 'João Simão vence High Roller de PLO de US$ 50 mil e conquista o quarto bracelete',
+    excerpt: 'O brasileiro superou 110 entradas, virou o heads-up e passou dos US$ 20 milhões em prêmios na carreira.',
+    img: '1581351721010-8cf859cb14a4', alt: 'Las Vegas à noite', author: 'redacao', date: '2026-06-22',
     body: [
-      'O Latin American Poker Tour confirmou uma etapa no <strong>Rio de Janeiro</strong> entre 12 e 22 de novembro. O Main Event terá buy-in de R$ 5 mil e garantido de R$ 3 milhões.',
-      '## Cronograma',
-      'Serão 34 eventos ao longo de dez dias, incluindo um High Roller, torneios de PLO e um evento especial para jogadores que nunca premiaram em torneios ao vivo.',
-      '> “O Rio tem uma energia única. Queremos trazer jogadores de toda a América Latina para cá.”',
-      'Os satélites online começam em outubro. Fique de olho na nossa agenda de torneios para não perder as datas.'
+      '<strong>João Simão</strong> conquistou o quarto bracelete da carreira ao vencer o Evento #55 da WSOP 2026, o High Roller de Pot-Limit Omaha de <strong>US$ 50 mil</strong>. Ele superou 110 entradas e levou <strong>US$ 1.368.700</strong>. O indiano Santhosh Suvarna foi o vice, com US$ 912.420.',
+      '## A virada',
+      'Simão começou o heads-up atrás em fichas, 12,2 milhões contra 20,8 milhões. A partida virou em dois potes: primeiro ele dobrou com um par de ases, depois flopou trinca de setes e completou um full house no river.',
+      'Na mão final, Simão tinha A-A-J-9 contra T-T-8-6 de Suvarna. O board A-7-8-5-K deu trinca de ases ao brasileiro.',
+      '## Números da conquista',
+      [
+        'O prêmio é o <strong>10º maior da história do poker brasileiro</strong>. Simão aparece duas vezes nessa lista.',
+        'Com a vitória, ele passou dos <strong>US$ 20 milhões</strong> em prêmios de torneios e ampliou a liderança como o maior premiado do Brasil.',
+        'Yuri Martins também chegou à mesa final e terminou em 6º, com US$ 244.510.'
+      ]
+    ],
+    sources: [
+      ['PokerNews — Joao Simao Wins WSOP $50k High Roller PLO', 'https://www.pokernews.com/news/2026/06/joao-simao-wins-wsop-event-55-50000-high-roller-plo-51620.htm'],
+      ['Mundo Poker — João Simão é o campeão do US$ 50K PLO', 'https://mundopoker.com.br/noticias/wsop/wsop-joao-simao-da-aula-na-mesa-final-conquista-o-us-50k-plo-e-leva-o-quarto-bracelete-junto-a-premio-milionario/']
     ]
   },
   {
-    slug: 'pares-baixos-torneios', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    slug: 'pares-baixos-torneios', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Intermediário',
     title: 'Como jogar pares baixos em torneios',
     excerpt: 'Set mining, stack efetivo e posição: entenda quando o 22 ao 66 vale a ficha e quando é melhor largar sem dor na consciência.',
     img: '1541278107931-e006523892df', alt: 'Cartas de baralho espalhadas', author: 'leticia', date: '2026-09-22',
@@ -779,7 +848,7 @@ const ARTICLES = [
     ]
   },
   {
-    slug: 'ranges-pre-flop-iniciantes', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    slug: 'ranges-pre-flop-iniciantes', section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 4,
     title: 'Guia de ranges pré-flop para iniciantes',
     excerpt: 'Tabelas simples de open-raise por posição para você parar de chutar e começar a jogar com base em números.',
     img: '1434030216411-0b793f4b4173', alt: 'Pessoa estudando com caderno', author: 'leticia', date: '2026-09-19',
@@ -800,7 +869,7 @@ const ARTICLES = [
     ]
   },
   {
-    slug: 'gestao-de-banca-erro', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    slug: 'gestao-de-banca-erro', section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 6,
     title: 'Gestão de banca: o erro que quebra jogadores',
     excerpt: 'Subir de limite rápido demais é o caminho mais curto para zerar a conta. Veja a regra dos 100 buy-ins na prática.',
     img: '1551288049-bebda4e38f71', alt: 'Gráficos de desempenho em uma tela', author: 'rafael', date: '2026-09-16',
@@ -821,31 +890,273 @@ const ARTICLES = [
     ]
   },
   {
-    slug: 'phil-ivey-high-stakes', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
-    title: 'Phil Ivey volta às mesas de high stakes',
-    excerpt: 'Após meses longe dos holofotes, o lendário jogador foi visto em um cash game de apostas altas em Las Vegas.',
-    img: '1511193311914-0346f16efe90', imgExtra: '&crop=bottom', alt: 'Mesa de poker com cartas viradas', author: 'camila', date: '2026-09-21',
+    slug: 'regras-texas-holdem', cards: ['A♠', 'K♥'], section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 1,
+    title: 'Como jogar Texas Hold’em: as regras básicas passo a passo',
+    excerpt: 'Blinds, cartas fechadas, as quatro rodadas de apostas e o showdown. Tudo o que você precisa para sentar na sua primeira mesa.',
+    img: '1511193311914-0346f16efe90', imgExtra: '&crop=top', alt: 'Cartas e fichas sobre mesa de feltro verde', author: 'redacao', date: '2026-09-23',
     body: [
-      'Poucos nomes mexem tanto com a comunidade do poker quanto o de Phil Ivey. Depois de meses longe dos holofotes, o jogador, dono de dez braceletes da WSOP, voltou a ser visto em mesas de <strong>high stakes</strong> em Las Vegas, segundo relatos que circularam nas redes sociais.',
-      '## O que se sabe',
-      'De acordo com jogadores presentes, o jogo aconteceu em uma sala privada e reuniu empresários e profissionais conhecidos. Não houve transmissão e nenhum valor foi confirmado oficialmente.',
-      '> “Quando ele senta na mesa, a dinâmica muda. Todo mundo joga diferente.”',
-      '## Por que isso importa',
-      'O retorno de nomes históricos costuma movimentar o mercado de high stakes, atrair novos jogadores recreativos para esses jogos e aumentar a audiência das transmissões. Seguiremos acompanhando.'
+      'O Texas Hold’em é a modalidade de poker mais jogada do mundo. O objetivo é simples: ganhar as fichas do pote, seja mostrando a melhor mão no final ou fazendo todos os adversários desistirem antes disso.',
+      '## 1. Os blinds',
+      'Antes de as cartas serem distribuídas, os dois jogadores à esquerda do botão do dealer colocam apostas obrigatórias: o <strong>small blind</strong> (a menor) e o <strong>big blind</strong> (normalmente o dobro). Os blinds garantem que sempre haja algo em disputa. O botão gira no sentido horário a cada mão.',
+      '## 2. As cartas',
+      'Cada jogador recebe <strong>duas cartas fechadas</strong>, que só ele vê. Ao longo da mão, cinco <strong>cartas comunitárias</strong> são abertas na mesa e podem ser usadas por todos. No final, cada um forma a melhor mão possível de cinco cartas, combinando as duas suas com as cinco da mesa, em qualquer combinação.',
+      '## 3. As quatro rodadas de apostas',
+      [
+        '<strong>Pré-flop:</strong> depois de receber as duas cartas. Começa pelo jogador à esquerda do big blind.',
+        '<strong>Flop:</strong> três cartas comunitárias são abertas de uma vez.',
+        '<strong>Turn:</strong> abre-se a quarta carta.',
+        '<strong>River:</strong> abre-se a quinta e última carta.'
+      ],
+      'Do flop em diante, a ação começa pelo primeiro jogador ativo à esquerda do botão.',
+      '## 4. O que você pode fazer na sua vez',
+      [
+        '<strong>Fold (desistir):</strong> larga as cartas e sai da mão.',
+        '<strong>Check (passar):</strong> não aposta, mas continua na mão. Só é possível se ninguém apostou antes na rodada.',
+        '<strong>Bet (apostar):</strong> coloca fichas quando ninguém apostou ainda.',
+        '<strong>Call (pagar):</strong> iguala a aposta de outro jogador.',
+        '<strong>Raise (aumentar):</strong> aposta mais do que a aposta atual.',
+        '<strong>All-in:</strong> aposta todas as suas fichas.'
+      ],
+      '## 5. O showdown',
+      'Se mais de um jogador continuar na mão depois da última rodada de apostas, as cartas são mostradas e vence a melhor combinação de cinco cartas. Em caso de empate exato, o pote é dividido.',
+      '> Próximo passo: aprenda quais mãos ganham de quais no ranking de mãos do poker.'
     ]
   },
   {
-    slug: 'macau-reabre-salas', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
-    title: 'Macau reabre salas de poker ao vivo',
-    excerpt: 'A capital asiática dos cassinos volta a liberar mesas de Hold’em ao vivo, e operadoras já anunciam séries para o fim do ano.',
-    img: '1518895312237-a9e23508077d', alt: 'Interior iluminado de cassino', author: 'bruno', date: '2026-09-17',
+    slug: 'ranking-de-maos', cards: ['10♠', 'J♠', 'Q♠', 'K♠', 'A♠'], section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 2,
+    title: 'Ranking de mãos do poker: da carta alta ao royal flush',
+    excerpt: 'As dez combinações do poker em ordem de força, com exemplos e as regras de desempate que todo iniciante confunde.',
+    img: '1541278107931-e006523892df', imgExtra: '&crop=top', alt: 'Cartas de baralho espalhadas', author: 'redacao', date: '2026-09-21',
     body: [
-      'Depois de anos com o poker ao vivo praticamente fora dos salões, Macau voltou a liberar <strong>mesas de Texas Hold’em</strong> em alguns dos seus principais cassinos, segundo operadoras locais.',
-      '## O que muda',
-      'A volta começa com cash games de limites médios e altos, mas pelo menos duas operadoras já anunciaram séries de torneios para dezembro, com Main Events na casa dos HK$ 10 mil.',
-      '## Impacto no circuito asiático',
-      'Macau já foi o centro do high stakes mundial, com jogos de valores que não se viam em nenhum outro lugar. O retorno pode reposicionar a Ásia no calendário dos grandes profissionais — hoje concentrado entre Estados Unidos e Europa.',
-      '> Para o jogador brasileiro, a novidade abre mais uma rota de viagem para quem busca fields diferentes.'
+      'No poker, toda mão é formada pelas <strong>cinco melhores cartas</strong> disponíveis. Decorar a ordem abaixo é o primeiro passo para qualquer jogador.',
+      '## Da mais forte para a mais fraca',
+      [
+        '<strong>Royal flush:</strong> A-K-Q-J-10 do mesmo naipe. A melhor mão do jogo.',
+        '<strong>Straight flush:</strong> cinco cartas em sequência do mesmo naipe. Ex.: 5-6-7-8-9 de copas.',
+        '<strong>Quadra:</strong> quatro cartas do mesmo valor. Ex.: 9-9-9-9-K.',
+        '<strong>Full house:</strong> uma trinca e um par. Ex.: Q-Q-Q-7-7.',
+        '<strong>Flush:</strong> cinco cartas do mesmo naipe, fora de sequência. Ex.: A-J-8-4-2 de espadas.',
+        '<strong>Sequência (straight):</strong> cinco cartas em ordem, de naipes variados. Ex.: 6-7-8-9-10.',
+        '<strong>Trinca:</strong> três cartas do mesmo valor. Ex.: 8-8-8-K-3.',
+        '<strong>Dois pares:</strong> ex.: J-J-4-4-A.',
+        '<strong>Um par:</strong> ex.: 10-10-K-7-2.',
+        '<strong>Carta alta:</strong> nenhuma combinação; vale a maior carta.'
+      ],
+      '## Regras de desempate',
+      [
+        '<strong>Kicker:</strong> se dois jogadores têm o mesmo par, vence quem tem a maior carta restante. A-A-K ganha de A-A-Q.',
+        '<strong>Naipe não desempata:</strong> no Hold’em, nenhum naipe vale mais que outro. Mãos idênticas dividem o pote.',
+        '<strong>O ás é duplo:</strong> ele vale como carta mais alta (10-J-Q-K-A) e também como mais baixa (A-2-3-4-5, a “roda”).',
+        '<strong>Só contam cinco cartas:</strong> se a mesa tem A-A-K-K-Q e você tem J-10, você não usa suas cartas.'
+      ],
+      '> Erro comum: achar que flush ganha de full house. Não ganha. O full house é mais forte.'
+    ]
+  },
+  {
+    slug: 'posicoes-na-mesa', cards: ['A♣', 'D', 'Q♣'], section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 3,
+    title: 'Posições na mesa: por que o button é o melhor lugar',
+    excerpt: 'UTG, cutoff, button, blinds: entenda o nome de cada cadeira e por que agir por último vale tanto.',
+    img: '1517232115160-ff93364542dd', imgExtra: '&crop=left', alt: 'Mesa de cassino cheia de fichas', author: 'redacao', date: '2026-09-19',
+    body: [
+      'No poker, a ordem em que você age muda tudo. Quem age por último vê o que todos fizeram antes de decidir. Por isso, a mesma mão pode ser jogável em uma posição e ruim em outra.',
+      '## As posições em uma mesa de 9 jogadores',
+      [
+        '<strong>Small blind (SB) e big blind (BB):</strong> fazem as apostas obrigatórias. São as piores posições depois do flop, porque agem primeiro.',
+        '<strong>UTG (under the gun) e UTG+1:</strong> os primeiros a agir no pré-flop. Exigem as mãos mais fortes.',
+        '<strong>Middle position (MP):</strong> as cadeiras do meio.',
+        '<strong>Hijack (HJ) e cutoff (CO):</strong> as duas antes do botão. Já permitem jogar mais mãos.',
+        '<strong>Button (BTN):</strong> o dealer. Age por último em todas as rodadas depois do flop.'
+      ],
+      '## Por que a posição vale fichas',
+      [
+        'Você vê a ação dos outros antes de decidir.',
+        'Controla o tamanho do pote: pode passar para ver cartas de graça ou apostar por valor.',
+        'Blefa com mais eficiência, porque sabe quando os adversários mostraram fraqueza.'
+      ],
+      '> Regra de ouro: jogue poucas mãos nas primeiras posições e mais mãos perto do botão.',
+      'No próximo tutorial, você vê exatamente quais mãos abrir em cada uma dessas posições.'
+    ]
+  },
+  {
+    slug: 'pot-odds-e-outs', cards: ['9♥', '8♥', '2♥', '7♥'], section: 'estrategia', cat: 'Estratégia', tag: 'Tutorial', level: 'Iniciante', step: 5,
+    title: 'Pot odds e outs: a matemática para pagar ou largar',
+    excerpt: 'Conte suas outs, use a regra do 2 e do 4 e descubra em segundos se um call dá lucro no longo prazo.',
+    img: '1551288049-bebda4e38f71', imgExtra: '&crop=right', alt: 'Gráficos de desempenho em uma tela', author: 'redacao', date: '2026-09-17',
+    body: [
+      'Boa parte das decisões no poker se resume a uma pergunta: <strong>vale a pena pagar para ver a próxima carta?</strong> Para responder, você compara duas coisas: a chance de ganhar a mão e o preço que o pote está pagando.',
+      '## 1. Conte suas outs',
+      '<strong>Outs</strong> são as cartas que ainda estão no baralho e completam a sua mão. Exemplos:',
+      [
+        '<strong>Projeto de flush</strong> (quatro cartas do mesmo naipe): 9 outs.',
+        '<strong>Sequência aberta</strong> (ex.: 7-8-9-10): 8 outs.',
+        '<strong>Sequência de meio (gutshot)</strong> (ex.: 7-8-10-J): 4 outs.',
+        '<strong>Par na mão querendo trinca:</strong> 2 outs.'
+      ],
+      '## 2. A regra do 2 e do 4',
+      'Um atalho para estimar sua chance: no flop, multiplique as outs por <strong>4</strong> para saber a chance de acertar até o river. No turn, multiplique por <strong>2</strong> para a chance de acertar só no river. Com um projeto de flush no turn, 9 × 2 = 18%, bem perto dos 19,6% exatos.',
+      '## 3. Calcule as pot odds',
+      'Suponha que o pote tem 100 fichas e o adversário aposta 50. Agora o pote tem 150, e você precisa pagar 50 para disputar um total de 200. Sua parte é 50 de 200, ou seja, <strong>você precisa vencer pelo menos 25% das vezes</strong> para o call empatar no longo prazo.',
+      '## 4. Compare',
+      'Se sua chance de ganhar é maior que o percentual exigido, o call é lucrativo. No exemplo acima, um projeto de flush no turn (cerca de 20%) não paga os 25% exigidos, então, só pela matemática, o certo é largar.',
+      '> Odds implícitas: às vezes vale pagar um pouco “caro” se, quando você acertar, puder ganhar muito mais fichas nas próximas apostas.'
+    ]
+  },
+  {
+    slug: 'continuation-bet', cards: ['K♦', '7♠', '2♣'], section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Intermediário',
+    title: 'C-bet: quando apostar de novo no flop (e quando passar)',
+    excerpt: 'A aposta de continuação é a jogada mais comum do poker, e também a mais desperdiçada. Veja como escolher a hora e o tamanho certos.',
+    img: '1596451190630-186aff535bf2', imgExtra: '&crop=left', alt: 'Jogador conferindo as cartas com fichas na mesa', author: 'redacao', date: '2026-09-15',
+    body: [
+      'A <strong>continuation bet</strong>, ou c-bet, é quando o jogador que deu raise no pré-flop aposta de novo no flop, tenha acertado ou não. Ela funciona porque, na maioria das vezes, ninguém acerta o flop, e quem mostrou força antes leva o pote.',
+      '## Quando a c-bet funciona bem',
+      [
+        '<strong>Boards secos</strong>, como K-7-2 de naipes diferentes, que favorecem quem deu raise e quase não têm projetos.',
+        '<strong>Poucos adversários:</strong> contra um jogador, a c-bet é muito mais eficiente do que contra três.',
+        '<strong>Em posição:</strong> se tomar call, você ainda terá informação no turn.'
+      ],
+      '## Quando é melhor passar',
+      [
+        '<strong>Boards molhados e baixos</strong>, como 7-8-9 com dois naipes iguais, que acertam muito o range de quem pagou.',
+        '<strong>Mão média com valor de showdown</strong>, como um par do meio, que prefere controlar o pote.',
+        '<strong>Muitos jogadores no pote.</strong>'
+      ],
+      '## Tamanho da aposta',
+      'Em boards secos, apostas pequenas, de <strong>25% a 33% do pote</strong>, costumam ser suficientes e baratas. Em boards com muitos projetos, prefira apostas maiores, de <strong>50% a 75%</strong>, para cobrar de quem está tentando completar a mão.',
+      '> Não aposte no flop só porque você deu raise antes. Aposte porque o board e o adversário justificam.'
+    ]
+  },
+  {
+    slug: 'blefe-e-semiblefe', cards: ['7♠', '2♦'], section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Intermediário',
+    title: 'Blefe e semiblefe: como blefar sem queimar fichas',
+    excerpt: 'O blefe lucrativo não é o mais corajoso, é o que conta uma história coerente. Aprenda a escolher as mãos e os momentos.',
+    img: '1500648767791-00dcc994a43e', imgExtra: '&crop=faces', alt: 'Retrato de homem com expressão neutra', author: 'redacao', date: '2026-09-11',
+    body: [
+      'Blefar é apostar para fazer um adversário largar uma mão melhor que a sua. Todo jogador vencedor blefa, mas os bons blefes seguem uma lógica, não um palpite.',
+      '## Semiblefe: o blefe com plano B',
+      'O <strong>semiblefe</strong> é apostar com uma mão que ainda não está feita, mas pode melhorar, como um projeto de flush ou de sequência. Você ganha de duas formas: o adversário larga agora, ou você acerta a carta e ganha no showdown. Por isso, o semiblefe é muito mais seguro que o blefe puro.',
+      '## Quando blefar',
+      [
+        '<strong>A história faz sentido:</strong> suas apostas desde o pré-flop precisam combinar com a mão que você quer representar.',
+        '<strong>Poucos adversários:</strong> é muito mais fácil fazer um jogador largar do que três.',
+        '<strong>O adversário consegue largar:</strong> blefar contra quem nunca desiste é jogar fichas fora.',
+        '<strong>Cartas de assustar:</strong> um terceiro naipe igual ou uma carta que completa sequência podem ser boas para apostar.'
+      ],
+      '## Blockers',
+      'Ter nas mãos uma carta que o adversário precisaria para ter uma mão forte torna o blefe melhor. Exemplo: com o ás de copas em um board com três copas, você sabe que ele não tem o flush máximo.',
+      '> Blefe menos contra iniciantes, que pagam demais, e mais contra jogadores atentos, que sabem largar.'
+    ]
+  },
+  {
+    slug: 'quando-dar-3-bet', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Intermediário',
+    title: '3-bet: quando e com quais mãos reaumentar antes do flop',
+    excerpt: 'O reaumento é a arma para ganhar potes sem showdown e isolar jogadores fracos. Veja como montar um range equilibrado.',
+    img: '1522069213448-443a614da9b6', alt: 'Dados vermelhos sobre fundo escuro', author: 'redacao', date: '2026-09-08',
+    body: [
+      'Dar <strong>3-bet</strong> é aumentar depois que alguém já deu raise no pré-flop. O nome vem da contagem: o big blind é a primeira aposta, o raise é a segunda e o reaumento é a terceira.',
+      '## Por valor e como blefe',
+      [
+        '<strong>3-bet por valor:</strong> com mãos muito fortes, como QQ+, AK e, em muitos casos, JJ e AQ suitado. Você quer que o adversário continue.',
+        '<strong>3-bet como blefe:</strong> com mãos que jogam bem se tomarem call e bloqueiam mãos fortes, como A5 e A4 do mesmo naipe ou conectores suitados.'
+      ],
+      '## Tamanho',
+      'Uma referência comum é reaumentar para cerca de <strong>3 vezes o raise</strong> quando você está em posição e cerca de <strong>4 vezes</strong> quando está fora de posição, como nos blinds.',
+      '## Contra quem',
+      [
+        'Contra quem abre muitas mãos, especialmente do cutoff e do button.',
+        'Contra jogadores que largam demais diante de um reaumento.',
+        'Evite dar 3-bet de blefe contra quem só abre mãos premium no UTG.'
+      ],
+      '> Um range só de mãos fortes fica fácil de ler. Misturar alguns blefes torna você um adversário difícil.'
+    ]
+  },
+  {
+    slug: 'icm-e-bolha', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Avançado',
+    title: 'ICM e bolha: por que em torneio ficha não vale dinheiro',
+    excerpt: 'Perto da zona de premiação, cada decisão muda de valor. Entenda o ICM e ajuste seu jogo na bolha e na mesa final.',
+    img: '1540575467063-178a50c2df87', alt: 'Plateia acompanhando um evento', author: 'redacao', date: '2026-09-04',
+    body: [
+      'Em cash game, cada ficha vale o mesmo que dinheiro. Em torneio, não. Dobrar sua pilha de fichas <strong>não dobra</strong> o seu prêmio esperado, porque os prêmios são fixos e distribuídos por colocação. O modelo que calcula isso se chama <strong>ICM</strong> (Independent Chip Model).',
+      '## A consequência prática',
+      'Perder fichas custa mais do que ganhar a mesma quantidade rende. Por isso, perto da premiação, você precisa de <strong>mais certeza</strong> para colocar as fichas em risco. Essa diferença é chamada de <strong>risk premium</strong>.',
+      '## Na bolha',
+      [
+        '<strong>Stack médio:</strong> pague all-ins com um range bem mais apertado que o normal. Cair logo antes de premiar é o pior resultado possível.',
+        '<strong>Stack grande:</strong> é a hora de pressionar. Os médios não podem pagar sem mãos fortes, então seus aumentos levam muitos blinds.',
+        '<strong>Stack curto:</strong> em geral, não dá para esperar que os outros caiam. Use o push or fold nas melhores oportunidades.'
+      ],
+      '## Na mesa final',
+      'Cada eliminação aumenta o prêmio de todos, e os saltos entre colocações costumam ser grandes. O mesmo raciocínio vale: evite confrontos com quem tem mais fichas que você e ataque quem tem menos.',
+      '> Ferramentas de estudo como calculadoras de ICM mostram o range certo de call para cada situação. Vale revisar suas mãos de bolha nelas.'
+    ]
+  },
+  {
+    slug: 'push-or-fold-stack-curto', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia', level: 'Avançado',
+    title: 'Push or fold: como jogar com menos de 15 blinds',
+    excerpt: 'Com stack curto, dar limp ou raise pequeno é desperdício. Veja por que o all-in é a jogada certa e como escolher as mãos.',
+    img: '1601370690183-1c7796ecec61', alt: 'Feltro verde de mesa de poker', author: 'redacao', date: '2026-08-31',
+    body: [
+      'Quando você tem <strong>menos de 15 big blinds</strong>, não sobram fichas para jogar pós-flop com calma. Um raise seguido de fold perde uma parte grande da sua pilha. Por isso, a estratégia padrão passa a ser simples: <strong>all-in ou fold</strong>.',
+      '## Por que o all-in funciona',
+      [
+        '<strong>Fold equity:</strong> muitas vezes todos largam e você leva os blinds e antes, uma boa parte da sua pilha, sem ver o flop.',
+        '<strong>Você usa toda a sua equity:</strong> indo all-in, você sempre vê as cinco cartas, sem ser tirado da mão por apostas depois.',
+        '<strong>Não há decisões difíceis depois do flop.</strong>'
+      ],
+      '## Quais mãos empurrar',
+      [
+        '<strong>Quanto mais perto do botão, mais largo:</strong> no button e no small blind, com 10 blinds, a maioria dos pares, dos áses, das cartas altas e muitos conectores suitados já são all-in lucrativos.',
+        '<strong>Nas primeiras posições,</strong> com mais jogadores para agir, o range fica mais apertado.',
+        '<strong>Quanto menor o stack, mais largo o range:</strong> com 5 blinds, até mãos fracas passam a valer o all-in.'
+      ],
+      '## Tabelas de Nash',
+      'Existem tabelas matemáticas, chamadas de <strong>tabelas de Nash</strong>, que mostram o range ideal de push e de call para cada posição e número de blinds. Estudar essas tabelas é o jeito mais rápido de parar de errar com stack curto.',
+      '> Não espere ficar com 3 blinds para ir all-in. Com poucas fichas, ninguém larga e você perde a fold equity.'
+    ]
+  },
+  {
+    slug: 'triton-jeju-pedro-padilha', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
+    title: 'Pedro Padilha vence em Jeju e vira o quarto brasileiro campeão da Triton',
+    excerpt: 'O brasileiro superou 129 entradas no evento de US$ 50 mil e bateu Nick Petrangelo no heads-up para faturar US$ 1,4 milhão.',
+    img: '1518895312237-a9e23508077d', alt: 'Interior iluminado de cassino', author: 'redacao', date: '2026-09-12',
+    body: [
+      'O brasileiro <strong>Pedro Padilha</strong> conquistou o primeiro troféu da carreira na Triton Super High Roller Series, o circuito de apostas mais altas do mundo. Em 11 de setembro, na ilha de Jeju, na Coreia do Sul, ele venceu o evento de <strong>US$ 50 mil</strong> de No-Limit Hold’em 8-max.',
+      '## A conquista',
+      'Padilha superou um field de 129 entradas e derrotou o americano Nick Petrangelo no heads-up, com prêmio de <strong>US$ 1,4 milhão</strong>. Com isso, ele se tornou o <strong>quarto brasileiro</strong> a vencer um torneio da Triton.',
+      'O título veio nove meses depois de uma quase vitória: em dezembro, na WSOP Paradise, Padilha foi vice-campeão do Main Event da Triton de US$ 100 mil, perdendo para Aleksejs Ponakovs.',
+      '## Outros resultados em Jeju',
+      [
+        'A série aconteceu de 4 a 17 de setembro.',
+        'Alex Theologis venceu o evento de abertura, de US$ 15 mil, com US$ 642 mil.',
+        'Klemens Roiter levou o US$ 20 mil 8-Handed, com US$ 771 mil, o primeiro título dele em 13 mesas finais na Triton.',
+        'No último evento, <strong>João Simão</strong> e Nick Petrangelo fizeram um acordo e dividiram o prêmio em 17 de setembro.'
+      ]
+    ],
+    sources: [
+      ['PokerNews — Pedro Padilha becomes 4th Brazilian Triton champ', 'https://www.pokernews.com/news/2026/09/pedro-padilha-wins-50k-nlh-triton-jeju-ii-52358.htm'],
+      ['CardPlayer — Pedro Padilha wins Triton Jeju $50,000 event', 'https://www.cardplayer.com/poker-news/1745785-pedro-padilha-wins-triton-jeju-50000-event-for-1-4-million'],
+      ['VIP-Grinders — Triton Poker results 2026', 'https://www.vip-grinders.com/news/triton-results/']
+    ]
+  },
+  {
+    slug: 'kristen-foxen-sexto-bracelete', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
+    title: 'Kristen Foxen conquista o sexto bracelete e amplia recorde entre as mulheres',
+    excerpt: 'A canadense venceu o High Roller de US$ 25 mil, com US$ 1,77 milhão, e agora tem o dobro de braceletes de qualquer outra mulher.',
+    img: '1570872626485-d8ffea69f463', alt: 'Palco iluminado em comemoração', author: 'redacao', date: '2026-06-08',
+    body: [
+      'A canadense <strong>Kristen Foxen</strong> venceu em 7 de junho o High Roller de <strong>US$ 25 mil</strong> da WSOP 2026 e conquistou o <strong>sexto bracelete</strong> da carreira. Ela superou 345 entradas e derrotou Galen Hall no heads-up, com prêmio de <strong>US$ 1.773.083</strong>.',
+      '## Recordes',
+      [
+        'Foxen tem agora o <strong>dobro de braceletes</strong> de qualquer outra mulher. Vanessa Selbst, Barbara Enright e Nani Dollison vêm em seguida, com três cada.',
+        'Foi a primeira mulher a vencer o High Roller de US$ 25 mil da WSOP.',
+        'O prêmio é o maior da carreira dela em torneios ao vivo e o quarto maior já conquistado por uma mulher.'
+      ],
+      '## Um ano forte para as mulheres',
+      'A WSOP 2026 teve cinco mulheres campeãs em eventos abertos, o que iguala o recorde de 2024. O Main Event também bateu recorde de participação feminina, com 431 jogadoras.'
+    ],
+    sources: [
+      ['WSOP.com — Kristen Foxen wins sixth WSOP bracelet in $25K High Roller', 'https://www.wsop.com/news/kristen-foxen-wins-sixth-wsop-bracelet-in-25-k-high-roller/'],
+      ['CardPlayer — Kristen Foxen captures sixth WSOP bracelet', 'https://www.cardplayer.com/poker-news/1665885-kristen-foxen-captures-sixth-wsop-bracelet-in-largest-win-of-her-career'],
+      ['CardPlayer — Os números da WSOP 2026', 'https://www.cardplayer.com/poker-news/1684562-record-entries-of-more-than-250000-headline-staggering-stats-for-2026-world-series-of-poker']
     ]
   },
   {
@@ -973,15 +1284,15 @@ const ARTICLES = [
 
 // Manchetes do ticker (texto + matéria)
 const TICKER = [
-  ['Brasileiro fatura título no WSOP 2026 e leva US$ 1,2 milhão', 'mineiro-fatura-bracelete-wsop'],
-  ['BSOP São Paulo bate recorde de inscritos no Main Event', 'bsop-sp-recorde-inscritos'],
-  ['EPT Barcelona abre inscrições com garantido de € 5 milhões', 'ept-barcelona-inscricoes'],
-  ['Gestão de banca: o erro que quebra 7 em cada 10 jogadores', 'gestao-de-banca-erro'],
-  ['Macau reabre salas de poker ao vivo', 'macau-reabre-salas'],
-  ['LAPT confirma etapa no Rio de Janeiro para novembro', 'lapt-rio-novembro']
-];
+  ['Lucas Jumalon, 22 anos, é o campeão do Main Event da WSOP 2026', 'wsop-2026-main-event-jumalon'],
+  ['Brasil lidera a WSOP Online 2026 com cinco braceletes', 'brasil-domina-wsop-online-2026'],
+  ['Pedro Padilha fatura US$ 1,4 milhão e vence na Triton Jeju', 'triton-jeju-pedro-padilha'],
+  ['BSOP Millions: Main Event terá R$ 10 milhões garantidos', 'bsop-millions-2026'],
+  ['Italiano Manuel Ferrari vence o EPT Barcelona 2026', 'ept-barcelona-2026-ferrari'],
+  ['WSOP Paradise terá US$ 120 milhões garantidos nas Bahamas', 'wsop-paradise-2026']
+]
 
-const MOST_READ = ['mineiro-fatura-bracelete-wsop', 'ranges-pre-flop-iniciantes', 'bsop-sp-recorde-inscritos', 'gestao-de-banca-erro', 'wsop-2026-guia-completo'];
+const MOST_READ = ['yuri-martins-sexto-bracelete', 'regras-texas-holdem', 'wsop-2026-main-event-jumalon', 'pot-odds-e-outs', 'brasil-domina-wsop-online-2026'];
 
 // Galeria de fotos
 const PHOTOS = [
@@ -1029,7 +1340,36 @@ const bySlug = slug => ARTICLES.find(a => a.slug === slug);
 const inSection = s => ARTICLES.filter(a => a.section === s);
 const initials = name => name.split(' ').map(p => p[0]).slice(0, 2).join('');
 const readTime = a => Math.max(2, Math.round(a.body.flat().map(stripTags).join(' ').split(/\s+/).length / 180));
-const artImg = (a, w) => IMG(a.img, w, a.imgExtra || '');
+// Capa desenhada com cartas, usada nos tutoriais (campo "cards" da matéria)
+function cardsCover(cards) {
+  const W = 1200, H = 750, cw = 170, ch = 240, gap = 26;
+  const total = cards.length * cw + (cards.length - 1) * gap;
+  let x = (W - total) / 2;
+  const items = cards.map(c => {
+    let out;
+    if (c === 'D') {
+      out = `<g transform="translate(${x + cw / 2},${H / 2})"><circle r="78" fill="#fff" stroke="#d4af37" stroke-width="8"/><text y="30" text-anchor="middle" font-size="86" font-weight="900" fill="#0a0f14" font-family="Arial,sans-serif">D</text></g>`;
+    } else {
+      const suit = c.slice(-1), rank = c.slice(0, -1), red = '♥♦'.includes(suit);
+      const col = red ? '#c8102e' : '#0a0f14';
+      out = `<g transform="translate(${x},${(H - ch) / 2})"><rect width="${cw}" height="${ch}" rx="16" fill="#fff" filter="url(#sh)"/>
+        <text x="18" y="50" font-size="44" font-weight="800" fill="${col}" font-family="Arial,sans-serif">${rank}</text>
+        <text x="20" y="92" font-size="36" fill="${col}" font-family="Arial,sans-serif">${suit}</text>
+        <text x="${cw / 2}" y="${ch / 2 + 38}" text-anchor="middle" font-size="110" fill="${col}" font-family="Arial,sans-serif">${suit}</text></g>`;
+    }
+    x += cw + gap;
+    return out;
+  }).join('');
+  const svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice">
+    <defs><radialGradient id="g" cx="50%" cy="40%" r="75%"><stop offset="0" stop-color="#0e7a4d"/><stop offset=".6" stop-color="#0b5d3b"/><stop offset="1" stop-color="#073d27"/></radialGradient>
+    <filter id="sh" x="-20%" y="-20%" width="140%" height="140%"><feDropShadow dx="0" dy="14" stdDeviation="14" flood-opacity=".35"/></filter></defs>
+    <rect width="${W}" height="${H}" fill="url(#g)"/>
+    <text x="${W - 30}" y="${H - 30}" text-anchor="end" font-size="150" fill="#fff" fill-opacity=".05" font-family="Arial,sans-serif">♠♥♦♣</text>
+    ${items}</svg>`;
+  return 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(svg);
+}
+const artAlt = a => a.cards ? "Ilustração com as cartas " + a.cards.filter(c => c !== "D").join(", ") : a.alt;
+const artImg = (a, w) => a.cards ? cardsCover(a.cards) : IMG(a.img, w, a.imgExtra || '');
 const store = {
   get(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } },
   set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); return true; } catch { return false; } }
@@ -1061,7 +1401,7 @@ const pageHero = (kicker, title, text, crumb) => `
    ===================================================================== */
 const featCard = (a, cls = '', h = 'h3', w = 900) => `
   <a href="#/materia/${a.slug}" class="feat ${cls} reveal">
-    <div class="media"><img loading="lazy" src="${artImg(a, w)}" alt="${esc(a.alt)}" /></div>
+    <div class="media"><img loading="lazy" src="${artImg(a, w)}" alt="${esc(artAlt(a))}" /></div>
     ${cls.includes('big') ? CHIP() : ''}
     <div class="body">
       <span class="tag ${a.tagClass || ''}">${a.tag}</span>
@@ -1071,17 +1411,22 @@ const featCard = (a, cls = '', h = 'h3', w = 900) => `
     </div>
   </a>`;
 
+const LEVELS = ['Iniciante', 'Intermediário', 'Avançado'];
+const levelPill = l => `<span class="lvl lvl-${LEVELS.indexOf(l)}">${l}</span>`;
+const byDate = list => [...list].sort((x, y) => y.date.localeCompare(x.date));
+const TRAIL = () => ARTICLES.filter(a => a.step).sort((x, y) => x.step - y.step);
+
 const card = (a, withAuthor) => `
   <a href="#/materia/${a.slug}" class="card reveal">
-    <div class="media"><img loading="lazy" src="${artImg(a, 700)}" alt="${esc(a.alt)}" /><span class="tag">${a.tag}</span></div>
+    <div class="media"><img loading="lazy" src="${artImg(a, 700)}" alt="${esc(artAlt(a))}" /><span class="tag">${a.tag}</span></div>
     <h3>${a.title}</h3>
-    <div class="meta">${withAuthor ? `<span>por <b>${AUTHORS[a.author].name}</b></span>` : ''}<span>${fmtDate(a.date)}</span></div>
+    <div class="meta">${a.level ? levelPill(a.level) : ''}${withAuthor ? `<span>por <b>${AUTHORS[a.author].name}</b></span>` : ''}<span>${fmtDate(a.date)}</span></div>
     <p>${a.excerpt}</p>
   </a>`;
 
 const listItem = a => `
   <a href="#/materia/${a.slug}" class="list-item reveal">
-    <div class="media"><img loading="lazy" src="${artImg(a, 300)}" alt="${esc(a.alt)}" /></div>
+    <div class="media"><img loading="lazy" src="${artImg(a, 300)}" alt="${esc(artAlt(a))}" /></div>
     <div><h4>${a.title}</h4><div class="meta"><span>por <b>${AUTHORS[a.author].name}</b></span><span>${fmtDate(a.date)}</span></div></div>
   </a>`;
 
@@ -1106,7 +1451,8 @@ VIEWS.home = () => {
   </div></section>
   <section id="estrategia"><div class="container">
     <h2 class="sec-title reveal">Estratégia <span class="suit red">♥</span></h2>
-    <div class="grid-3">${inSection('estrategia').map(a => card(a)).join('')}</div>
+    <div class="grid-3">${byDate(inSection('estrategia')).slice(0, 3).map(a => card(a)).join('')}</div>
+    <p class="more-link reveal"><a class="btn ghost" href="#/estrategia">Ver todas as estratégias e tutoriais (${inSection('estrategia').length}) →</a></p>
   </div></section>
   <section id="internacional"><div class="container">
     <h2 class="sec-title reveal">Internacional <span class="suit red">♦</span></h2>
@@ -1147,6 +1493,14 @@ const sidebar = current => `
     </form>
   </div></aside>`;
 
+const trailNav = a => {
+  const t = TRAIL(), i = t.indexOf(a), prev = t[i - 1], next = t[i + 1];
+  return `<nav class="trail-nav">
+    ${prev ? `<a href="#/materia/${prev.slug}"><small>← Passo ${prev.step}</small>${prev.title}</a>` : '<span></span>'}
+    ${next ? `<a class="next" href="#/materia/${next.slug}"><small>Passo ${next.step} →</small>${next.title}</a>` : `<a class="next" href="#/estrategia"><small>Trilha concluída ✓</small>Ver mais estratégias</a>`}
+  </nav>`;
+};
+
 VIEWS.materia = slug => {
   const a = bySlug(slug);
   if (!a) return VIEWS.notFound();
@@ -1160,18 +1514,20 @@ VIEWS.materia = slug => {
     <nav class="crumbs"><a href="#/">Início</a><span class="sep">›</span><a href="#/${catRoute}">${a.cat}</a><span class="sep">›</span><span>${a.title}</span></nav>
     <div class="article-grid">
       <article class="post">
-        <span class="tag ${a.tagClass || ''}">${a.tag}</span>
+        <span class="tag ${a.tagClass || ''}">${a.tag}</span>${a.level ? ' ' + levelPill(a.level) : ''}${a.step ? ` <span class="lvl">Trilha · passo ${a.step} de ${TRAIL().length}</span>` : ''}
         <h1>${a.title}</h1>
         <p class="lead">${a.excerpt}</p>
         <div class="byline">
-          <span class="avatar" style="background:${au.color}">${initials(au.name)}</span>
+          <span class="avatar" style="background:${au.color}">${au.ini || initials(au.name)}</span>
           <div class="meta" style="font-size:13.5px"><span>por <b>${au.name}</b></span><span>${fmtDate(a.date)}</span><span>${readTime(a)} min de leitura</span></div>
         </div>
         <figure style="margin:0">
-          <div class="media post-cover"><img src="${artImg(a, 1400)}" alt="${esc(a.alt)}" /></div>
-          <figcaption>${esc(a.alt)} · Foto: Unsplash</figcaption>
+          <div class="media post-cover"><img src="${artImg(a, 1400)}" alt="${esc(artAlt(a))}" /></div>
+          <figcaption>${a.cards ? "Ilustração: pokertodahora" : esc(a.alt) + " · Foto: Unsplash"}</figcaption>
         </figure>
         <div class="post-body">${renderBody(a.body)}</div>
+        ${a.step ? trailNav(a) : ''}
+        ${a.sources ? `<div class="sources"><b>Fontes</b><ul>${a.sources.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${t} ↗</a></li>`).join('')}</ul></div>` : ''}
         <div class="share">
           <b>Compartilhe</b>
           <a class="wa" href="https://wa.me/?text=${txt}%20${url}" target="_blank" rel="noopener">WhatsApp</a>
@@ -1180,7 +1536,7 @@ VIEWS.materia = slug => {
           <button class="cp" type="button" data-copy>Copiar link</button>
         </div>
         <div class="author-box">
-          <span class="avatar lg" style="background:${au.color}">${initials(au.name)}</span>
+          <span class="avatar lg" style="background:${au.color}">${au.ini || initials(au.name)}</span>
           <div><small>${au.role}</small><h4>${au.name}</h4><p>${au.bio}</p></div>
         </div>
       </article>
@@ -1194,7 +1550,7 @@ VIEWS.materia = slug => {
 };
 
 VIEWS['quem-somos'] = () => {
-  const team = Object.values(AUTHORS);
+  const team = Object.values(AUTHORS).filter(m => m.staff !== false);
   return `
   ${pageHero('Quem somos', 'Poker levado a sério, do jeito que a gente gosta', 'O pokertodahora nasceu na mesa, entre um nível e outro, da vontade de ter um lugar que falasse de poker com qualidade, em português e sem enrolação.')}
   <section><div class="container">
@@ -1383,6 +1739,29 @@ VIEWS['minha-banca'] = () => `
     </div>
   </div></section>`;
 
+VIEWS.estrategia = () => {
+  const all = byDate(inSection('estrategia'));
+  return `
+  ${pageHero('Aprenda poker', 'Estratégia e tutoriais', 'Das regras básicas até ICM e jogo de stack curto. Comece pela trilha para iniciantes ou escolha o seu nível.')}
+  <section><div class="container">
+    <h2 class="sec-title reveal">Trilha: aprenda do zero <span class="suit">♠</span></h2>
+    <ol class="trail">${TRAIL().map(a => `
+      <li class="reveal"><a href="#/materia/${a.slug}"><span class="n">${a.step}</span><span><b>${a.title}</b><small>${a.excerpt}</small></span></a></li>`).join('')}
+    </ol>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Todos os conteúdos <span class="suit red">♥</span></h2>
+    <div class="filters" data-filter="levels">${['Todos', ...LEVELS].map((l, i) => `<button type="button" class="${i ? '' : 'on'}" data-cat="${l}">${l}</button>`).join('')}</div>
+    <div class="grid-3" id="stratGrid">${all.map(a => card(a).replace('class="card reveal"', `class="card reveal" data-cat="${a.level}"`)).join('')}</div>
+  </div></section>
+  <section><div class="container">
+    <div class="study-cta reveal">
+      <div><h3>Estude também com vídeos</h3><p>Aulas de ranges e gestão de banca com Jonathan Little, Daniel Negreanu e GTO Wizard.</p></div>
+      <a class="btn gold" href="#/videos">Ver vídeos de estratégia</a>
+    </div>
+  </div></section>`;
+};
+
 VIEWS.busca = q => {
   const nq = normalize(q);
   const hits = ARTICLES.filter(a => normalize(stripTags([a.title, a.excerpt, a.cat, a.tag, ...a.body.flat()].join(' '))).includes(nq));
@@ -1531,6 +1910,8 @@ document.addEventListener('keydown', e => {
     btns[(i + (e.shiftKey ? -1 : 1) + btns.length) % btns.length].focus();
   }
 });
+
+SETUP.estrategia = () => setupFilters('levels', '#stratGrid .card');
 
 SETUP.fotos = () => {
   setupFilters('gallery', '.ph');
@@ -1719,7 +2100,8 @@ window.addEventListener('resize', () => { if (current.view === 'minha-banca') dr
 /* =====================================================================
    ROTEADOR (troca de páginas dentro do mesmo arquivo)
    ===================================================================== */
-const HOME_SECTIONS = ['noticias', 'torneios', 'estrategia', 'internacional', 'lifestyle'];
+const HOME_SECTIONS = ['noticias', 'torneios', 'internacional', 'lifestyle'];
+const SPY_SECTIONS = ['noticias', 'torneios', 'estrategia', 'internacional', 'lifestyle'];
 const current = { view: null, arg: null };
 const menuLinks = $$('#menu a');
 const setActive = key => menuLinks.forEach(a => a.classList.toggle('active', a.dataset.key === key));
@@ -1731,7 +2113,7 @@ function startSpy() {
   spy = new IntersectionObserver(entries => entries.forEach(e => {
     if (e.isIntersecting) setActive(e.target.id);
   }), { rootMargin: '-45% 0px -50% 0px' });
-  HOME_SECTIONS.forEach(id => spy.observe(document.getElementById(id)));
+  SPY_SECTIONS.forEach(id => spy.observe(document.getElementById(id)));
 }
 
 let revealObs;
@@ -1784,7 +2166,7 @@ function route() {
 
   const target = scrollTo && document.getElementById(scrollTo);
   if (target) target.scrollIntoView({ behavior: sameView ? 'smooth' : 'auto' });
-  else if (!sameView) window.scrollTo({ top: view === 'home' ? 0 : Math.min(window.scrollY, $('#mainnav').offsetTop), behavior: 'auto' });
+  else if (!sameView) window.scrollTo({ top: 0, behavior: 'instant' });
 }
 window.addEventListener('hashchange', route);
 
