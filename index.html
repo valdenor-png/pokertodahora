@@ -4106,6 +4106,9 @@ themeBtn.addEventListener('click', () => {
 });
 
 $('#year').textContent = new Date().getFullYear();
+// Ao recarregar (F5), começa do topo em vez de voltar para onde a página estava rolada
+if ('scrollRestoration' in history) history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
 route();
 </script>
 </body>
