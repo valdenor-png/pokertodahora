@@ -1,0 +1,1787 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta name="theme-color" content="#0a0f14" />
+<meta name="description" content="pokertodahora — Notícias, estratégias e bastidores para você jogar mais e melhor." />
+<title>pokertodahora — Notícias, estratégias e bastidores do poker</title>
+<link rel="icon" href="img/logo.jpg" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Nunito+Sans:wght@400;600;700;800;900&display=swap" rel="stylesheet" />
+<style>
+  :root{
+    --ink:#0a0f14;
+    --ink-2:#161d25;
+    --felt:#0b5d3b;
+    --felt-2:#0e7a4d;
+    --felt-dark:#073d27;
+    --gold:#d4af37;
+    --red:#c8102e;
+    --text:#1c232b;
+    --muted:#6b7480;
+    --line:#e5e8ec;
+    --bg:#ffffff;
+    --soft:#f5f6f4;
+    --radius:6px;
+    --shadow:0 10px 30px rgba(10,15,20,.12);
+  }
+  *,*::before,*::after{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:"Nunito Sans",system-ui,-apple-system,"Segoe UI",sans-serif;color:var(--text);background:var(--bg);line-height:1.55;-webkit-font-smoothing:antialiased}
+  img{display:block;max-width:100%}
+  a{color:inherit;text-decoration:none}
+  h1,h2,h3,h4{margin:0;font-weight:800;line-height:1.2}
+  button,input,select,textarea{font:inherit}
+  .container{width:100%;max-width:1200px;margin:0 auto;padding:0 16px}
+  .sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+  /* ---------- 1. TOP BAR ---------- */
+  .topbar{background:var(--ink);color:#d9dee4;font-size:13px}
+  .topbar .container{display:flex;align-items:center;gap:16px;min-height:44px}
+  .latest-label{display:inline-flex;align-items:center;gap:8px;background:var(--red);color:#fff;font-weight:800;letter-spacing:.08em;font-size:12px;padding:6px 12px;border-radius:3px;flex-shrink:0}
+  .latest-label svg{width:16px;height:16px}
+  .ticker{position:relative;flex:1;height:22px;overflow:hidden;min-width:0}
+  .ticker a{position:absolute;inset:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;opacity:0;transform:translateY(100%);transition:opacity .45s ease,transform .45s ease;font-weight:600}
+  .ticker a.is-active{opacity:1;transform:translateY(0)}
+  .ticker a.is-leaving{opacity:0;transform:translateY(-100%)}
+  .ticker a:hover{color:var(--gold)}
+  .ticker a .dot{color:var(--gold);margin-right:8px}
+  .search{display:flex;align-items:center;background:var(--ink-2);border:1px solid #26303b;border-radius:4px;flex-shrink:0}
+  .search input{background:transparent;border:0;outline:0;color:#fff;padding:7px 10px;width:190px}
+  .search input::placeholder{color:#8792a0}
+  .search button{background:transparent;border:0;color:#b9c2cc;padding:0 10px;cursor:pointer;display:grid;place-items:center;height:32px}
+  .search button:hover{color:var(--gold)}
+  .search:focus-within{border-color:var(--gold)}
+
+  /* ---------- 2. HEADER ---------- */
+  .site-header{background:#fff}
+  .site-header .container{display:flex;align-items:center;justify-content:space-between;gap:24px;padding-top:24px;padding-bottom:24px}
+  .brand{display:flex;flex-direction:column;align-items:flex-start;gap:8px}
+  .brand img{height:92px;width:auto;aspect-ratio:2/1;object-fit:cover;border-radius:8px;box-shadow:0 6px 18px rgba(11,93,59,.25)}
+  .brand .slogan{font-size:13px;color:var(--muted);font-weight:600;max-width:330px}
+  .header-cards{display:flex;gap:28px}
+  .hcard{display:flex;align-items:center;gap:14px;max-width:290px}
+  .hcard .ico{width:58px;height:58px;border-radius:14px;display:grid;place-items:center;flex-shrink:0;transition:transform .3s ease}
+  .hcard:hover .ico{transform:rotate(-6deg) scale(1.05)}
+  .hcard .ico svg{width:30px;height:30px}
+  .ico.dark{background:var(--ink);color:var(--gold)}
+  .ico.accent{background:var(--gold);color:var(--ink)}
+  .hcard strong{display:block;font-weight:900;font-size:15px;letter-spacing:.04em;color:var(--ink)}
+  .hcard span{font-size:13px;color:var(--muted);line-height:1.4}
+  .hcard:hover strong{color:var(--felt)}
+
+  /* ---------- 3. MENU ---------- */
+  .mainnav{position:sticky;top:0;z-index:50;background:rgba(255,255,255,.96);border-top:1px solid var(--line);border-bottom:1px solid var(--line);transition:background .3s ease,box-shadow .3s ease}
+  .mainnav.is-stuck{background:rgba(255,255,255,.78);-webkit-backdrop-filter:blur(12px) saturate(1.4);backdrop-filter:blur(12px) saturate(1.4);box-shadow:0 6px 20px rgba(10,15,20,.08)}
+  .mainnav .container{display:flex;align-items:center;justify-content:space-between}
+  .menu{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap}
+  .menu a{position:relative;display:block;padding:15px 15px;font-weight:800;font-size:14px;color:var(--ink);transition:color .2s}
+  .menu a::before{content:"";position:absolute;left:0;right:0;top:-1px;height:3px;background:var(--felt);transform:scaleX(0);transition:transform .25s ease}
+  .menu a:hover{color:var(--felt)}
+  .menu a:hover::before{transform:scaleX(.5)}
+  .menu a.active{color:var(--felt)}
+  .menu a.active::before{transform:scaleX(1)}
+  .nav-brand{display:none;align-items:center}
+  .nav-brand img{height:34px;width:68px;object-fit:cover;border-radius:4px}
+  .burger{display:none;background:none;border:0;width:44px;height:44px;cursor:pointer;position:relative}
+  .burger span,.burger span::before,.burger span::after{position:absolute;left:10px;width:24px;height:2px;background:var(--ink);transition:transform .3s,top .3s,opacity .3s;content:""}
+  .burger span{top:21px}
+  .burger span::before{left:0;top:-7px}
+  .burger span::after{left:0;top:7px}
+  .burger[aria-expanded="true"] span{background:transparent}
+  .burger[aria-expanded="true"] span::before{top:0;transform:rotate(45deg)}
+  .burger[aria-expanded="true"] span::after{top:0;transform:rotate(-45deg)}
+
+  /* ---------- Genéricos ---------- */
+  #app{min-height:60vh}
+  section{padding:44px 0 8px;scroll-margin-top:60px}
+  .sec-title{display:flex;align-items:center;gap:12px;margin:0 0 22px;font-size:18px;font-weight:900;text-transform:uppercase;letter-spacing:.05em;color:var(--ink)}
+  .sec-title::before{content:"";width:5px;height:24px;background:var(--felt);border-radius:1px;flex-shrink:0}
+  .sec-title::after{content:"";flex:1;border-top:2px dotted #cdd3da;margin-left:4px}
+  .sec-title .suit{font-size:18px;line-height:1;color:var(--felt);opacity:.75}
+  .sec-title .suit.red{color:var(--red)}
+  .sec-title.sm{font-size:15px;margin-bottom:16px}
+  .sec-title.sm::before{height:18px}
+  .tag{display:inline-block;background:var(--felt);color:#fff;font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;padding:3px 8px;border-radius:2px;line-height:1.5}
+  .tag.gold{background:var(--gold);color:var(--ink)}
+  .tag.red{background:var(--red)}
+  .meta{font-size:12.5px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px;align-items:center}
+  .meta b{color:var(--ink);font-weight:700}
+  .media{position:relative;overflow:hidden;background:linear-gradient(135deg,var(--felt),var(--felt-dark))}
+  .media img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .media.noimg::after{content:"♠ ♥ ♦ ♣";position:absolute;inset:0;display:grid;place-items:center;color:rgba(255,255,255,.25);font-size:28px;letter-spacing:.3em}
+  .media.noimg img{opacity:0}
+  .card:hover .media img,.feat:hover .media img,.list-item:hover .media img{transform:scale(1.05)}
+  .card h3,.feat h2,.feat h3,.list-item h4{transition:color .25s ease}
+  .btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border:0;border-radius:4px;padding:11px 20px;font-weight:800;font-size:14px;cursor:pointer;background:var(--felt);color:#fff;transition:background .2s,transform .2s,color .2s}
+  .btn:hover{background:var(--felt-2)}
+  .btn:active{transform:translateY(1px)}
+  .btn.gold{background:var(--gold);color:var(--ink)}
+  .btn.gold:hover{background:#e3c252}
+  .btn.ghost{background:transparent;color:var(--ink);box-shadow:inset 0 0 0 1.5px var(--line)}
+  .btn.ghost:hover{box-shadow:inset 0 0 0 1.5px var(--felt);color:var(--felt)}
+  .btn.danger{background:transparent;color:var(--red);box-shadow:inset 0 0 0 1.5px rgba(200,16,46,.35)}
+  .btn.danger:hover{background:var(--red);color:#fff}
+  .btn.sm{padding:7px 12px;font-size:13px}
+
+  /* Overlay cards (hero + torneios) */
+  .feat{position:relative;display:block;overflow:hidden;border-radius:var(--radius);color:#fff;isolation:isolate}
+  .feat .media{position:absolute;inset:0;z-index:-2}
+  .feat::after{content:"";position:absolute;inset:0;z-index:-1;background:linear-gradient(180deg,rgba(10,15,20,0) 30%,rgba(10,15,20,.55) 60%,rgba(10,15,20,.92) 100%)}
+  .feat .body{position:absolute;left:0;right:0;bottom:0;padding:22px}
+  .feat .body .tag{margin-bottom:10px}
+  .feat .meta{color:rgba(255,255,255,.8);margin-top:8px}
+  .feat .meta b{color:#fff}
+  .feat:hover h2,.feat:hover h3{color:var(--gold)}
+
+  /* ---------- 4. HERO ---------- */
+  .hero{padding-top:28px}
+  .hero-grid{display:grid;grid-template-columns:2fr 1fr;grid-template-rows:1fr 1fr;gap:6px;height:520px}
+  .hero-grid .big{grid-row:1 / span 2}
+  .hero-grid .big .body{padding:34px}
+  .hero-grid .big h2{font-size:clamp(26px,3.2vw,40px);font-weight:900;max-width:640px;text-shadow:0 2px 20px rgba(0,0,0,.35)}
+  .hero-grid .big p{margin:12px 0 0;max-width:560px;color:rgba(255,255,255,.85);font-size:15px}
+  .hero-grid .small h3{font-size:19px;font-weight:800}
+
+  /* Ficha 3D */
+  .chip3d{position:absolute;top:26px;right:30px;width:112px;height:112px;perspective:700px;z-index:2;animation:bob 4s ease-in-out infinite;filter:drop-shadow(0 18px 18px rgba(0,0,0,.45))}
+  .chip3d .spin{position:relative;width:100%;height:100%;transform-style:preserve-3d;animation:chipSpin 8s linear infinite}
+  .chip3d .layer{position:absolute;inset:0;border-radius:50%;background:#8c0a1f}
+  .chip3d .layer:nth-child(odd){background:#e9e4d8}
+  .chip3d .face{position:absolute;inset:0;border-radius:50%;background:repeating-conic-gradient(var(--red) 0 22.5deg,#f4efe3 22.5deg 45deg);box-shadow:inset 0 0 0 4px #9d0c23,inset 0 0 0 7px rgba(255,255,255,.15);backface-visibility:hidden}
+  .chip3d .face::before{content:"";position:absolute;inset:15%;border-radius:50%;background:var(--red);border:3px dashed #f4efe3}
+  .chip3d .face::after{content:"♠";position:absolute;inset:29%;border-radius:50%;background:radial-gradient(circle at 35% 30%,#fff,#e8e1cf);display:grid;place-items:center;color:var(--ink);font-size:26px;font-weight:900;line-height:1;box-shadow:inset 0 0 0 2px var(--gold)}
+  .chip3d .face.back::after{content:"♥";color:var(--red)}
+  .chip3d .front{transform:translateZ(6px)}
+  .chip3d .back{transform:rotateY(180deg) translateZ(6px)}
+  .chip3d.static{position:relative;top:auto;right:auto;flex-shrink:0}
+  @keyframes chipSpin{from{transform:rotateX(14deg) rotateY(0)}to{transform:rotateX(14deg) rotateY(360deg)}}
+  @keyframes bob{0%,100%{translate:0 0}50%{translate:0 -10px}}
+
+  /* ---------- 5. TORNEIOS ---------- */
+  .grid-2x2{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .grid-2x2 .feat{height:280px}
+  .grid-2x2 h3{font-size:22px;font-weight:800;max-width:520px}
+
+  /* ---------- 6/7. ESTRATÉGIA + INTERNACIONAL ---------- */
+  .grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:26px}
+  .card{display:flex;flex-direction:column;gap:12px}
+  .card .media{aspect-ratio:16/10;border-radius:var(--radius)}
+  .card .media .tag{position:absolute;left:12px;bottom:12px;z-index:1}
+  .card h3{font-size:19px;font-weight:800;color:var(--ink)}
+  .card:hover h3{color:var(--felt)}
+  .card p{margin:0;color:#4b5561;font-size:14.5px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+  /* ---------- 8. LIFESTYLE ---------- */
+  .list-2{display:grid;grid-template-columns:1fr 1fr;gap:22px 34px}
+  .list-item{display:flex;gap:16px;align-items:center;padding-bottom:22px;border-bottom:1px solid var(--line)}
+  .list-item .media{width:130px;height:92px;border-radius:var(--radius);flex-shrink:0}
+  .list-item h4{font-size:16.5px;font-weight:800;color:var(--ink);margin-bottom:6px}
+  .list-item:hover h4{color:var(--felt)}
+
+  /* ---------- PÁGINAS INTERNAS ---------- */
+  .page-hero{position:relative;overflow:hidden;background:radial-gradient(ellipse at 20% 0%,var(--felt-2),var(--felt) 45%,var(--felt-dark));color:#fff;padding:54px 0 50px}
+  .page-hero::before{content:"♠ ♥ ♦ ♣";position:absolute;right:-20px;bottom:-40px;font-size:150px;letter-spacing:.08em;color:rgba(255,255,255,.05);white-space:nowrap;pointer-events:none}
+  .page-hero .container{position:relative;display:flex;align-items:center;justify-content:space-between;gap:30px}
+  .page-hero .kicker{display:inline-block;color:var(--gold);font-weight:900;letter-spacing:.14em;font-size:12px;text-transform:uppercase;margin-bottom:10px}
+  .page-hero h1{font-size:clamp(30px,4.4vw,46px);font-weight:900}
+  .page-hero p{margin:12px 0 0;max-width:620px;color:rgba(255,255,255,.86);font-size:16px}
+  .crumbs{font-size:13px;color:var(--muted);padding:22px 0 0;display:flex;flex-wrap:wrap;gap:6px}
+  .crumbs a:hover{color:var(--felt)}
+  .crumbs span.sep{color:#b7bec6}
+  .page-hero .crumbs{color:rgba(255,255,255,.7);padding:0 0 14px}
+  .page-hero .crumbs a:hover{color:var(--gold)}
+  .page-hero .crumbs .sep{color:rgba(255,255,255,.4)}
+
+  /* Matéria */
+  .article-grid{display:grid;grid-template-columns:minmax(0,1fr) 320px;gap:48px;padding:18px 0 10px}
+  .post h1{font-size:clamp(28px,3.6vw,42px);font-weight:900;color:var(--ink);margin:14px 0 14px;letter-spacing:-.01em}
+  .post .lead{font-size:18.5px;color:#4b5561;margin:0 0 18px;line-height:1.5}
+  .byline{display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .avatar{width:44px;height:44px;border-radius:50%;display:grid;place-items:center;color:#fff;font-weight:900;font-size:15px;flex-shrink:0;letter-spacing:.02em}
+  .avatar.lg{width:84px;height:84px;font-size:26px}
+  .post-cover{margin:24px 0 8px;border-radius:var(--radius);aspect-ratio:16/9}
+  .post figcaption{font-size:12px;color:var(--muted);margin-bottom:26px}
+  .post-body{font-size:17.5px;line-height:1.75;color:#262e37}
+  .post-body > p:first-child::first-letter{float:left;font-size:62px;line-height:.9;font-weight:900;color:var(--felt);margin:6px 10px 0 0}
+  .post-body p{margin:0 0 20px}
+  .post-body h2{font-size:24px;font-weight:900;color:var(--ink);margin:34px 0 14px;display:flex;align-items:center;gap:10px}
+  .post-body h2::before{content:"♠";color:var(--felt);font-size:18px}
+  .post-body ul{margin:0 0 22px;padding-left:0;list-style:none}
+  .post-body li{position:relative;padding-left:26px;margin-bottom:8px}
+  .post-body li::before{content:"♦";position:absolute;left:0;top:0;color:var(--red);font-size:14px}
+  .post-body blockquote{margin:28px 0;padding:18px 24px;border-left:4px solid var(--gold);background:var(--soft);font-size:20px;font-weight:700;font-style:italic;color:var(--ink);border-radius:0 var(--radius) var(--radius) 0}
+  .post-body strong{color:var(--ink)}
+  .share{display:flex;align-items:center;flex-wrap:wrap;gap:8px;margin:30px 0;padding:18px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line)}
+  .share b{font-size:13px;text-transform:uppercase;letter-spacing:.06em;margin-right:6px}
+  .share a,.share button{display:inline-flex;align-items:center;gap:6px;padding:8px 14px;border-radius:4px;font-weight:800;font-size:13px;color:#fff;border:0;cursor:pointer}
+  .share .wa{background:#1f9d55}.share .x{background:var(--ink)}.share .fb{background:#1c5bb8}.share .cp{background:var(--soft);color:var(--ink)}
+  .share a:hover,.share button:hover{filter:brightness(1.1)}
+  .author-box{display:flex;gap:18px;align-items:flex-start;background:var(--soft);border-radius:var(--radius);padding:22px}
+  .author-box h4{font-size:17px;color:var(--ink)}
+  .author-box small{color:var(--felt);font-weight:800;text-transform:uppercase;letter-spacing:.06em;font-size:11px}
+  .author-box p{margin:6px 0 0;font-size:14.5px;color:#4b5561}
+  .sidebar{display:flex;flex-direction:column;gap:30px}
+  .sidebar .sticky{position:sticky;top:76px;display:flex;flex-direction:column;gap:30px}
+  .most-read{list-style:none;margin:0;padding:0;counter-reset:mr}
+  .most-read li{counter-increment:mr;display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--line)}
+  .most-read li::before{content:counter(mr);font-size:30px;font-weight:900;line-height:1;color:var(--gold);min-width:26px}
+  .most-read a{font-weight:800;font-size:15px;color:var(--ink);line-height:1.35}
+  .most-read a:hover{color:var(--felt)}
+  .widget-cta{background:var(--ink);color:#fff;border-radius:var(--radius);padding:24px;position:relative;overflow:hidden}
+  .widget-cta::after{content:"♣";position:absolute;right:-8px;bottom:-34px;font-size:130px;color:rgba(255,255,255,.05)}
+  .widget-cta h4{font-size:20px;font-weight:900;margin:12px 0 6px}
+  .widget-cta p{margin:0 0 16px;color:#aab3bd;font-size:14px}
+  .newsletter{border:1px solid var(--line);border-radius:var(--radius);padding:22px}
+  .newsletter p{margin:0 0 14px;font-size:14px;color:#4b5561}
+  .newsletter input{width:100%;padding:11px 12px;border:1.5px solid var(--line);border-radius:4px;margin-bottom:10px;outline:0}
+  .newsletter input:focus{border-color:var(--felt)}
+  .newsletter .btn{width:100%}
+
+  /* Quem somos */
+  .about-grid{display:grid;grid-template-columns:1.2fr 1fr;gap:48px;align-items:start}
+  .about-grid .text p{font-size:17px;line-height:1.75;margin:0 0 18px;color:#2d3640}
+  .about-grid .media{border-radius:var(--radius);aspect-ratio:4/3}
+  .stats{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;margin-top:10px}
+  .stat{background:var(--soft);border-radius:var(--radius);padding:22px;border-top:3px solid var(--felt)}
+  .stat strong{display:block;font-size:32px;font-weight:900;color:var(--ink);line-height:1.1}
+  .stat span{font-size:13px;color:var(--muted);font-weight:600}
+  .values{display:grid;grid-template-columns:repeat(3,1fr);gap:22px}
+  .value{border:1px solid var(--line);border-radius:var(--radius);padding:26px;transition:border-color .25s,transform .25s,box-shadow .25s}
+  .value:hover{border-color:var(--felt);transform:translateY(-4px);box-shadow:var(--shadow)}
+  .value .suit-ico{width:48px;height:48px;border-radius:12px;display:grid;place-items:center;font-size:24px;background:var(--felt);color:#fff;margin-bottom:16px}
+  .value .suit-ico.red{background:var(--red)}
+  .value h3{font-size:18px;margin-bottom:8px;color:var(--ink)}
+  .value p{margin:0;color:#4b5561;font-size:14.5px}
+  .team{display:grid;grid-template-columns:repeat(5,1fr);gap:20px}
+  .member{text-align:center;padding:24px 14px;border-radius:var(--radius);background:var(--soft)}
+  .member .avatar{margin:0 auto 14px}
+  .member h4{font-size:16px;color:var(--ink)}
+  .member small{display:block;color:var(--felt);font-weight:800;font-size:12px;margin:4px 0 8px}
+  .member p{margin:0;font-size:13px;color:#4b5561}
+  .responsible{display:flex;gap:20px;align-items:center;background:var(--ink);color:#d9dee4;border-radius:var(--radius);padding:26px 28px}
+  .responsible .age{width:64px;height:64px;border-radius:50%;border:3px solid var(--red);display:grid;place-items:center;font-weight:900;font-size:20px;color:#fff;flex-shrink:0}
+  .responsible h3{color:#fff;font-size:19px;margin-bottom:4px}
+  .responsible p{margin:0;font-size:14.5px}
+
+  /* Contato */
+  .contact-grid{display:grid;grid-template-columns:1.4fr 1fr;gap:40px;align-items:start}
+  .form{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+  .form .full{grid-column:1 / -1}
+  .field label{display:block;font-weight:800;font-size:13px;margin-bottom:6px;color:var(--ink)}
+  .field input,.field select,.field textarea{width:100%;padding:12px 13px;border:1.5px solid var(--line);border-radius:4px;background:#fff;outline:0;transition:border-color .2s,box-shadow .2s;color:var(--text)}
+  .field textarea{min-height:150px;resize:vertical}
+  .field input:focus,.field select:focus,.field textarea:focus{border-color:var(--felt);box-shadow:0 0 0 3px rgba(11,93,59,.12)}
+  .field.invalid input,.field.invalid select,.field.invalid textarea{border-color:var(--red)}
+  .field .err{display:none;color:var(--red);font-size:12.5px;font-weight:700;margin-top:5px}
+  .field.invalid .err{display:block}
+  .check{display:flex;gap:10px;align-items:flex-start;font-size:14px;color:#4b5561}
+  .check input{margin-top:4px;accent-color:var(--felt)}
+  .form-success{display:none;background:#e9f5ef;border:1px solid #b9dfca;color:var(--felt-dark);border-radius:var(--radius);padding:22px;font-weight:600}
+  .form-success.show{display:block}
+  .form-success h3{color:var(--felt);margin-bottom:6px}
+  .info-card{background:var(--soft);border-radius:var(--radius);padding:24px;margin-bottom:18px}
+  .info-card h3{font-size:16px;margin-bottom:12px;color:var(--ink)}
+  .info-row{display:flex;gap:12px;align-items:flex-start;padding:10px 0;border-bottom:1px dashed #d6dbe0;font-size:14.5px}
+  .info-row:last-child{border-bottom:0}
+  .info-row .ic{width:34px;height:34px;border-radius:8px;background:var(--felt);color:#fff;display:grid;place-items:center;flex-shrink:0;font-size:15px}
+  .info-row b{display:block;color:var(--ink)}
+  .info-row a:hover{color:var(--felt)}
+  .socials{display:flex;gap:10px;flex-wrap:wrap}
+  .socials a{padding:8px 14px;border-radius:4px;background:var(--ink);color:#fff;font-weight:800;font-size:13px}
+  .socials a:hover{background:var(--felt)}
+  .faq details{border-bottom:1px solid var(--line);padding:14px 0}
+  .faq summary{cursor:pointer;font-weight:800;color:var(--ink);list-style:none;display:flex;justify-content:space-between;gap:12px}
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{content:"+";color:var(--felt);font-size:20px;line-height:1;transition:transform .2s}
+  .faq details[open] summary::after{transform:rotate(45deg)}
+  .faq details p{margin:10px 0 0;color:#4b5561;font-size:15px}
+
+  /* Filtros (fotos/vídeos) */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+  .filters button{border:1.5px solid var(--line);background:#fff;color:var(--ink);padding:8px 16px;border-radius:40px;font-weight:800;font-size:13px;cursor:pointer;transition:all .2s}
+  .filters button:hover{border-color:var(--felt);color:var(--felt)}
+  .filters button.on{background:var(--felt);border-color:var(--felt);color:#fff}
+
+  /* Fotos */
+  .gallery{columns:3 280px;column-gap:14px}
+  .ph{break-inside:avoid;margin:0 0 14px;position:relative;border-radius:var(--radius);overflow:hidden;cursor:zoom-in;display:block;width:100%;padding:0;border:0;background:var(--felt)}
+  .ph img{width:100%;height:auto;transition:transform .6s cubic-bezier(.2,.7,.2,1)}
+  .ph::after{content:"";position:absolute;inset:0;background:linear-gradient(180deg,transparent 55%,rgba(10,15,20,.85));opacity:0;transition:opacity .3s}
+  .ph span{position:absolute;left:14px;right:14px;bottom:12px;z-index:1;color:#fff;font-weight:800;font-size:14px;text-align:left;opacity:0;transform:translateY(8px);transition:all .3s}
+  .ph:hover img{transform:scale(1.05)}
+  .ph:hover::after,.ph:hover span,.ph:focus-visible::after,.ph:focus-visible span{opacity:1;transform:none}
+  .ph.hidden{display:none}
+  .lightbox{position:fixed;inset:0;z-index:100;background:rgba(6,9,12,.94);display:none;align-items:center;justify-content:center;padding:60px 70px}
+  .lightbox.open{display:flex}
+  .lightbox figure{margin:0;max-width:1100px;width:100%;text-align:center}
+  .lightbox img{max-height:78vh;width:auto;max-width:100%;margin:0 auto;border-radius:4px;box-shadow:0 20px 60px rgba(0,0,0,.5)}
+  .lightbox figcaption{color:#d9dee4;margin-top:14px;font-weight:700}
+  .lightbox figcaption small{display:block;color:#8792a0;font-weight:600;margin-top:2px}
+  .lb-btn{position:absolute;background:rgba(255,255,255,.08);border:0;color:#fff;width:48px;height:48px;border-radius:50%;cursor:pointer;font-size:22px;display:grid;place-items:center;transition:background .2s}
+  .lb-btn:hover{background:var(--felt)}
+  .lb-close{top:18px;right:18px}
+  .lb-prev{left:14px;top:50%;transform:translateY(-50%)}
+  .lb-next{right:14px;top:50%;transform:translateY(-50%)}
+
+  /* Vídeos */
+  .video-feature{display:grid;grid-template-columns:1.6fr 1fr;gap:28px;align-items:center;margin-bottom:34px}
+  .player{position:relative;aspect-ratio:16/9;border-radius:var(--radius);overflow:hidden;background:var(--ink);cursor:pointer;display:block;width:100%;border:0;padding:0}
+  .player img{width:100%;height:100%;object-fit:cover;transition:transform .6s cubic-bezier(.2,.7,.2,1),opacity .3s}
+  .player:hover img{transform:scale(1.05);opacity:.85}
+  .player iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+  .play{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:68px;height:68px;border-radius:50%;background:var(--red);display:grid;place-items:center;box-shadow:0 10px 30px rgba(0,0,0,.4);transition:transform .25s,background .25s}
+  .play::before{content:"";margin-left:5px;border-left:20px solid #fff;border-top:12px solid transparent;border-bottom:12px solid transparent}
+  .player:hover .play{transform:translate(-50%,-50%) scale(1.1);background:var(--gold)}
+  .player.sm .play{width:52px;height:52px}
+  .player.sm .play::before{border-left-width:15px;border-top-width:9px;border-bottom-width:9px;margin-left:4px}
+  .lang{position:absolute;top:10px;right:10px;background:rgba(10,15,20,.8);color:#fff;font-size:11px;font-weight:900;padding:3px 7px;border-radius:3px;letter-spacing:.06em}
+  .video-feature h2{font-size:clamp(22px,2.6vw,30px);font-weight:900;color:var(--ink);margin:12px 0 10px}
+  .video-feature p{color:#4b5561;margin:0 0 16px}
+  .vcard{display:flex;flex-direction:column;gap:10px}
+  .vcard h3{font-size:16.5px;color:var(--ink)}
+  .vcard .yt{font-size:12.5px;font-weight:800;color:var(--muted)}
+  .vcard .yt:hover{color:var(--red)}
+  .vcard.hidden{display:none}
+
+  /* Minha Banca */
+  .banca-stats{display:grid;grid-template-columns:repeat(6,1fr);gap:14px;margin-bottom:26px}
+  .kpi{background:#fff;border:1px solid var(--line);border-radius:var(--radius);padding:16px 16px 14px;position:relative;overflow:hidden}
+  .kpi::before{content:"";position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--felt)}
+  .kpi small{display:block;font-size:11.5px;font-weight:800;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+  .kpi strong{display:block;font-size:21px;font-weight:900;color:var(--ink);margin-top:4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+  .kpi.pos strong{color:var(--felt)}
+  .kpi.neg strong{color:var(--red)}
+  .kpi.neg::before{background:var(--red)}
+  .kpi.hl{background:var(--ink);border-color:var(--ink)}
+  .kpi.hl small{color:#8792a0}
+  .kpi.hl strong{color:var(--gold)}
+  .kpi.hl::before{background:var(--gold)}
+  .banca-grid{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:28px;align-items:start}
+  .panel{border:1px solid var(--line);border-radius:var(--radius);padding:22px;background:#fff}
+  .panel + .panel{margin-top:22px}
+  .chart-wrap{position:relative;height:300px}
+  .chart-wrap canvas{width:100%;height:100%;display:block}
+  .banca-form{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .banca-form .full{grid-column:1 / -1}
+  .banca-form .field input,.banca-form .field select{padding:10px 11px}
+  .tip{margin-top:16px;padding:14px;border-radius:var(--radius);background:#fbf6e3;border:1px solid #efe0a8;font-size:13.5px;color:#5a4a12}
+  .tip b{color:#3d3208}
+  .table-wrap{overflow-x:auto}
+  table{width:100%;border-collapse:collapse;font-size:14px}
+  th{text-align:left;font-size:11.5px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted);font-weight:800;padding:10px;border-bottom:2px solid var(--line);white-space:nowrap}
+  td{padding:11px 10px;border-bottom:1px solid var(--line);white-space:nowrap}
+  td.name{white-space:normal;font-weight:700;color:var(--ink);min-width:160px}
+  td.num{text-align:right;font-variant-numeric:tabular-nums}
+  th.num{text-align:right}
+  td .pill{font-size:11px;font-weight:800;padding:2px 7px;border-radius:20px;background:var(--soft);color:var(--muted)}
+  td .pill.live{background:#e9f5ef;color:var(--felt)}
+  .pos-t{color:var(--felt);font-weight:800}
+  .neg-t{color:var(--red);font-weight:800}
+  .del{background:none;border:0;color:#a3acb6;cursor:pointer;font-size:18px;line-height:1;padding:4px 6px;border-radius:4px}
+  .del:hover{color:var(--red);background:#fdecef}
+  .empty{text-align:center;padding:34px 10px;color:var(--muted)}
+  .empty .big-suit{font-size:40px;color:#cfd4da}
+  .row-actions{display:flex;flex-wrap:wrap;gap:8px;justify-content:space-between;align-items:center;margin-bottom:14px}
+  .row-actions .sec-title{margin:0;flex:1;min-width:200px}
+
+  /* Busca / 404 */
+  .empty-page{text-align:center;padding:70px 0 40px}
+  .empty-page .cards{font-size:64px;letter-spacing:.1em;color:var(--felt)}
+  .empty-page .cards .r{color:var(--red)}
+  .empty-page h1{font-size:34px;font-weight:900;margin:10px 0 8px;color:var(--ink)}
+  .empty-page p{color:var(--muted);margin:0 0 22px}
+
+  /* ---------- 9. FOOTER ---------- */
+  .site-footer{margin-top:60px;background:var(--ink);color:#aab3bd;font-size:13.5px;position:relative;overflow:hidden}
+  .site-footer::before{content:"♠ ♥ ♦ ♣";position:absolute;right:-10px;top:-30px;font-size:120px;letter-spacing:.1em;color:rgba(255,255,255,.03);pointer-events:none;white-space:nowrap}
+  .site-footer .container{display:flex;align-items:center;justify-content:space-between;gap:20px;padding-top:26px;padding-bottom:26px;position:relative}
+  .site-footer strong{color:#fff}
+  .site-footer .credits{margin:6px 0 0;color:#8792a0;font-size:13px}
+  .site-footer .credits strong{color:var(--gold);font-weight:700}
+  .foot-menu{list-style:none;margin:0;padding:0;display:flex;flex-wrap:wrap;gap:6px 20px}
+  .foot-menu a{font-weight:700;color:#cfd5dc}
+  .foot-menu a:hover{color:var(--gold)}
+  .foot-strip{height:4px;background:linear-gradient(90deg,var(--felt) 0 60%,var(--gold) 60% 80%,var(--red) 80%)}
+  .to-top{position:fixed;right:20px;bottom:20px;width:48px;height:48px;border-radius:50%;border:0;background:var(--felt);color:#fff;cursor:pointer;display:grid;place-items:center;box-shadow:var(--shadow);opacity:0;visibility:hidden;transform:translateY(16px);transition:opacity .3s,transform .3s,visibility .3s,background .2s;z-index:60}
+  .to-top.show{opacity:1;visibility:visible;transform:translateY(0)}
+  .to-top:hover{background:var(--gold);color:var(--ink)}
+  .to-top svg{width:22px;height:22px}
+
+  .toast{position:fixed;left:50%;bottom:24px;transform:translate(-50%,20px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:6px;font-size:14px;font-weight:600;box-shadow:var(--shadow);opacity:0;pointer-events:none;transition:opacity .3s,transform .3s;z-index:120;max-width:calc(100% - 32px)}
+  .toast.show{opacity:1;transform:translate(-50%,0)}
+
+  .reveal{opacity:0;transform:translateY(28px);transition:opacity .7s ease,transform .7s cubic-bezier(.2,.7,.2,1)}
+  .reveal.in{opacity:1;transform:none}
+  .view-enter{animation:viewIn .45s ease}
+  @keyframes viewIn{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}
+
+  @media (prefers-reduced-motion:reduce){
+    html{scroll-behavior:auto}
+    .chip3d,.chip3d .spin,.view-enter{animation:none}
+    .reveal{opacity:1;transform:none;transition:none}
+    .media img,.ph img,.player img{transition:none}
+  }
+
+  /* ---------- RESPONSIVO ---------- */
+  @media (max-width:1100px){
+    .banca-stats{grid-template-columns:repeat(3,1fr)}
+    .team{grid-template-columns:repeat(3,1fr)}
+  }
+  @media (max-width:1024px){
+    .header-cards{gap:18px}
+    .hcard{max-width:240px}
+    .menu a{padding:15px 11px}
+    .article-grid{grid-template-columns:minmax(0,1fr) 280px;gap:32px}
+    .banca-grid{grid-template-columns:1fr}
+  }
+  @media (max-width:900px){
+    .site-header .container{flex-direction:column;align-items:flex-start}
+    .header-cards{flex-direction:column;width:100%;gap:14px}
+    .hcard{max-width:none}
+    .burger{display:block}
+    .nav-brand{display:flex}
+    .mainnav .container{min-height:56px}
+    .menu{position:absolute;left:0;right:0;top:100%;flex-direction:column;flex-wrap:nowrap;background:#fff;border-bottom:1px solid var(--line);box-shadow:0 14px 24px rgba(10,15,20,.1);max-height:0;overflow:hidden;transition:max-height .35s ease}
+    .menu.open{max-height:520px}
+    .menu a{padding:13px 16px;border-top:1px solid var(--line)}
+    .menu a::before{top:0;bottom:0;right:auto;width:3px;height:auto;transform:scaleY(0)}
+    .menu a.active::before{transform:scaleY(1)}
+    .hero-grid{grid-template-columns:1fr;grid-template-rows:none;height:auto}
+    .hero-grid .big{grid-row:auto;height:440px}
+    .hero-grid .small{height:240px}
+    .grid-3{grid-template-columns:1fr 1fr}
+    .article-grid,.about-grid,.contact-grid,.video-feature{grid-template-columns:1fr}
+    .sidebar .sticky{position:static}
+    .stats{grid-template-columns:1fr 1fr}
+    .values{grid-template-columns:1fr}
+    .page-hero .chip3d{display:none}
+  }
+  @media (max-width:640px){
+    .topbar .container{flex-wrap:wrap;padding-top:8px;padding-bottom:8px;gap:10px}
+    .ticker{flex-basis:calc(100% - 120px)}
+    .search{width:100%}
+    .search input{width:100%;flex:1}
+    .brand img{height:76px}
+    .grid-2x2,.grid-3,.list-2,.form,.banca-form{grid-template-columns:1fr}
+    .grid-2x2 .feat{height:240px}
+    .hero-grid .big{height:400px}
+    .hero-grid .big .body{padding:22px}
+    .chip3d{width:78px;height:78px;top:16px;right:16px}
+    .chip3d .face::after{font-size:18px}
+    .site-footer .container{flex-direction:column;align-items:flex-start}
+    .list-item .media{width:110px;height:80px}
+    .banca-stats{grid-template-columns:1fr 1fr}
+    .team{grid-template-columns:1fr 1fr}
+    .post-body{font-size:16.5px}
+    .author-box,.responsible{flex-direction:column}
+    .lightbox{padding:60px 10px}
+    .lb-prev,.lb-next{top:auto;bottom:14px;transform:none}
+    .page-hero{padding:40px 0 38px}
+  }
+</style>
+</head>
+<body>
+
+<!-- 1. TOP BAR -->
+<div class="topbar">
+  <div class="container">
+    <span class="latest-label">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 11v2a1 1 0 0 0 1 1h2l5 4V6L6 10H4a1 1 0 0 0-1 1z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>
+      ÚLTIMAS
+    </span>
+    <div class="ticker" id="ticker" aria-live="polite"></div>
+    <form class="search" id="searchForm" role="search">
+      <label for="q" class="sr-only">Buscar no site</label>
+      <input id="q" type="search" placeholder="Buscar notícias..." autocomplete="off" />
+      <button type="submit" aria-label="Buscar">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      </button>
+    </form>
+  </div>
+</div>
+
+<!-- 2. HEADER -->
+<header class="site-header">
+  <div class="container">
+    <a href="#/" class="brand" aria-label="pokertodahora — página inicial">
+      <img src="img/logo.jpg" alt="pokertodahora" />
+      <span class="slogan">Notícias, estratégias e bastidores para você jogar mais e melhor</span>
+    </a>
+    <div class="header-cards">
+      <a href="#/minha-banca" class="hcard">
+        <span class="ico dark">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true">
+            <ellipse cx="16" cy="8" rx="10" ry="3.5"/>
+            <path d="M6 8v4c0 1.9 4.5 3.5 10 3.5s10-1.6 10-3.5V8"/>
+            <path d="M6 12v4c0 1.9 4.5 3.5 10 3.5s10-1.6 10-3.5v-4"/>
+            <path d="M6 16v4c0 1.9 4.5 3.5 10 3.5s10-1.6 10-3.5v-4"/>
+            <path d="M6 20v4c0 1.9 4.5 3.5 10 3.5s10-1.6 10-3.5v-4"/>
+          </svg>
+        </span>
+        <span><strong>MINHA BANCA</strong><span>Acompanhe seus torneios, resultados e evolução!</span></span>
+      </a>
+      <a href="#/estrategia" class="hcard">
+        <span class="ico accent">
+          <svg viewBox="0 0 32 32" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true">
+            <rect x="7" y="3" width="18" height="26" rx="3"/>
+            <path d="M16 10c-2.5 2.6-5 4.3-5 6.6a2.6 2.6 0 0 0 4.4 1.9L14.5 22h3l-.9-3.5a2.6 2.6 0 0 0 4.4-1.9c0-2.3-2.5-4-5-6.6z" fill="currentColor" stroke="none"/>
+          </svg>
+        </span>
+        <span><strong>ESTRATÉGIA</strong><span>Não sabe como jogar a mão? Deixe a gente te ajudar!</span></span>
+      </a>
+    </div>
+  </div>
+</header>
+
+<!-- 3. MENU -->
+<nav class="mainnav" id="mainnav" aria-label="Menu principal">
+  <div class="container">
+    <a href="#/" class="nav-brand" aria-label="pokertodahora"><img src="img/logo.jpg" alt="" /></a>
+    <button class="burger" id="burger" aria-label="Abrir menu" aria-expanded="false" aria-controls="menu"><span></span></button>
+    <ul class="menu" id="menu">
+      <li><a href="#/" data-key="home">Página inicial</a></li>
+      <li><a href="#/quem-somos" data-key="quem-somos">Quem somos</a></li>
+      <li><a href="#/contato" data-key="contato">Contato</a></li>
+      <li><a href="#/noticias" data-key="noticias">Notícias</a></li>
+      <li><a href="#/fotos" data-key="fotos">Fotos</a></li>
+      <li><a href="#/videos" data-key="videos">Vídeos</a></li>
+      <li><a href="#/torneios" data-key="torneios">Torneios</a></li>
+      <li><a href="#/estrategia" data-key="estrategia">Estratégia</a></li>
+    </ul>
+  </div>
+</nav>
+
+<!-- Conteúdo de cada página é montado pelo JavaScript abaixo -->
+<main id="app"></main>
+
+<!-- 9. FOOTER -->
+<footer class="site-footer">
+  <div class="foot-strip"></div>
+  <div class="container">
+    <div>
+      <p style="margin:0">© <span id="year">2026</span> <strong>pokertodahora</strong>. Todos os direitos reservados. Jogue com responsabilidade · +18</p>
+      <p class="credits">Desenvolvido por <strong>Valdenor Neto</strong>, <strong>Leon Oliveira</strong>, <strong>Artur Santos</strong>, <strong>Claudyney Martins</strong> e <strong>Janilson Carvalho</strong>.</p>
+    </div>
+    <ul class="foot-menu">
+      <li><a href="#/">Página inicial</a></li>
+      <li><a href="#/quem-somos">Quem somos</a></li>
+      <li><a href="#/contato">Contato</a></li>
+      <li><a href="#/noticias">Notícias</a></li>
+      <li><a href="#/fotos">Fotos</a></li>
+      <li><a href="#/videos">Vídeos</a></li>
+      <li><a href="#/torneios">Torneios</a></li>
+      <li><a href="#/estrategia">Estratégia</a></li>
+      <li><a href="#/minha-banca">Minha Banca</a></li>
+    </ul>
+  </div>
+</footer>
+
+<button class="to-top" id="toTop" aria-label="Voltar ao topo">
+  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m6 15 6-6 6 6"/></svg>
+</button>
+<div class="toast" id="toast" role="status"></div>
+
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Visualizar foto">
+  <button class="lb-btn lb-close" data-lb="close" aria-label="Fechar">✕</button>
+  <button class="lb-btn lb-prev" data-lb="prev" aria-label="Foto anterior">‹</button>
+  <figure><img id="lbImg" alt="" /><figcaption id="lbCap"></figcaption></figure>
+  <button class="lb-btn lb-next" data-lb="next" aria-label="Próxima foto">›</button>
+</div>
+
+<script>
+/* =====================================================================
+   DADOS DO SITE — edite aqui para trocar textos, fotos e matérias
+   ===================================================================== */
+
+// Integrantes do grupo que desenvolveu o site
+const GROUP = ['Valdenor Neto', 'Leon Oliveira', 'Artur Santos', 'Claudyney Martins', 'Janilson Carvalho'];
+const GROUP_COLORS = ['#0b5d3b', '#c8102e', '#0a0f14', '#8a6d12', '#1c5bb8'];
+
+// Autores
+const AUTHORS = {
+  rafael:  { name: 'Rafael Monteiro', role: 'Editor-chefe', color: '#0b5d3b', bio: 'Jornalista há 15 anos e jogador de MTT nas horas vagas. Cobre as grandes séries internacionais desde 2014.' },
+  camila:  { name: 'Camila Duarte',   role: 'Repórter internacional', color: '#c8102e', bio: 'Acompanha o circuito high stakes e já cobriu etapas em Las Vegas, Barcelona e Melbourne.' },
+  bruno:   { name: 'Bruno Azevedo',   role: 'Repórter de torneios', color: '#0a0f14', bio: 'Especialista no circuito nacional, está em todas as etapas do BSOP com o bloco de notas na mão.' },
+  leticia: { name: 'Letícia Prado',   role: 'Estratégia e mental game', color: '#8a6d12', bio: 'Coach de poker e psicóloga esportiva. Escreve sobre decisão, tilt e evolução de jogo.' },
+  thiago:  { name: 'Thiago Nunes',    role: 'Lifestyle e viagens', color: '#1c5bb8', bio: 'Roda o mundo atrás de boas mesas, bons pratos e boas histórias para contar.' }
+};
+
+// Monta a URL de uma foto do Unsplash
+const IMG = (id, w = 900, extra = '') => `https://images.unsplash.com/photo-${id}?auto=format&fit=crop&w=${w}&q=75${extra}`;
+
+/* Matérias
+   section: onde aparece na home (hero-main, hero-side, torneios, estrategia, internacional, lifestyle)
+   body: cada item é um parágrafo; "## " vira subtítulo, "> " vira citação e [array] vira lista */
+const ARTICLES = [
+  {
+    slug: 'wsop-2026-guia-completo', section: 'hero-main', cat: 'Notícias', tag: 'Destaque', tagClass: 'gold',
+    title: 'WSOP 2026: o guia completo da maior série de poker do mundo',
+    excerpt: 'Datas, buy-ins, estruturas e os brasileiros que chegaram mais longe em Las Vegas. Tudo o que você precisa saber em um só lugar.',
+    img: '1511193311914-0346f16efe90', alt: 'Cartas e fichas sobre mesa de feltro verde', author: 'rafael', date: '2026-09-23',
+    body: [
+      'Todo verão, Las Vegas vira a capital mundial do poker. A World Series of Poker de 2026 teve <strong>99 eventos com bracelete</strong>, mais de 240 mil entradas somadas e premiação total acima de US$ 460 milhões. Para quem sonha em jogar a série um dia — ou só quer entender o que acontece por lá — reunimos o essencial.',
+      '## Quando e onde',
+      'A série acontece entre o fim de maio e meados de julho, dividida entre os salões do Horseshoe e do Paris Las Vegas, na Strip. O Main Event, de US$ 10.000, começa sempre no início de julho e tem vários Dias 1 para acomodar o field gigante.',
+      '## Quanto custa jogar',
+      [
+        '<strong>Eventos de entrada:</strong> buy-ins a partir de US$ 300, com fields que passam de 20 mil jogadores.',
+        '<strong>Faixa intermediária:</strong> US$ 1.500 a US$ 5.000, onde fica a maioria dos braceletes disputados por brasileiros.',
+        '<strong>High rollers:</strong> de US$ 25.000 a US$ 250.000, com mesas cheias de profissionais de elite.',
+        '<strong>Main Event:</strong> US$ 10.000, estrutura lenta e blinds de duas horas.'
+      ],
+      '## Como os brasileiros foram',
+      'O Brasil fechou 2026 com três braceletes e mais de 900 premiações. O destaque ficou para o título do mineiro Lucas Andrade no evento de US$ 5.000 6-Max, e para a campanha histórica de dois brasileiros entre os 50 primeiros do Main Event.',
+      '> “A diferença hoje é que o brasileiro chega a Las Vegas estudado. Não é mais só coragem, é preparo.”',
+      '## Dicas para quem vai pela primeira vez',
+      'Chegue com a banca separada da viagem, jogue satélites online antes para reduzir o custo dos buy-ins maiores e escolha poucos eventos com estrutura boa em vez de tentar jogar tudo. E não subestime o cansaço: os dias de torneio passam fácil das 12 horas.'
+    ]
+  },
+  {
+    slug: 'mineiro-fatura-bracelete-wsop', section: 'hero-side', cat: 'Notícias', tag: 'Em Alta',
+    title: 'Mineiro de 27 anos fatura bracelete e entra para a história da WSOP',
+    excerpt: 'Lucas Andrade venceu o evento de US$ 5.000 6-Max após mais de 14 horas de mesa final e levou US$ 1,2 milhão.',
+    img: '1596451190630-186aff535bf2', alt: 'Jogador conferindo as cartas com fichas na mesa', author: 'camila', date: '2026-09-22',
+    body: [
+      'Foram mais de 14 horas de mesa final até o último all-in. Quando o river confirmou o straight, o mineiro Lucas Andrade, de 27 anos, levantou os braços e virou o primeiro jogador de Belo Horizonte a conquistar um bracelete da WSOP, com um prêmio de <strong>US$ 1,2 milhão</strong>.',
+      '## A campanha',
+      'Lucas chegou à mesa final em quarto lugar em fichas, mas cresceu no momento certo. Com uma sequência de 3-bets agressivos, eliminou dois adversários em menos de uma hora e chegou ao heads-up com vantagem de quase três para um.',
+      '> “Eu estudei muito spot de 6-max nos últimos meses. Quando chegou a hora, parecia que eu já tinha jogado aquela mão mil vezes.”',
+      '## Quem é o campeão',
+      'Formado em engenharia, Lucas começou no online em 2018 e migrou para o ao vivo há três anos. Antes do título, seu maior resultado tinha sido uma mesa final no BSOP Millions. Ele contou que vai reinvestir parte do prêmio em estudo e em uma agenda de torneios na Europa em 2027.'
+    ]
+  },
+  {
+    slug: 'bsop-sp-recorde-inscritos', section: 'hero-side', cat: 'Torneios', tag: 'Em Alta',
+    title: 'BSOP São Paulo bate recorde com 4.812 inscritos no Main Event',
+    excerpt: 'A etapa paulista superou todas as marcas do circuito nacional e distribuiu mais de R$ 11 milhões em prêmios.',
+    img: '1517232115160-ff93364542dd', alt: 'Mesa de cassino cheia de fichas', author: 'bruno', date: '2026-09-21',
+    body: [
+      'O Main Event do BSOP São Paulo terminou com <strong>4.812 entradas</strong>, o maior número da história do circuito. A premiação total passou de R$ 11 milhões, com R$ 1,65 milhão reservados ao campeão.',
+      '## Por que bateu recorde',
+      'A organização apostou em mais Dias 1, incluindo um turbo no domingo, e em satélites online que classificaram quase mil jogadores. O salão foi ampliado para 260 mesas, mas mesmo assim houve fila para as reentradas no último dia de inscrição.',
+      [
+        'Maior field da história do BSOP',
+        '690 jogadores premiados',
+        'Jogadores de 23 estados e 11 países',
+        'Mais de 60% dos inscritos vieram de satélites'
+      ],
+      '> “O poker brasileiro nunca esteve tão forte. A gente vê gente nova chegando e os veteranos continuam aqui.”',
+      'A mesa final será transmitida ao vivo com cartas abertas e narração em português. Acompanhe a cobertura completa aqui no pokertodahora.'
+    ]
+  },
+  {
+    slug: 'bsop-sao-paulo-etapa', section: 'torneios', cat: 'Torneios', tag: 'BSOP',
+    title: 'BSOP São Paulo: tudo sobre a etapa que parou a capital',
+    excerpt: 'Doze dias de torneios, 58 eventos e um público que lotou o salão do primeiro ao último dia.',
+    img: '1543059080-f9b1272213d5', alt: 'Vista de São Paulo', author: 'bruno', date: '2026-09-20',
+    body: [
+      'Foram doze dias de poker quase sem parar. A etapa paulista do BSOP teve <strong>58 eventos</strong>, de torneios de R$ 300 a um High Roller de R$ 25 mil, e confirmou São Paulo como a casa do poker ao vivo no Brasil.',
+      '## Os destaques',
+      [
+        '<strong>Main Event:</strong> recorde histórico de 4.812 entradas.',
+        '<strong>High Roller:</strong> 212 jogadores e prêmio de R$ 1,1 milhão para o campeão.',
+        '<strong>Ladies Event:</strong> 318 inscritas, o maior da história do circuito.',
+        '<strong>PLO:</strong> os torneios de Omaha cresceram 40% em relação a 2025.'
+      ],
+      '## Infraestrutura',
+      'O novo layout do salão, com áreas separadas para cash game e torneios, reduziu o barulho e melhorou o fluxo. A praça de alimentação funcionou 24 horas e o aplicativo oficial avisava sobre mudanças de mesa em tempo real.',
+      'A próxima etapa do circuito acontece em novembro, com o BSOP Millions encerrando a temporada.'
+    ]
+  },
+  {
+    slug: 'ept-barcelona-inscricoes', section: 'torneios', cat: 'Torneios', tag: 'EPT',
+    title: 'EPT Barcelona abre inscrições com garantido de € 5 milhões',
+    excerpt: 'A etapa espanhola do European Poker Tour terá 98 eventos e promete mais uma vez o maior field da Europa.',
+    img: '1583422409516-2895a77efded', alt: 'Vista aérea de Barcelona', author: 'camila', date: '2026-09-18',
+    body: [
+      'O European Poker Tour confirmou o calendário da etapa de Barcelona, que volta ao Casino Barcelona com <strong>98 eventos</strong> e um Main Event de € 5.300 com garantido de € 5 milhões.',
+      '## Por que Barcelona é especial',
+      'A etapa catalã é, há anos, a mais cheia do circuito europeu. O clima, a cidade e a estrutura atraem desde recreativos até os maiores nomes do high stakes. Em 2025, o Main Event passou de 2.500 entradas.',
+      '## Como se classificar',
+      'Os satélites online já estão abertos, com entradas a partir de € 5. Há pacotes que incluem buy-in, hotel e ajuda de custo para a viagem — uma boa porta de entrada para quem quer jogar o primeiro torneio internacional.',
+      '> Dica: brasileiros não precisam de visto para a Espanha em viagens de turismo de até 90 dias.'
+    ]
+  },
+  {
+    slug: 'wsop-las-vegas-numeros-2026', section: 'torneios', cat: 'Torneios', tag: 'WSOP',
+    title: 'WSOP Las Vegas: os números finais da edição 2026',
+    excerpt: 'Premiação recorde, Main Event gigante e o Brasil entre os cinco países com mais premiações.',
+    img: '1581351721010-8cf859cb14a4', alt: 'Las Vegas à noite', author: 'rafael', date: '2026-09-15',
+    body: [
+      'A WSOP 2026 fechou as contas e os números impressionam. Foram <strong>99 eventos</strong>, mais de 240 mil entradas e premiação total superior a US$ 460 milhões — mais uma vez um recorde.',
+      '## Os números que importam',
+      [
+        '<strong>Main Event:</strong> mais de 10.300 inscritos, o segundo maior da história.',
+        '<strong>Maior prêmio:</strong> US$ 10 milhões para o campeão do Main Event.',
+        '<strong>Brasil:</strong> 3 braceletes, mais de 900 premiações e US$ 14 milhões em prêmios.',
+        '<strong>Países representados:</strong> 118.'
+      ],
+      '## O que vem por aí',
+      'A organização já confirmou que a edição de 2027 manterá os dois cassinos da Strip e deve ampliar o número de eventos de PLO, que cresceram mais de 30% neste ano.'
+    ]
+  },
+  {
+    slug: 'lapt-rio-novembro', section: 'torneios', cat: 'Torneios', tag: 'LAPT',
+    title: 'LAPT confirma retorno ao Rio de Janeiro em novembro',
+    excerpt: 'O Latin American Poker Tour volta à cidade maravilhosa com Main Event de R$ 5 mil e cronograma de dez dias.',
+    img: '1483729558449-99ef09a8c325', alt: 'Rio de Janeiro visto do alto', author: 'bruno', date: '2026-09-12',
+    body: [
+      'O Latin American Poker Tour confirmou uma etapa no <strong>Rio de Janeiro</strong> entre 12 e 22 de novembro. O Main Event terá buy-in de R$ 5 mil e garantido de R$ 3 milhões.',
+      '## Cronograma',
+      'Serão 34 eventos ao longo de dez dias, incluindo um High Roller, torneios de PLO e um evento especial para jogadores que nunca premiaram em torneios ao vivo.',
+      '> “O Rio tem uma energia única. Queremos trazer jogadores de toda a América Latina para cá.”',
+      'Os satélites online começam em outubro. Fique de olho na nossa agenda de torneios para não perder as datas.'
+    ]
+  },
+  {
+    slug: 'pares-baixos-torneios', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    title: 'Como jogar pares baixos em torneios',
+    excerpt: 'Set mining, stack efetivo e posição: entenda quando o 22 ao 66 vale a ficha e quando é melhor largar sem dor na consciência.',
+    img: '1541278107931-e006523892df', alt: 'Cartas de baralho espalhadas', author: 'leticia', date: '2026-09-22',
+    body: [
+      'Pares baixos são uma das mãos mais mal jogadas em torneios. Parecem fortes antes do flop, mas raramente seguem na frente depois dele. A chave está em entender <strong>quanto você pode ganhar</strong> quando acerta a trinca — e quanto custa tentar.',
+      '## A regra do set mining',
+      'Você acerta trinca no flop cerca de uma vez a cada 8,5 tentativas. Por isso, pagar um raise só com o objetivo de acertar a trinca exige que você e o adversário tenham, juntos, algo como 15 a 20 vezes o valor que você vai pagar.',
+      [
+        '<strong>Stacks fundos (60+ blinds):</strong> pagar raises para ver o flop é lucrativo, principalmente em posição.',
+        '<strong>Stacks médios (25–40 blinds):</strong> prefira abrir ou fazer 3-bet em vez de pagar.',
+        '<strong>Stacks curtos (menos de 20 blinds):</strong> pares baixos viram mãos de all-in, não de flop.'
+      ],
+      '## Posição muda tudo',
+      'Fora de posição, pares baixos perdem muito valor: você não consegue controlar o tamanho do pote nem extrair o máximo quando acerta. Em early position de uma mesa cheia, largar 22 ou 33 é perfeitamente aceitável.',
+      '> Par baixo não é mão para proteger. É mão para acertar ou largar.',
+      '## Resumo prático',
+      'Abra pares baixos da metade da mesa para trás, pague raises quando os stacks forem fundos e jogue all-in pré-flop quando estiver curto. Fora disso, economize suas fichas para spots melhores.'
+    ]
+  },
+  {
+    slug: 'ranges-pre-flop-iniciantes', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    title: 'Guia de ranges pré-flop para iniciantes',
+    excerpt: 'Tabelas simples de open-raise por posição para você parar de chutar e começar a jogar com base em números.',
+    img: '1434030216411-0b793f4b4173', alt: 'Pessoa estudando com caderno', author: 'leticia', date: '2026-09-19',
+    body: [
+      'Se você ainda decide quais mãos jogar “no feeling”, este guia é para você. Um range é simplesmente o conjunto de mãos que você joga em cada situação. Ter ranges definidos elimina boa parte dos erros caros antes mesmo do flop.',
+      '## Ranges de abertura por posição (mesa de 9)',
+      [
+        '<strong>UTG / UTG+1:</strong> 77+, AJs+, KQs, AQo+ (cerca de 10% das mãos).',
+        '<strong>Middle position:</strong> 55+, A9s+, KJs+, QJs, JTs, AJo+, KQo (cerca de 15%).',
+        '<strong>Cutoff:</strong> 22+, A2s+, K9s+, Q9s+, J9s+, T9s, 98s, ATo+, KJo+ (cerca de 25%).',
+        '<strong>Button:</strong> quase todo par e ás, conectores suitados e broadways (40% ou mais).',
+        '<strong>Small blind:</strong> jogue agressivo contra o big blind, mas evite pagar limps.'
+      ],
+      '## Por que a posição importa tanto',
+      'Quanto mais jogadores ainda vão agir depois de você, maior a chance de alguém ter uma mão forte. Por isso o range do UTG é apertado e o do button é largo: no button, você só precisa passar por dois jogadores e ainda terá posição no resto da mão.',
+      '> Comece com ranges mais apertados do que a teoria sugere. Aumente conforme ganhar confiança pós-flop.',
+      'Imprima as tabelas, deixe ao lado do computador e revise suas mãos no fim de cada sessão. Em poucas semanas, abrir o range certo vira automático.'
+    ]
+  },
+  {
+    slug: 'gestao-de-banca-erro', section: 'estrategia', cat: 'Estratégia', tag: 'Estratégia',
+    title: 'Gestão de banca: o erro que quebra jogadores',
+    excerpt: 'Subir de limite rápido demais é o caminho mais curto para zerar a conta. Veja a regra dos 100 buy-ins na prática.',
+    img: '1551288049-bebda4e38f71', alt: 'Gráficos de desempenho em uma tela', author: 'rafael', date: '2026-09-16',
+    body: [
+      'Existe um padrão que se repete com jogadores talentosos: eles começam bem, a banca cresce, sobem de limite rápido demais, pegam uma sequência ruim e quebram. O problema quase nunca foi o jogo — foi a <strong>gestão de banca</strong>.',
+      '## A variância é maior do que você pensa',
+      'Em torneios, mesmo um jogador vencedor pode passar 200 ou 300 torneios sem um resultado grande. Isso é normal. Sem uma banca preparada para isso, uma fase ruim comum vira uma quebra.',
+      '## A regra dos 100 buy-ins',
+      [
+        '<strong>Torneios online (MTT):</strong> tenha pelo menos 100 buy-ins do torneio que você joga normalmente.',
+        '<strong>Sit & Go:</strong> de 50 a 75 buy-ins.',
+        '<strong>Cash game:</strong> de 30 a 50 buy-ins do limite.',
+        '<strong>Torneios ao vivo:</strong> separe a banca de viagem da banca de jogo.'
+      ],
+      '> Descer de limite não é derrota. É o que permite você continuar jogando.',
+      '## Registre tudo',
+      'Você só sabe se está ganhando se anotar cada resultado. Use a ferramenta <a href="#/minha-banca" style="color:var(--felt);font-weight:800">Minha Banca</a> aqui do site para registrar buy-ins, prêmios e acompanhar seu ROI ao longo do tempo.'
+    ]
+  },
+  {
+    slug: 'phil-ivey-high-stakes', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
+    title: 'Phil Ivey volta às mesas de high stakes',
+    excerpt: 'Após meses longe dos holofotes, o lendário jogador foi visto em um cash game de apostas altas em Las Vegas.',
+    img: '1511193311914-0346f16efe90', imgExtra: '&crop=bottom', alt: 'Mesa de poker com cartas viradas', author: 'camila', date: '2026-09-21',
+    body: [
+      'Poucos nomes mexem tanto com a comunidade do poker quanto o de Phil Ivey. Depois de meses longe dos holofotes, o jogador, dono de dez braceletes da WSOP, voltou a ser visto em mesas de <strong>high stakes</strong> em Las Vegas, segundo relatos que circularam nas redes sociais.',
+      '## O que se sabe',
+      'De acordo com jogadores presentes, o jogo aconteceu em uma sala privada e reuniu empresários e profissionais conhecidos. Não houve transmissão e nenhum valor foi confirmado oficialmente.',
+      '> “Quando ele senta na mesa, a dinâmica muda. Todo mundo joga diferente.”',
+      '## Por que isso importa',
+      'O retorno de nomes históricos costuma movimentar o mercado de high stakes, atrair novos jogadores recreativos para esses jogos e aumentar a audiência das transmissões. Seguiremos acompanhando.'
+    ]
+  },
+  {
+    slug: 'macau-reabre-salas', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
+    title: 'Macau reabre salas de poker ao vivo',
+    excerpt: 'A capital asiática dos cassinos volta a liberar mesas de Hold’em ao vivo, e operadoras já anunciam séries para o fim do ano.',
+    img: '1518895312237-a9e23508077d', alt: 'Interior iluminado de cassino', author: 'bruno', date: '2026-09-17',
+    body: [
+      'Depois de anos com o poker ao vivo praticamente fora dos salões, Macau voltou a liberar <strong>mesas de Texas Hold’em</strong> em alguns dos seus principais cassinos, segundo operadoras locais.',
+      '## O que muda',
+      'A volta começa com cash games de limites médios e altos, mas pelo menos duas operadoras já anunciaram séries de torneios para dezembro, com Main Events na casa dos HK$ 10 mil.',
+      '## Impacto no circuito asiático',
+      'Macau já foi o centro do high stakes mundial, com jogos de valores que não se viam em nenhum outro lugar. O retorno pode reposicionar a Ásia no calendário dos grandes profissionais — hoje concentrado entre Estados Unidos e Europa.',
+      '> Para o jogador brasileiro, a novidade abre mais uma rota de viagem para quem busca fields diferentes.'
+    ]
+  },
+  {
+    slug: 'online-vs-ao-vivo-leitura', section: 'internacional', cat: 'Internacional', tag: 'Internacional',
+    title: 'Online vs. ao vivo: o que muda na leitura',
+    excerpt: 'Tells físicos, padrões de timing e tamanho de apostas: como adaptar sua leitura de adversários em cada ambiente.',
+    img: '1500648767791-00dcc994a43e', imgExtra: '&crop=faces', alt: 'Retrato de homem com expressão neutra', author: 'leticia', date: '2026-09-14',
+    body: [
+      'Quem joga online e vai para o ao vivo pela primeira vez costuma sentir a mudança logo na primeira mão. O ritmo é mais lento, há muito mais informação na mesa — e muito mais barulho também.',
+      '## No online',
+      [
+        '<strong>Timing:</strong> decisões muito rápidas costumam indicar ações automáticas; demoras longas em rios, dúvida real.',
+        '<strong>Tamanho de aposta:</strong> é o seu principal “tell”. Jogadores recreativos repetem padrões.',
+        '<strong>Estatísticas:</strong> HUDs e anotações substituem a observação física.'
+      ],
+      '## No ao vivo',
+      [
+        '<strong>Tells físicos:</strong> mãos tremendo, respiração e postura dizem muito — mas são menos confiáveis do que parecem.',
+        '<strong>Conversa:</strong> quem fala muito durante a mão costuma estar confortável.',
+        '<strong>Manuseio de fichas:</strong> jogadores recreativos preparam fichas antes da vez quando vão pagar.'
+      ],
+      '> O melhor tell continua sendo o mesmo nos dois ambientes: como a pessoa aposta.',
+      'Nossa recomendação: no ao vivo, observe mais e jogue menos mãos nas primeiras órbitas. A informação que você coleta cedo vale ouro nas decisões grandes.'
+    ]
+  },
+  {
+    slug: 'cassinos-mais-bonitos', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Os cassinos mais bonitos do mundo',
+    excerpt: 'De Mônaco a Macau, uma volta pelos salões que valem a viagem mesmo para quem não vai jogar.',
+    img: '1539037116277-4db20889f2d4', alt: 'Avenida iluminada ao entardecer', author: 'thiago', date: '2026-09-20',
+    body: [
+      'Alguns cassinos são muito mais do que salões de jogo. São arquitetura, história e cenário de filme. Selecionamos cinco que merecem uma visita — com ou sem fichas no bolso.',
+      [
+        '<strong>Casino de Monte-Carlo (Mônaco):</strong> o clássico da Belle Époque, com tetos pintados e dress code rigoroso.',
+        '<strong>Kurhaus Baden-Baden (Alemanha):</strong> salões inspirados em palácios franceses; Marlene Dietrich o chamou de o mais bonito do mundo.',
+        '<strong>Bellagio (Las Vegas):</strong> as fontes dançantes e a lendária poker room frequentada por profissionais.',
+        '<strong>The Venetian (Macau):</strong> canais internos, gôndolas e um dos maiores salões de jogo do planeta.',
+        '<strong>Casino Estoril (Portugal):</strong> inspirou Ian Fleming a escrever Cassino Royale.'
+      ],
+      '> Dica: muitos desses cassinos oferecem visitas guiadas durante o dia, sem necessidade de jogar.'
+    ]
+  },
+  {
+    slug: 'rotina-jogador-profissional', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Rotina de um jogador profissional: treino, estudo e grind',
+    excerpt: 'Acordar tarde e jogar a noite toda? A rotina real de quem vive do poker é bem mais disciplinada.',
+    img: '1571902943202-507ec2618e8f', alt: 'Academia vazia', author: 'camila', date: '2026-09-18',
+    body: [
+      'Acompanhamos por uma semana a rotina de três profissionais brasileiros de torneios online. A conclusão: o poker é só uma parte do trabalho.',
+      '## Um dia típico',
+      [
+        '<strong>10h:</strong> acordar, café e atividade física — academia, corrida ou natação.',
+        '<strong>12h às 14h:</strong> estudo com solver, revisão de mãos ou aula com coach.',
+        '<strong>15h às 2h:</strong> grind, com pausas curtas a cada hora.',
+        '<strong>Depois:</strong> anotar resultados e desligar das telas antes de dormir.'
+      ],
+      '> “Se eu não treino de manhã, eu jogo pior à noite. Parece exagero, mas os números mostram.”',
+      'Todos os entrevistados tiram pelo menos um dia de folga completa por semana e fazem pausas mais longas depois de séries grandes.'
+    ]
+  },
+  {
+    slug: 'meditacao-contra-tilt', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Meditação contra o tilt: como a mente decide o torneio',
+    excerpt: 'Técnicas simples de respiração e atenção que ajudam a manter a cabeça fria depois de uma bad beat.',
+    img: '1544367567-0f2fcb009e0b', alt: 'Pessoa praticando yoga ao pôr do sol', author: 'leticia', date: '2026-09-15',
+    body: [
+      'Tilt é quando a emoção passa a tomar as decisões por você. Todo jogador tem, e ninguém elimina de vez. O que dá para fazer é perceber mais cedo e voltar ao jogo mais rápido.',
+      '## Três técnicas para a mesa',
+      [
+        '<strong>Respiração 4-7-8:</strong> inspire em 4 segundos, segure por 7 e solte em 8. Duas repetições já reduzem a frequência cardíaca.',
+        '<strong>Nomear a emoção:</strong> dizer mentalmente “estou irritado” ajuda o cérebro a sair do piloto automático.',
+        '<strong>Regra das três mãos:</strong> depois de uma bad beat, jogue apenas mãos premium nas três rodadas seguintes.'
+      ],
+      '> O objetivo não é não sentir nada. É sentir e ainda assim tomar a decisão certa.',
+      'Fora da mesa, dez minutos diários de meditação por quatro semanas já mostram diferença na capacidade de manter o foco em sessões longas.'
+    ]
+  },
+  {
+    slug: 'onde-comer-bsop-sp', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Onde comer bem perto das mesas do BSOP em São Paulo',
+    excerpt: 'Do almoço rápido entre níveis ao jantar de comemoração: um roteiro para quem vai jogar na capital.',
+    img: '1517248135467-4c7edcad34c4', alt: 'Restaurante sofisticado', author: 'rafael', date: '2026-09-13',
+    body: [
+      'Quem joga um torneio longo sabe: comer bem faz diferença na tomada de decisão. Montamos um roteiro por tipo de pausa para quem vai encarar a etapa paulista.',
+      '## No intervalo do jantar (60 minutos)',
+      'Prefira pratos leves e com proteína. Os restaurantes por quilo da região têm opções rápidas e evitam aquela sonolência do fim da tarde.',
+      '## Depois do dia de torneio',
+      'Os bairros de Pinheiros e Vila Madalena ficam abertos até tarde e têm de hamburguerias a botecos tradicionais. Para comemorar uma boa campanha, os Jardins concentram restaurantes de cozinha contemporânea.',
+      '> Evite álcool e refeições pesadas antes dos níveis decisivos. Seu stack agradece.'
+    ]
+  },
+  {
+    slug: 'resorts-com-poker', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Resorts com sala de poker: férias com mesa garantida',
+    excerpt: 'Praia de dia, torneio à noite. Destinos que unem descanso e poker na medida certa.',
+    img: '1520250497591-112f2f40a3f4', alt: 'Piscina de resort', author: 'thiago', date: '2026-09-10',
+    body: [
+      'Nem toda viagem de poker precisa ser uma maratona de 12 horas por dia. Estes destinos combinam resort, praia e uma boa sala de poker para jogar quando der vontade.',
+      [
+        '<strong>Punta del Este (Uruguai):</strong> perto do Brasil, com cassino à beira-mar e torneios no verão.',
+        '<strong>Bahamas:</strong> casa de séries internacionais em resorts com praia privativa.',
+        '<strong>Cancún (México):</strong> tudo incluído, salas de cash game e festivais ao longo do ano.',
+        '<strong>Chipre:</strong> destino queridinho dos festivais europeus de high rollers.'
+      ],
+      '> Dica: planeje a viagem em torno de um festival. Os pacotes costumam incluir hotel com desconto.'
+    ]
+  },
+  {
+    slug: 'vinhos-para-celebrar', section: 'lifestyle', cat: 'Lifestyle', tag: 'Lifestyle',
+    title: 'Vinhos para celebrar aquela cravada no Main Event',
+    excerpt: 'Do espumante nacional ao Champagne de safra: rótulos para cada tamanho de prêmio.',
+    img: '1510812431401-41d2bd2722f3', alt: 'Taças de vinho tinto em brinde', author: 'thiago', date: '2026-09-07',
+    body: [
+      'Cravou um torneio? Merece brindar. Montamos uma lista de sugestões por faixa de prêmio — porque toda vitória merece a garrafa certa.',
+      [
+        '<strong>Primeira premiação:</strong> um bom espumante brasileiro da Serra Gaúcha.',
+        '<strong>Mesa final:</strong> um tinto argentino de Malbec, encorpado e fácil de gostar.',
+        '<strong>Título:</strong> um Champagne clássico para dividir com quem torceu por você.',
+        '<strong>Bracelete:</strong> aí vale abrir aquela garrafa guardada há anos.'
+      ],
+      '> Beba com moderação — e nunca antes de jogar.'
+    ]
+  }
+];
+
+// Manchetes do ticker (texto + matéria)
+const TICKER = [
+  ['Brasileiro fatura título no WSOP 2026 e leva US$ 1,2 milhão', 'mineiro-fatura-bracelete-wsop'],
+  ['BSOP São Paulo bate recorde de inscritos no Main Event', 'bsop-sp-recorde-inscritos'],
+  ['EPT Barcelona abre inscrições com garantido de € 5 milhões', 'ept-barcelona-inscricoes'],
+  ['Gestão de banca: o erro que quebra 7 em cada 10 jogadores', 'gestao-de-banca-erro'],
+  ['Macau reabre salas de poker ao vivo', 'macau-reabre-salas'],
+  ['LAPT confirma etapa no Rio de Janeiro para novembro', 'lapt-rio-novembro']
+];
+
+const MOST_READ = ['mineiro-fatura-bracelete-wsop', 'ranges-pre-flop-iniciantes', 'bsop-sp-recorde-inscritos', 'gestao-de-banca-erro', 'wsop-2026-guia-completo'];
+
+// Galeria de fotos
+const PHOTOS = [
+  { id: '1511193311914-0346f16efe90', cat: 'Mesas', t: 'Rei de espadas e rei de paus no feltro' },
+  { id: '1517232115160-ff93364542dd', cat: 'Cassinos', t: 'Mesa lotada de fichas' },
+  { id: '1581351721010-8cf859cb14a4', cat: 'Destinos', t: 'Las Vegas vista do alto' },
+  { id: '1596451190630-186aff535bf2', cat: 'Mesas', t: 'Hora da decisão' },
+  { id: '1518895312237-a9e23508077d', cat: 'Cassinos', t: 'As luzes do salão' },
+  { id: '1583422409516-2895a77efded', cat: 'Destinos', t: 'Barcelona, casa do EPT' },
+  { id: '1541278107931-e006523892df', cat: 'Mesas', t: 'Baralho espalhado depois do torneio' },
+  { id: '1540575467063-178a50c2df87', cat: 'Bastidores', t: 'Plateia da mesa final' },
+  { id: '1543059080-f9b1272213d5', cat: 'Destinos', t: 'São Paulo, a capital do BSOP' },
+  { id: '1522069213448-443a614da9b6', cat: 'Cassinos', t: 'Dados vermelhos no pano' },
+  { id: '1570872626485-d8ffea69f463', cat: 'Bastidores', t: 'Festa de encerramento da série' },
+  { id: '1483729558449-99ef09a8c325', cat: 'Destinos', t: 'Rio de Janeiro recebe o LAPT' },
+  { id: '1601370690183-1c7796ecec61', cat: 'Mesas', t: 'O feltro verde' },
+  { id: '1566073771259-6a8506099945', cat: 'Bastidores', t: 'Descanso entre um dia e outro' },
+  { id: '1506973035872-a4ec16b8e8d9', cat: 'Destinos', t: 'Austrália, parada do circuito asiático' }
+];
+
+// Vídeos (IDs reais do YouTube)
+const VIDEOS = [
+  { id: 'TgLxFzUOKAE', cat: 'Brasil', t: '€5.300 Main Event – Mesa Final | EPT Barcelona 2026', ch: 'PokerStars Brasil', d: 'A decisão completa do Main Event do EPT Barcelona 2026, com cartas abertas e narração em português.' },
+  { id: 'e-Rp8cfmNuM', cat: 'Highlights', t: 'Quem leva o troféu? Melhores momentos da mesa final do EPT Barcelona 2026', ch: 'PokerStars', en: true },
+  { id: 'OjAlvTqwQuc', cat: 'Highlights', t: 'Melhores momentos: a decisão do Main Event de US$ 10.000 da WSOP', ch: 'World Series of Poker', en: true },
+  { id: '2jW4A4wcKqw', cat: 'Brasil', t: '€5.300 Main Event – Dia 4 | EPT Barcelona 2026', ch: 'PokerStars Brasil' },
+  { id: '_byP30oaH1k', cat: 'Brasil', t: 'O Ruyter invadiu o BSOP Poker Show e apostou no escuro!', ch: 'BSOP' },
+  { id: 'EC0nxNA4OHQ', cat: 'Estratégia', t: 'Ranges pré-flop: como estudar e memorizar', ch: 'Jonathan Little', en: true },
+  { id: 'f7rLc7mx000', cat: 'Estratégia', t: 'Ranges de poker explicados', ch: 'Daniel Negreanu', en: true },
+  { id: 'JohfEAp4lmk', cat: 'Estratégia', t: 'Guia definitivo de gestão de banca', ch: 'GTO Wizard', en: true }
+];
+
+/* =====================================================================
+   UTILITÁRIOS
+   ===================================================================== */
+const $ = (s, r = document) => r.querySelector(s);
+const $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const app = $('#app');
+const MONTHS = ['jan', 'fev', 'mar', 'abr', 'mai', 'jun', 'jul', 'ago', 'set', 'out', 'nov', 'dez'];
+const fmtDate = iso => { const [y, m, d] = iso.split('-').map(Number); return `${d} ${MONTHS[m - 1]} ${y}`; };
+const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const normalize = s => s.normalize('NFD').replace(/[̀-ͯ]/g, '').toLowerCase();
+const stripTags = s => s.replace(/<[^>]+>/g, '');
+const bySlug = slug => ARTICLES.find(a => a.slug === slug);
+const inSection = s => ARTICLES.filter(a => a.section === s);
+const initials = name => name.split(' ').map(p => p[0]).slice(0, 2).join('');
+const readTime = a => Math.max(2, Math.round(a.body.flat().map(stripTags).join(' ').split(/\s+/).length / 180));
+const artImg = (a, w) => IMG(a.img, w, a.imgExtra || '');
+const store = {
+  get(key, fallback) { try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : fallback; } catch { return fallback; } },
+  set(key, val) { try { localStorage.setItem(key, JSON.stringify(val)); return true; } catch { return false; } }
+};
+
+const toastEl = $('#toast');
+let toastTimer;
+function toast(msg) {
+  toastEl.textContent = msg;
+  toastEl.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => toastEl.classList.remove('show'), 2800);
+}
+
+const CHIP = (cls = '') => `
+  <div class="chip3d ${cls}" aria-hidden="true"><div class="spin">
+    ${[-5, -4, -3, -2, -1, 0, 1, 2, 3, 4, 5].map(z => `<div class="layer" style="transform:translateZ(${z}px)"></div>`).join('')}
+    <div class="face front"></div><div class="face back"></div>
+  </div></div>`;
+
+const pageHero = (kicker, title, text, crumb) => `
+  <div class="page-hero"><div class="container"><div>
+    <nav class="crumbs"><a href="#/">Início</a><span class="sep">›</span><span>${crumb || title}</span></nav>
+    <span class="kicker">${kicker}</span><h1>${title}</h1>${text ? `<p>${text}</p>` : ''}
+  </div>${CHIP('static')}</div></div>`;
+
+/* =====================================================================
+   COMPONENTES DA HOME
+   ===================================================================== */
+const featCard = (a, cls = '', h = 'h3', w = 900) => `
+  <a href="#/materia/${a.slug}" class="feat ${cls} reveal">
+    <div class="media"><img loading="lazy" src="${artImg(a, w)}" alt="${esc(a.alt)}" /></div>
+    ${cls.includes('big') ? CHIP() : ''}
+    <div class="body">
+      <span class="tag ${a.tagClass || ''}">${a.tag}</span>
+      <${h}>${a.title}</${h}>
+      ${cls.includes('big') ? `<p>${a.excerpt}</p>` : ''}
+      <div class="meta">${cls.includes('big') ? `<span>por <b>${AUTHORS[a.author].name}</b></span>` : ''}<span>${fmtDate(a.date)}</span>${cls.includes('big') ? `<span>${readTime(a)} min de leitura</span>` : ''}</div>
+    </div>
+  </a>`;
+
+const card = (a, withAuthor) => `
+  <a href="#/materia/${a.slug}" class="card reveal">
+    <div class="media"><img loading="lazy" src="${artImg(a, 700)}" alt="${esc(a.alt)}" /><span class="tag">${a.tag}</span></div>
+    <h3>${a.title}</h3>
+    <div class="meta">${withAuthor ? `<span>por <b>${AUTHORS[a.author].name}</b></span>` : ''}<span>${fmtDate(a.date)}</span></div>
+    <p>${a.excerpt}</p>
+  </a>`;
+
+const listItem = a => `
+  <a href="#/materia/${a.slug}" class="list-item reveal">
+    <div class="media"><img loading="lazy" src="${artImg(a, 300)}" alt="${esc(a.alt)}" /></div>
+    <div><h4>${a.title}</h4><div class="meta"><span>por <b>${AUTHORS[a.author].name}</b></span><span>${fmtDate(a.date)}</span></div></div>
+  </a>`;
+
+/* =====================================================================
+   PÁGINAS
+   ===================================================================== */
+const VIEWS = {};
+
+VIEWS.home = () => {
+  const main = inSection('hero-main')[0];
+  const sides = inSection('hero-side');
+  return `
+  <section class="hero" id="noticias">
+    <div class="container"><div class="hero-grid">
+      ${featCard(main, 'big', 'h2', 1400)}
+      ${sides.map(a => featCard(a, 'small', 'h3', 800)).join('')}
+    </div></div>
+  </section>
+  <section id="torneios"><div class="container">
+    <h2 class="sec-title reveal">Torneios <span class="suit">♠</span></h2>
+    <div class="grid-2x2">${inSection('torneios').map(a => featCard(a)).join('')}</div>
+  </div></section>
+  <section id="estrategia"><div class="container">
+    <h2 class="sec-title reveal">Estratégia <span class="suit red">♥</span></h2>
+    <div class="grid-3">${inSection('estrategia').map(a => card(a)).join('')}</div>
+  </div></section>
+  <section id="internacional"><div class="container">
+    <h2 class="sec-title reveal">Internacional <span class="suit red">♦</span></h2>
+    <div class="grid-3">${inSection('internacional').map(a => card(a, true)).join('')}</div>
+  </div></section>
+  <section id="lifestyle"><div class="container">
+    <h2 class="sec-title reveal">Lifestyle <span class="suit">♣</span></h2>
+    <div class="list-2">${inSection('lifestyle').map(listItem).join('')}</div>
+  </div></section>`;
+};
+
+const renderBody = blocks => blocks.map(b =>
+  Array.isArray(b) ? `<ul>${b.map(li => `<li>${li}</li>`).join('')}</ul>`
+  : b.startsWith('## ') ? `<h2>${b.slice(3)}</h2>`
+  : b.startsWith('> ') ? `<blockquote>${b.slice(2)}</blockquote>`
+  : `<p>${b}</p>`).join('');
+
+const CAT_ROUTE = { 'Torneios': 'torneios', 'Estratégia': 'estrategia', 'Internacional': 'internacional', 'Lifestyle': 'lifestyle', 'Notícias': 'noticias' };
+
+const sidebar = current => `
+  <aside class="sidebar"><div class="sticky">
+    <div>
+      <h3 class="sec-title sm">Mais lidas <span class="suit red">♥</span></h3>
+      <ol class="most-read">${MOST_READ.filter(s => s !== current).slice(0, 4).map(s => `<li><a href="#/materia/${s}">${bySlug(s).title}</a></li>`).join('')}</ol>
+    </div>
+    <div class="widget-cta">
+      <span class="tag gold">Ferramenta grátis</span>
+      <h4>Minha Banca</h4>
+      <p>Registre seus torneios, acompanhe lucro, ROI e veja sua evolução em um gráfico.</p>
+      <a href="#/minha-banca" class="btn gold">Abrir Minha Banca</a>
+    </div>
+    <form class="newsletter" data-newsletter>
+      <h3 class="sec-title sm">Newsletter <span class="suit">♣</span></h3>
+      <p>Receba toda sexta as principais notícias e uma mão comentada.</p>
+      <label class="sr-only" for="nlEmail">Seu e-mail</label>
+      <input id="nlEmail" type="email" placeholder="seu@email.com" required />
+      <button class="btn" type="submit">Quero receber</button>
+    </form>
+  </div></aside>`;
+
+VIEWS.materia = slug => {
+  const a = bySlug(slug);
+  if (!a) return VIEWS.notFound();
+  const au = AUTHORS[a.author];
+  const url = encodeURIComponent(location.href);
+  const txt = encodeURIComponent(a.title + ' — pokertodahora');
+  const related = [...ARTICLES.filter(x => x.cat === a.cat && x.slug !== a.slug), ...ARTICLES.filter(x => x.cat !== a.cat)].slice(0, 3);
+  const catRoute = CAT_ROUTE[a.cat];
+  return `
+  <div class="container">
+    <nav class="crumbs"><a href="#/">Início</a><span class="sep">›</span><a href="#/${catRoute}">${a.cat}</a><span class="sep">›</span><span>${a.title}</span></nav>
+    <div class="article-grid">
+      <article class="post">
+        <span class="tag ${a.tagClass || ''}">${a.tag}</span>
+        <h1>${a.title}</h1>
+        <p class="lead">${a.excerpt}</p>
+        <div class="byline">
+          <span class="avatar" style="background:${au.color}">${initials(au.name)}</span>
+          <div class="meta" style="font-size:13.5px"><span>por <b>${au.name}</b></span><span>${fmtDate(a.date)}</span><span>${readTime(a)} min de leitura</span></div>
+        </div>
+        <figure style="margin:0">
+          <div class="media post-cover"><img src="${artImg(a, 1400)}" alt="${esc(a.alt)}" /></div>
+          <figcaption>${esc(a.alt)} · Foto: Unsplash</figcaption>
+        </figure>
+        <div class="post-body">${renderBody(a.body)}</div>
+        <div class="share">
+          <b>Compartilhe</b>
+          <a class="wa" href="https://wa.me/?text=${txt}%20${url}" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="x" href="https://twitter.com/intent/tweet?text=${txt}&url=${url}" target="_blank" rel="noopener">X</a>
+          <a class="fb" href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" rel="noopener">Facebook</a>
+          <button class="cp" type="button" data-copy>Copiar link</button>
+        </div>
+        <div class="author-box">
+          <span class="avatar lg" style="background:${au.color}">${initials(au.name)}</span>
+          <div><small>${au.role}</small><h4>${au.name}</h4><p>${au.bio}</p></div>
+        </div>
+      </article>
+      ${sidebar(a.slug)}
+    </div>
+    <section style="padding-top:36px">
+      <h2 class="sec-title">Leia também <span class="suit">♠</span></h2>
+      <div class="grid-3">${related.map(r => card(r)).join('')}</div>
+    </section>
+  </div>`;
+};
+
+VIEWS['quem-somos'] = () => {
+  const team = Object.values(AUTHORS);
+  return `
+  ${pageHero('Quem somos', 'Poker levado a sério, do jeito que a gente gosta', 'O pokertodahora nasceu na mesa, entre um nível e outro, da vontade de ter um lugar que falasse de poker com qualidade, em português e sem enrolação.')}
+  <section><div class="container">
+    <div class="about-grid">
+      <div class="text reveal">
+        <h2 class="sec-title">Nossa história <span class="suit">♠</span></h2>
+        <p>Em 2019, um grupo de amigos que se conheceu no circuito de torneios ao vivo percebeu que faltava informação de qualidade sobre poker em português. As notícias chegavam atrasadas, os conteúdos de estratégia eram quase todos em inglês e ninguém contava as histórias dos bastidores.</p>
+        <p>Começamos com um blog e uma planilha de resultados. Hoje, o <strong>pokertodahora</strong> é um portal com cobertura das principais séries do Brasil e do mundo, conteúdo de estratégia para todos os níveis e uma comunidade de jogadores que cresce a cada etapa.</p>
+        <p>Nosso compromisso é simples: informar com precisão, ensinar com clareza e tratar o poker como o que ele é — um jogo de habilidade, estudo e disciplina.</p>
+      </div>
+      <div class="media reveal"><img loading="lazy" src="${IMG('1540575467063-178a50c2df87', 900)}" alt="Plateia acompanhando um evento" /></div>
+    </div>
+    <div class="stats" style="margin-top:34px">
+      <div class="stat reveal"><strong>1,2 mi</strong><span>leitores por mês</span></div>
+      <div class="stat reveal"><strong>4.500+</strong><span>matérias publicadas</span></div>
+      <div class="stat reveal"><strong>38</strong><span>etapas cobertas ao vivo em 2026</span></div>
+      <div class="stat reveal"><strong>2019</strong><span>no ar desde</span></div>
+    </div>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Nossos valores <span class="suit red">♥</span></h2>
+    <div class="values">
+      <div class="value reveal"><div class="suit-ico">♠</div><h3>Informação de verdade</h3><p>Apuramos cada resultado e cada número antes de publicar. Se erramos, corrigimos e avisamos.</p></div>
+      <div class="value reveal"><div class="suit-ico red">♥</div><h3>Feito por quem joga</h3><p>Nossa equipe vive o poker na prática. Escrevemos para jogadores porque somos jogadores.</p></div>
+      <div class="value reveal"><div class="suit-ico">♣</div><h3>Jogo responsável</h3><p>Poker é para quem tem mais de 18 anos e deve ser jogado com banca separada e limites claros.</p></div>
+    </div>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Desenvolvido por <span class="suit">♠</span></h2>
+    <div class="team">${GROUP.map((n, i) => `
+      <div class="member reveal"><span class="avatar lg" style="background:${GROUP_COLORS[i]}">${initials(n)}</span><h4>${n}</h4><small>Grupo pokertodahora</small></div>`).join('')}
+    </div>
+  </div></section>
+  <section><div class="container">
+    <h2 class="sec-title reveal">Equipe de redação <span class="suit red">♦</span></h2>
+    <div class="team">${team.map(m => `
+      <div class="member reveal"><span class="avatar lg" style="background:${m.color}">${initials(m.name)}</span><h4>${m.name}</h4><small>${m.role}</small><p>${m.bio}</p></div>`).join('')}
+    </div>
+  </div></section>
+  <section><div class="container">
+    <div class="responsible reveal">
+      <span class="age">+18</span>
+      <div><h3>Jogue com responsabilidade</h3><p>Poker deve ser diversão. Defina limites de tempo e dinheiro, nunca jogue com valores que fazem falta e procure ajuda se sentir que perdeu o controle. Use a <a href="#/minha-banca" style="color:var(--gold);font-weight:800">Minha Banca</a> para acompanhar seus gastos.</p></div>
+    </div>
+  </div></section>`;
+};
+
+VIEWS.contato = () => `
+  ${pageHero('Contato', 'Fale com a gente', 'Sugestões de pauta, dúvidas de estratégia, parcerias ou correções: respondemos todas as mensagens em até dois dias úteis.')}
+  <section><div class="container">
+    <div class="contact-grid">
+      <div class="reveal">
+        <h2 class="sec-title">Envie sua mensagem <span class="suit">♠</span></h2>
+        <form class="form" id="contactForm" novalidate>
+          <div class="field"><label for="cNome">Nome</label><input id="cNome" name="nome" autocomplete="name" required /><span class="err">Informe seu nome.</span></div>
+          <div class="field"><label for="cEmail">E-mail</label><input id="cEmail" name="email" type="email" autocomplete="email" required /><span class="err">Informe um e-mail válido.</span></div>
+          <div class="field full"><label for="cAssunto">Assunto</label>
+            <select id="cAssunto" name="assunto" required>
+              <option value="">Selecione...</option>
+              <option>Sugestão de pauta</option>
+              <option>Dúvida de estratégia</option>
+              <option>Parcerias e publicidade</option>
+              <option>Imprensa</option>
+              <option>Correção de informação</option>
+              <option>Outro</option>
+            </select><span class="err">Escolha um assunto.</span></div>
+          <div class="field full"><label for="cMsg">Mensagem</label><textarea id="cMsg" name="mensagem" required minlength="10"></textarea><span class="err">Escreva pelo menos 10 caracteres.</span></div>
+          <label class="check full"><input type="checkbox" id="cNews" /> Quero receber a newsletter semanal do pokertodahora.</label>
+          <div class="full"><button class="btn" type="submit">Enviar mensagem</button></div>
+        </form>
+        <div class="form-success" id="contactOk"></div>
+      </div>
+      <div class="reveal">
+        <div class="info-card">
+          <h3>Canais de atendimento</h3>
+          <div class="info-row"><span class="ic">✉</span><div><b>Redação</b><a href="mailto:contato@pokertodahora.com.br">contato@pokertodahora.com.br</a></div></div>
+          <div class="info-row"><span class="ic">★</span><div><b>Publicidade</b><a href="mailto:comercial@pokertodahora.com.br">comercial@pokertodahora.com.br</a></div></div>
+          <div class="info-row"><span class="ic">♠</span><div><b>Imprensa</b><a href="mailto:imprensa@pokertodahora.com.br">imprensa@pokertodahora.com.br</a></div></div>
+          <div class="info-row"><span class="ic">⏱</span><div><b>Horário</b>Segunda a sexta, das 10h às 19h</div></div>
+        </div>
+        <div class="info-card">
+          <h3>Redes sociais</h3>
+          <div class="socials"><a href="#">Instagram</a><a href="#">YouTube</a><a href="#">X</a><a href="#">TikTok</a></div>
+        </div>
+        <div class="info-card faq">
+          <h3>Perguntas frequentes</h3>
+          <details><summary>Vocês analisam mãos enviadas pelos leitores?</summary><p>Sim! Escolha o assunto “Dúvida de estratégia” e descreva a mão com posições, stacks e ações. As melhores viram matéria.</p></details>
+          <details><summary>Como divulgo meu torneio ou clube?</summary><p>Mande os detalhes para comercial@pokertodahora.com.br. Temos formatos de agenda, banners e cobertura ao vivo.</p></details>
+          <details><summary>Encontrei um erro em uma matéria.</summary><p>Obrigado por avisar. Use o assunto “Correção de informação” e indique o link da matéria. Corrigimos o quanto antes.</p></details>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+
+VIEWS.fotos = () => {
+  const cats = ['Todas', ...new Set(PHOTOS.map(p => p.cat))];
+  return `
+  ${pageHero('Galeria', 'Fotos', 'Mesas, cassinos, destinos e bastidores do circuito. Clique em uma foto para ampliar.')}
+  <section><div class="container">
+    <div class="filters" data-filter="gallery">${cats.map((c, i) => `<button type="button" class="${i ? '' : 'on'}" data-cat="${c}">${c}</button>`).join('')}</div>
+    <div class="gallery" id="gallery">
+      ${PHOTOS.map((p, i) => `<button type="button" class="ph reveal" data-i="${i}" data-cat="${p.cat}"><img loading="lazy" src="https://images.unsplash.com/photo-${p.id}?auto=format&w=800&q=75" alt="${esc(p.t)}" /><span>${p.t}</span></button>`).join('')}
+    </div>
+  </div></section>`;
+};
+
+const player = (v, sm) => `
+  <button type="button" class="player ${sm ? 'sm' : ''}" data-video="${v.id}" aria-label="Assistir: ${esc(v.t)}">
+    <img loading="lazy" src="https://i.ytimg.com/vi/${v.id}/hqdefault.jpg" alt="" />
+    <span class="play"></span>${v.en ? '<span class="lang">EN</span>' : ''}
+  </button>`;
+
+VIEWS.videos = () => {
+  const [feat, ...rest] = VIDEOS;
+  const cats = ['Todos', ...new Set(rest.map(v => v.cat))];
+  return `
+  ${pageHero('Vídeos', 'Assista às mãos que fizeram história', 'Mesas finais, bastidores e aulas de estratégia dos principais canais de poker.')}
+  <section><div class="container">
+    <div class="video-feature reveal">
+      ${player(feat)}
+      <div>
+        <span class="tag red">Em destaque</span>
+        <h2>${feat.t}</h2>
+        <p>${feat.d}</p>
+        <div class="meta"><span>Canal <b>${feat.ch}</b></span></div>
+        <p style="margin-top:16px"><a class="btn ghost sm" href="https://www.youtube.com/watch?v=${feat.id}" target="_blank" rel="noopener">Abrir no YouTube ↗</a></p>
+      </div>
+    </div>
+    <h2 class="sec-title reveal">Mais vídeos <span class="suit red">♦</span></h2>
+    <div class="filters" data-filter="videos">${cats.map((c, i) => `<button type="button" class="${i ? '' : 'on'}" data-cat="${c}">${c}</button>`).join('')}</div>
+    <div class="grid-3">${rest.map(v => `
+      <div class="vcard reveal" data-cat="${v.cat}">
+        ${player(v, true)}
+        <h3>${v.t}</h3>
+        <a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">${v.ch} · ver no YouTube ↗</a>
+      </div>`).join('')}
+    </div>
+  </div></section>`;
+};
+
+VIEWS['minha-banca'] = () => `
+  ${pageHero('Ferramenta', 'Minha Banca', 'Registre cada torneio, acompanhe lucro, ROI e a evolução da sua banca. Os dados ficam salvos apenas neste navegador.')}
+  <section><div class="container">
+    <div class="banca-stats" id="kpis"></div>
+    <div class="banca-grid">
+      <div>
+        <div class="panel">
+          <h2 class="sec-title sm">Evolução da banca <span class="suit">♠</span></h2>
+          <div class="chart-wrap"><canvas id="bancaChart" aria-label="Gráfico da evolução da banca" role="img"></canvas></div>
+        </div>
+        <div class="panel">
+          <div class="row-actions">
+            <h2 class="sec-title sm">Histórico <span class="suit red">♥</span></h2>
+            <div style="display:flex;gap:8px;flex-wrap:wrap">
+              <button class="btn ghost sm" type="button" id="bExport">Exportar CSV</button>
+              <button class="btn danger sm" type="button" id="bClear">Apagar tudo</button>
+            </div>
+          </div>
+          <div class="table-wrap" id="bTable"></div>
+        </div>
+      </div>
+      <div>
+        <div class="panel">
+          <h2 class="sec-title sm">Novo resultado <span class="suit">♣</span></h2>
+          <form class="banca-form" id="bForm">
+            <div class="field full"><label for="bNome">Torneio</label><input id="bNome" required placeholder="Ex.: BSOP São Paulo – Main Event" maxlength="80" /></div>
+            <div class="field"><label for="bData">Data</label><input id="bData" type="date" required /></div>
+            <div class="field"><label for="bTipo">Tipo</label><select id="bTipo"><option>Online</option><option>Ao vivo</option></select></div>
+            <div class="field"><label for="bBuy">Buy-in (R$)</label><input id="bBuy" type="number" min="0" step="0.01" required placeholder="0,00" /></div>
+            <div class="field"><label for="bPremio">Prêmio (R$)</label><input id="bPremio" type="number" min="0" step="0.01" value="0" /></div>
+            <div class="field full"><label for="bPos">Colocação (opcional)</label><input id="bPos" type="number" min="1" placeholder="Ex.: 12" /></div>
+            <div class="full"><button class="btn" type="submit" style="width:100%">Adicionar resultado</button></div>
+          </form>
+        </div>
+        <div class="panel">
+          <h2 class="sec-title sm">Banca inicial <span class="suit red">♦</span></h2>
+          <div class="field"><label for="bInicial">Valor com que você começou (R$)</label><input id="bInicial" type="number" min="0" step="0.01" /></div>
+          <div class="tip" id="bTip"></div>
+          <button class="btn ghost sm" type="button" id="bSample" style="margin-top:14px">Carregar dados de exemplo</button>
+        </div>
+      </div>
+    </div>
+  </div></section>`;
+
+VIEWS.busca = q => {
+  const nq = normalize(q);
+  const hits = ARTICLES.filter(a => normalize(stripTags([a.title, a.excerpt, a.cat, a.tag, ...a.body.flat()].join(' '))).includes(nq));
+  return `
+  ${pageHero('Busca', `Resultados para “${esc(q)}”`, hits.length ? `${hits.length} ${hits.length === 1 ? 'matéria encontrada' : 'matérias encontradas'}.` : '', 'Busca')}
+  <section><div class="container">
+    ${hits.length ? `<div class="grid-3">${hits.map(a => card(a, true)).join('')}</div>` : `
+      <div class="empty-page"><div class="cards">♠<span class="r">♥</span>♣<span class="r">♦</span></div><h1>Nenhuma matéria encontrada</h1><p>Tente outra palavra, como “BSOP”, “ranges” ou “Las Vegas”.</p><a class="btn" href="#/">Voltar para a página inicial</a></div>`}
+  </div></section>`;
+};
+
+VIEWS.notFound = () => `
+  <div class="container"><div class="empty-page">
+    <div class="cards">7<span class="r">♥</span> 2♣</div>
+    <h1>Essa mão não existe</h1>
+    <p>A página que você procura não foi encontrada. Melhor largar e esperar a próxima.</p>
+    <a class="btn" href="#/">Voltar para a página inicial</a>
+  </div></div>`;
+
+/* =====================================================================
+   COMPORTAMENTO DE CADA PÁGINA
+   ===================================================================== */
+const SETUP = {};
+
+SETUP.materia = () => {
+  const cp = $('[data-copy]', app);
+  cp && cp.addEventListener('click', async () => {
+    try { await navigator.clipboard.writeText(location.href); toast('Link copiado!'); }
+    catch { toast('Não foi possível copiar. Copie o endereço na barra do navegador.'); }
+  });
+};
+
+SETUP.contato = () => {
+  const form = $('#contactForm');
+  const ok = $('#contactOk');
+  const check = f => {
+    const el = $('input,select,textarea', f);
+    const valid = el.checkValidity() && el.value.trim().length >= (el.minLength > 0 ? el.minLength : 1);
+    f.classList.toggle('invalid', !valid);
+    return valid;
+  };
+  $$('.field', form).forEach(f => $('input,select,textarea', f).addEventListener('blur', () => check(f)));
+  form.addEventListener('submit', e => {
+    e.preventDefault();
+    const fields = $$('.field', form);
+    const allValid = fields.map(check).every(Boolean);
+    if (!allValid) { $('.field.invalid input, .field.invalid select, .field.invalid textarea', form).focus(); return; }
+    // Para receber as mensagens de verdade, conecte o formulário a um serviço (ex.: Formspree) ou ao seu servidor aqui.
+    const nome = form.nome.value.trim().split(' ')[0];
+    const inbox = store.get('pth-contatos', []);
+    inbox.push({ nome: form.nome.value, email: form.email.value, assunto: form.assunto.value, mensagem: form.mensagem.value, data: new Date().toISOString() });
+    store.set('pth-contatos', inbox);
+    form.style.display = 'none';
+    ok.innerHTML = `<h3>Obrigado, ${esc(nome)}!</h3>Recebemos sua mensagem sobre “${esc(form.assunto.value)}”. Nossa equipe responde em até dois dias úteis no e-mail ${esc(form.email.value)}.<p style="margin:14px 0 0"><button class="btn sm" type="button" id="cAgain">Enviar outra mensagem</button></p>`;
+    ok.classList.add('show');
+    $('#cAgain').addEventListener('click', () => { form.reset(); form.style.display = ''; ok.classList.remove('show'); });
+  });
+};
+
+function setupFilters(type, itemSel) {
+  const bar = $(`[data-filter="${type}"]`, app);
+  if (!bar) return;
+  bar.addEventListener('click', e => {
+    const b = e.target.closest('button');
+    if (!b) return;
+    $$('button', bar).forEach(x => x.classList.toggle('on', x === b));
+    const c = b.dataset.cat;
+    $$(itemSel, app).forEach(el => {
+      el.classList.toggle('hidden', c !== 'Todas' && c !== 'Todos' && el.dataset.cat !== c);
+      el.classList.add('in');
+    });
+  });
+}
+
+// Lightbox da galeria
+const lb = { el: $('#lightbox'), i: 0, list: [] };
+function lbShow(i) {
+  lb.i = (i + lb.list.length) % lb.list.length;
+  const p = PHOTOS[lb.list[lb.i]];
+  $('#lbImg').src = `https://images.unsplash.com/photo-${p.id}?auto=format&w=1600&q=80`;
+  $('#lbImg').alt = p.t;
+  $('#lbCap').innerHTML = `${esc(p.t)}<small>${p.cat} · ${lb.i + 1} de ${lb.list.length} · Foto: Unsplash</small>`;
+}
+function lbOpen(photoIndex) {
+  lb.list = $$('.ph:not(.hidden)', app).map(el => +el.dataset.i);
+  lb.el.classList.add('open');
+  document.body.style.overflow = 'hidden';
+  lbShow(lb.list.indexOf(photoIndex));
+  $('.lb-close').focus();
+}
+function lbClose() { lb.el.classList.remove('open'); document.body.style.overflow = ''; }
+lb.el.addEventListener('click', e => {
+  const act = e.target.closest('[data-lb]')?.dataset.lb;
+  if (act === 'close' || e.target === lb.el) lbClose();
+  if (act === 'prev') lbShow(lb.i - 1);
+  if (act === 'next') lbShow(lb.i + 1);
+});
+document.addEventListener('keydown', e => {
+  if (!lb.el.classList.contains('open')) return;
+  if (e.key === 'Escape') lbClose();
+  if (e.key === 'ArrowLeft') lbShow(lb.i - 1);
+  if (e.key === 'ArrowRight') lbShow(lb.i + 1);
+});
+
+SETUP.fotos = () => {
+  setupFilters('gallery', '.ph');
+  $('#gallery').addEventListener('click', e => {
+    const ph = e.target.closest('.ph');
+    if (ph) lbOpen(+ph.dataset.i);
+  });
+};
+
+SETUP.videos = () => setupFilters('videos', '.vcard');
+app.addEventListener('click', e => {
+    const p = e.target.closest('[data-video]');
+    if (!p || p.querySelector('iframe')) return;
+    const id = p.dataset.video;
+    // Abrindo o arquivo direto do computador (file://) o YouTube bloqueia o player embutido; nesse caso abrimos no YouTube.
+    if (location.protocol === 'file:') { window.open(`https://www.youtube.com/watch?v=${id}`, '_blank', 'noopener'); return; }
+    p.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="Vídeo do YouTube" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen referrerpolicy="strict-origin-when-cross-origin"></iframe>`;
+});
+
+/* ---------- Minha Banca ---------- */
+const BANCA_KEY = 'pth-minha-banca-v1';
+const BRL = new Intl.NumberFormat('pt-BR', { style: 'currency', currency: 'BRL' });
+const BRLc = v => Math.abs(v) >= 10000 ? 'R$ ' + new Intl.NumberFormat('pt-BR', { notation: 'compact', maximumFractionDigits: 1 }).format(v) : BRL.format(v);
+let banca = store.get(BANCA_KEY, { inicial: 1000, jogos: [] });
+
+const SAMPLE = [
+  ['2026-07-02', 'Big $55 – Domingo', 'Online', 55, 0, null], ['2026-07-05', 'Sunday Million Satélite', 'Online', 22, 109, 3],
+  ['2026-07-09', 'Clube Paulistano – Semanal', 'Ao vivo', 300, 0, null], ['2026-07-13', 'Big $109', 'Online', 109, 412, 28],
+  ['2026-07-20', 'Bounty Builder $44', 'Online', 44, 0, null], ['2026-07-27', 'Sunday Warm-Up', 'Online', 109, 0, null],
+  ['2026-08-03', 'Big $55 – Domingo', 'Online', 55, 1840, 4], ['2026-08-10', 'Mini Main Event', 'Online', 55, 0, null],
+  ['2026-08-17', 'Clube Paulistano – Mensal', 'Ao vivo', 500, 1320, 9], ['2026-08-31', 'Big $109', 'Online', 109, 0, null],
+  ['2026-09-06', 'BSOP São Paulo – Turbo', 'Ao vivo', 1100, 0, null], ['2026-09-14', 'Sunday Warm-Up', 'Online', 109, 690, 41]
+];
+
+const saveBanca = () => { if (!store.set(BANCA_KEY, banca)) toast('Não foi possível salvar neste navegador (modo privado?).'); };
+const sortedGames = () => [...banca.jogos].sort((a, b) => a.data.localeCompare(b.data) || a.id - b.id);
+
+function renderBanca() {
+  const g = banca.jogos;
+  const invest = g.reduce((s, x) => s + x.buyin, 0);
+  const prem = g.reduce((s, x) => s + x.premio, 0);
+  const lucro = prem - invest;
+  const roi = invest ? lucro / invest * 100 : 0;
+  const itm = g.length ? g.filter(x => x.premio > 0).length / g.length * 100 : 0;
+  const maior = g.reduce((m, x) => Math.max(m, x.premio), 0);
+  const atual = banca.inicial + lucro;
+  $('#kpis').innerHTML = [
+    ['Banca atual', BRLc(atual), 'hl'],
+    ['Lucro total', (lucro > 0 ? '+' : '') + BRLc(lucro), lucro > 0 ? 'pos' : lucro < 0 ? 'neg' : ''],
+    ['ROI', (roi > 0 ? '+' : '') + roi.toFixed(1).replace('.', ',') + '%', roi > 0 ? 'pos' : roi < 0 ? 'neg' : ''],
+    ['ITM', itm.toFixed(0) + '%', ''],
+    ['Torneios', g.length, ''],
+    ['Maior prêmio', BRLc(maior), '']
+  ].map(([l, v, c]) => `<div class="kpi ${c}"><small>${l}</small><strong>${v}</strong></div>`).join('');
+
+  $('#bInicial').value = banca.inicial;
+  const media = g.length ? invest / g.length : 0;
+  const ideal = atual / 100;
+  $('#bTip').innerHTML = `<b>Regra dos 100 buy-ins:</b> com ${BRL.format(atual)} de banca, o ideal é jogar torneios de até <b>${BRL.format(Math.max(0, ideal))}</b>.` +
+    (g.length ? ` Seu buy-in médio é ${BRL.format(media)}${media > ideal ? ' — <b>acima do recomendado</b>, cuidado com a variância.' : ' — dentro do limite. Boa!'}` : '');
+
+  const rows = sortedGames().reverse();
+  $('#bTable').innerHTML = rows.length ? `
+    <table><thead><tr><th>Data</th><th>Torneio</th><th>Tipo</th><th class="num">Buy-in</th><th class="num">Prêmio</th><th class="num">Resultado</th><th></th></tr></thead>
+    <tbody>${rows.map(x => { const r = x.premio - x.buyin; return `
+      <tr><td>${fmtDate(x.data)}</td><td class="name">${esc(x.nome)}${x.pos ? ` <span class="pill">${x.pos}º</span>` : ''}</td>
+      <td><span class="pill ${x.tipo === 'Ao vivo' ? 'live' : ''}">${esc(x.tipo)}</span></td>
+      <td class="num">${BRL.format(x.buyin)}</td><td class="num">${BRL.format(x.premio)}</td>
+      <td class="num ${r >= 0 ? 'pos-t' : 'neg-t'}">${r > 0 ? '+' : ''}${BRL.format(r)}</td>
+      <td><button class="del" data-del="${x.id}" aria-label="Excluir ${esc(x.nome)}">×</button></td></tr>`; }).join('')}
+    </tbody></table>` : `<div class="empty"><div class="big-suit">♠ ♥ ♦ ♣</div><p>Nenhum torneio registrado ainda.<br>Adicione seu primeiro resultado ou carregue os dados de exemplo.</p></div>`;
+  drawChart();
+}
+
+function drawChart() {
+  const c = $('#bancaChart');
+  if (!c) return;
+  const dpr = window.devicePixelRatio || 1;
+  const w = c.clientWidth, h = c.clientHeight;
+  c.width = w * dpr; c.height = h * dpr;
+  const ctx = c.getContext('2d');
+  ctx.scale(dpr, dpr);
+  ctx.clearRect(0, 0, w, h);
+  const font = '"Nunito Sans", sans-serif';
+  const games = sortedGames();
+  const pts = [banca.inicial];
+  games.forEach(x => pts.push(pts[pts.length - 1] + x.premio - x.buyin));
+  if (pts.length < 2) {
+    ctx.fillStyle = '#6b7480'; ctx.font = `600 14px ${font}`; ctx.textAlign = 'center';
+    ctx.fillText('Registre torneios para ver sua evolução', w / 2, h / 2);
+    return;
+  }
+  const pad = { l: 80, r: 14, t: 14, b: 30 };
+  let min = Math.min(...pts), max = Math.max(...pts);
+  if (min === max) { min -= 100; max += 100; }
+  const span = max - min; min -= span * .08; max += span * .08;
+  const X = i => pad.l + i * (w - pad.l - pad.r) / (pts.length - 1);
+  const Y = v => pad.t + (max - v) / (max - min) * (h - pad.t - pad.b);
+
+  ctx.font = `600 11.5px ${font}`; ctx.textAlign = 'right'; ctx.textBaseline = 'middle';
+  for (let k = 0; k <= 4; k++) {
+    const v = min + (max - min) * k / 4, y = Y(v);
+    ctx.strokeStyle = '#eef0f2'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.moveTo(pad.l, y); ctx.lineTo(w - pad.r, y); ctx.stroke();
+    ctx.fillStyle = '#8a939e'; ctx.fillText('R$ ' + Math.round(v).toLocaleString('pt-BR'), pad.l - 10, y);
+  }
+  // linha da banca inicial
+  ctx.setLineDash([5, 5]); ctx.strokeStyle = '#d4af37'; ctx.lineWidth = 1.5;
+  ctx.beginPath(); ctx.moveTo(pad.l, Y(banca.inicial)); ctx.lineTo(w - pad.r, Y(banca.inicial)); ctx.stroke();
+  ctx.setLineDash([]);
+  // área
+  const grad = ctx.createLinearGradient(0, pad.t, 0, h - pad.b);
+  grad.addColorStop(0, 'rgba(11,93,59,.28)'); grad.addColorStop(1, 'rgba(11,93,59,0)');
+  ctx.beginPath(); ctx.moveTo(X(0), h - pad.b);
+  pts.forEach((v, i) => ctx.lineTo(X(i), Y(v)));
+  ctx.lineTo(X(pts.length - 1), h - pad.b); ctx.closePath(); ctx.fillStyle = grad; ctx.fill();
+  // linha
+  ctx.beginPath(); pts.forEach((v, i) => i ? ctx.lineTo(X(i), Y(v)) : ctx.moveTo(X(i), Y(v)));
+  ctx.strokeStyle = '#0b5d3b'; ctx.lineWidth = 2.5; ctx.lineJoin = 'round'; ctx.stroke();
+  // pontos
+  pts.forEach((v, i) => {
+    if (i === 0) return;
+    const win = games[i - 1].premio > games[i - 1].buyin;
+    ctx.beginPath(); ctx.arc(X(i), Y(v), i === pts.length - 1 ? 5 : 3.2, 0, Math.PI * 2);
+    ctx.fillStyle = win ? '#0b5d3b' : '#c8102e'; ctx.fill();
+    ctx.strokeStyle = '#fff'; ctx.lineWidth = 1.5; ctx.stroke();
+  });
+  // eixo x (primeira e última data)
+  ctx.fillStyle = '#8a939e'; ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'left'; ctx.fillText('Início', pad.l, h - 8);
+  ctx.textAlign = 'right'; ctx.fillText(fmtDate(games[games.length - 1].data), w - pad.r, h - 8);
+}
+
+SETUP['minha-banca'] = () => {
+  $('#bData').value = new Date().toISOString().slice(0, 10);
+  $('#bForm').addEventListener('submit', e => {
+    e.preventDefault();
+    const nome = $('#bNome').value.trim();
+    const buyin = parseFloat($('#bBuy').value);
+    if (!nome || !(buyin >= 0) || !$('#bData').value) { toast('Preencha torneio, data e buy-in.'); return; }
+    banca.jogos.push({
+      id: Date.now(), data: $('#bData').value, nome, tipo: $('#bTipo').value,
+      buyin, premio: parseFloat($('#bPremio').value) || 0, pos: parseInt($('#bPos').value) || null
+    });
+    saveBanca(); renderBanca();
+    $('#bNome').value = ''; $('#bBuy').value = ''; $('#bPremio').value = '0'; $('#bPos').value = '';
+    toast('Resultado adicionado!');
+  });
+  $('#bInicial').addEventListener('change', e => {
+    banca.inicial = Math.max(0, parseFloat(e.target.value) || 0);
+    saveBanca(); renderBanca();
+  });
+  $('#bTable').addEventListener('click', e => {
+    const b = e.target.closest('[data-del]');
+    if (!b) return;
+    banca.jogos = banca.jogos.filter(x => x.id !== +b.dataset.del);
+    saveBanca(); renderBanca();
+    toast('Resultado excluído.');
+  });
+  $('#bClear').addEventListener('click', () => {
+    if (!banca.jogos.length) return;
+    if (!confirm('Apagar todos os resultados registrados?')) return;
+    banca.jogos = []; saveBanca(); renderBanca();
+  });
+  $('#bSample').addEventListener('click', () => {
+    if (banca.jogos.length && !confirm('Substituir seus resultados pelos dados de exemplo?')) return;
+    banca = { inicial: 2000, jogos: SAMPLE.map(([data, nome, tipo, buyin, premio, pos], i) => ({ id: i + 1, data, nome, tipo, buyin, premio, pos })) };
+    saveBanca(); renderBanca();
+    toast('Dados de exemplo carregados.');
+  });
+  $('#bExport').addEventListener('click', () => {
+    if (!banca.jogos.length) { toast('Nada para exportar ainda.'); return; }
+    const lines = [['Data', 'Torneio', 'Tipo', 'Buy-in', 'Prêmio', 'Colocação', 'Resultado'],
+      ...sortedGames().map(x => [x.data, x.nome, x.tipo, x.buyin, x.premio, x.pos || '', x.premio - x.buyin])];
+    const csv = '﻿' + lines.map(r => r.map(v => `"${String(v).replace(/"/g, '""')}"`).join(';')).join('\n');
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    a.download = 'minha-banca-pokertodahora.csv';
+    a.click();
+    URL.revokeObjectURL(a.href);
+  });
+  renderBanca();
+};
+window.addEventListener('resize', () => { if (current.view === 'minha-banca') drawChart(); });
+
+/* =====================================================================
+   ROTEADOR (troca de páginas dentro do mesmo arquivo)
+   ===================================================================== */
+const HOME_SECTIONS = ['noticias', 'torneios', 'estrategia', 'internacional', 'lifestyle'];
+const current = { view: null, arg: null };
+const menuLinks = $$('#menu a');
+const setActive = key => menuLinks.forEach(a => a.classList.toggle('active', a.dataset.key === key));
+
+let spy;
+function startSpy() {
+  spy && spy.disconnect();
+  if (current.view !== 'home') return;
+  spy = new IntersectionObserver(entries => entries.forEach(e => {
+    if (e.isIntersecting) setActive(e.target.id);
+  }), { rootMargin: '-45% 0px -50% 0px' });
+  HOME_SECTIONS.forEach(id => spy.observe(document.getElementById(id)));
+}
+
+let revealObs;
+function startReveal() {
+  revealObs && revealObs.disconnect();
+  revealObs = new IntersectionObserver(entries => entries.forEach(e => {
+    if (!e.isIntersecting) return;
+    const sibs = [...e.target.parentElement.children].filter(c => c.classList.contains('reveal'));
+    e.target.style.transitionDelay = (Math.max(0, sibs.indexOf(e.target)) % 4) * 90 + 'ms';
+    e.target.classList.add('in');
+    revealObs.unobserve(e.target);
+  }), { threshold: 0.1 });
+  $$('.reveal:not(.in)', app).forEach(el => revealObs.observe(el));
+}
+
+function imgFallback() {
+  $$('.media img', app).forEach(img => {
+    const fail = () => img.parentElement.classList.add('noimg');
+    if (img.complete && img.naturalWidth === 0) fail();
+    img.addEventListener('error', fail);
+  });
+}
+
+function route() {
+  const parts = decodeURIComponent(location.hash.replace(/^#\/?/, '')).split('/');
+  let [view, ...rest] = parts;
+  let arg = rest.join('/');
+  let scrollTo = null, key = view || 'home';
+
+  if (!view) view = 'home';
+  else if (HOME_SECTIONS.includes(view)) { scrollTo = view; view = 'home'; }
+  else if (view === 'materia') { key = CAT_ROUTE[bySlug(arg)?.cat] || null; }
+  else if (!VIEWS[view] || view === 'notFound') { view = 'notFound'; key = null; }
+
+  const sameView = current.view === view && current.arg === arg;
+  if (!sameView) {
+    current.view = view; current.arg = arg;
+    lbClose();
+    app.innerHTML = VIEWS[view](arg);
+    app.classList.remove('view-enter'); void app.offsetWidth; app.classList.add('view-enter');
+    SETUP[view] && SETUP[view](arg);
+    startReveal(); imgFallback();
+    const a = view === 'materia' && bySlug(arg);
+    document.title = a ? `${stripTags(a.title)} — pokertodahora`
+      : view === 'home' ? 'pokertodahora — Notícias, estratégias e bastidores do poker'
+      : `${($('h1', app)?.textContent || 'pokertodahora').trim()} — pokertodahora`;
+  }
+  startSpy();
+  setActive(key);
+
+  const target = scrollTo && document.getElementById(scrollTo);
+  if (target) target.scrollIntoView({ behavior: sameView ? 'smooth' : 'auto' });
+  else if (!sameView) window.scrollTo({ top: view === 'home' ? 0 : Math.min(window.scrollY, $('#mainnav').offsetTop), behavior: 'auto' });
+}
+window.addEventListener('hashchange', route);
+
+// Clicar de novo no mesmo link (ex.: "Torneios" depois de rolar) também deve funcionar
+document.addEventListener('click', e => {
+  const a = e.target.closest('a[href^="#/"]');
+  if (a && a.getAttribute('href') === location.hash) { e.preventDefault(); route(); }
+});
+
+/* =====================================================================
+   ELEMENTOS FIXOS (topbar, menu, busca, voltar ao topo)
+   ===================================================================== */
+// Ticker
+$('#ticker').innerHTML = TICKER.map(([t, s], i) => `<a href="#/materia/${s}" class="${i ? '' : 'is-active'}"><span class="dot">${'♠♥♦♣'[i % 4]}</span>${t}</a>`).join('');
+const tItems = $$('#ticker a');
+let tCur = 0;
+setInterval(() => {
+  const prev = tItems[tCur];
+  tCur = (tCur + 1) % tItems.length;
+  prev.classList.replace('is-active', 'is-leaving');
+  tItems[tCur].classList.remove('is-leaving');
+  tItems[tCur].classList.add('is-active');
+  setTimeout(() => prev.classList.remove('is-leaving'), 500);
+}, 4000);
+
+// Menu fixo com blur + botão voltar ao topo
+const nav = $('#mainnav');
+const toTop = $('#toTop');
+const onScroll = () => {
+  nav.classList.toggle('is-stuck', window.scrollY > nav.offsetTop - 1 && window.scrollY > 10);
+  toTop.classList.toggle('show', window.scrollY > 600);
+};
+window.addEventListener('scroll', onScroll, { passive: true });
+onScroll();
+toTop.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+
+// Hambúrguer
+const burger = $('#burger');
+const menu = $('#menu');
+const closeMenu = () => { menu.classList.remove('open'); burger.setAttribute('aria-expanded', 'false'); burger.setAttribute('aria-label', 'Abrir menu'); };
+burger.addEventListener('click', () => {
+  const open = menu.classList.toggle('open');
+  burger.setAttribute('aria-expanded', open);
+  burger.setAttribute('aria-label', open ? 'Fechar menu' : 'Abrir menu');
+});
+menuLinks.forEach(a => a.addEventListener('click', closeMenu));
+
+// Busca
+$('#searchForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const q = $('#q').value.trim();
+  if (q) location.hash = '#/busca/' + encodeURIComponent(q);
+});
+
+// Newsletter (em qualquer página)
+document.addEventListener('submit', e => {
+  if (!e.target.matches('[data-newsletter]')) return;
+  e.preventDefault();
+  const email = $('input[type=email]', e.target).value;
+  const list = store.get('pth-newsletter', []);
+  if (!list.includes(email)) list.push(email);
+  store.set('pth-newsletter', list);
+  e.target.innerHTML = '<h3 class="sec-title sm">Newsletter <span class="suit">♣</span></h3><p style="margin:0"><b>Inscrição confirmada!</b> Na sexta você recebe a primeira edição.</p>';
+});
+
+$('#year').textContent = new Date().getFullYear();
+route();
+</script>
+</body>
+</html>
