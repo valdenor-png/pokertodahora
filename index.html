@@ -451,6 +451,16 @@
   .modal-side{display:flex;flex-direction:column;gap:12px}
   .modal .range-grid{touch-action:none;user-select:none}
 
+  /* Aulas */
+  .lesson-level{margin-bottom:34px}
+  .lesson-level[hidden]{display:none}
+  .vcard .meta{gap:6px 10px}
+  .lesson-link{font-size:13px;font-weight:800;color:var(--felt);line-height:1.35}
+  .lesson-link:hover{text-decoration:underline}
+  .post-lessons{margin:30px 0 0}
+  .lessons-inline{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+  .post-body + .post-lessons{margin-top:34px}
+
   /* Solver */
   .solver-setup{display:grid;grid-template-columns:1fr 1fr;gap:22px;align-items:start}
   .sv-board{margin:0 0 12px}
@@ -811,7 +821,7 @@
     .team{grid-template-columns:1fr 1fr}
     .post-body{font-size:16.5px}
     .author-box,.responsible,.study-cta{flex-direction:column;align-items:flex-start}
-    .trail,.trail-nav,.players,.tools,.tools.compact,.agenda-strip,.gl-group dl,.q-hands{grid-template-columns:1fr}
+    .lessons-inline,.trail,.trail-nav,.players,.tools,.tools.compact,.agenda-strip,.gl-group dl,.q-hands{grid-template-columns:1fr}
     .nl-fields{flex-direction:column;width:100%}
     .nl-fields input{min-width:0}
     .profile-head{flex-direction:column;align-items:flex-start}
@@ -923,6 +933,7 @@
       <li><a href="#/agenda">Agenda</a></li>
       <li><a href="#/jogadores">Jogadores</a></li>
       <li><a href="#/ferramentas">Ferramentas</a></li>
+      <li><a href="#/aulas">Aulas</a></li>
       <li><a href="#/glossario">Glossário</a></li>
       <li><a href="#/minha-banca">Minha Banca</a></li>
     </ul>
@@ -2156,6 +2167,7 @@ VIEWS.materia = slug => {
         </figure>
         <div class="post-body">${renderBody(a.body)}</div>
         ${a.cat === 'Estratégia' && glossaryFor(a).length ? `<div class="gl-chips"><b>Termos deste artigo</b>${glossaryFor(a).map(([t]) => `<a href="#/glossario/${slugify(t)}">${t}</a>`).join('')}</div>` : ''}
+        ${LESSONS.some(v => v.slug === a.slug) ? `<div class="post-lessons"><h2 class="sec-title sm">Assista à aula <span class="suit red">▶</span></h2><div class="lessons-inline">${LESSONS.filter(v => v.slug === a.slug).slice(0, 2).map(v => `<div class="vcard">${player(v, true)}<h3>${v.t}</h3><a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">${v.ch} · ${v.dur} ↗</a></div>`).join('')}</div></div>` : ''}
         ${a.step ? trailNav(a) : ''}
         ${a.sources ? `<div class="sources"><b>Fontes</b><ul>${a.sources.map(([t, u]) => `<li><a href="${u}" target="_blank" rel="noopener">${t} ↗</a></li>`).join('')}</ul></div>` : ''}
         <div class="share">
@@ -2297,6 +2309,39 @@ const player = (v, sm) => `
     <span class="play"></span>${v.en ? '<span class="lang">EN</span>' : ''}
   </button>`;
 
+
+// Aulas em vídeo (YouTube). level: nível; topic: assunto; slug: tutorial relacionado do site
+const LESSONS = [
+  { id: '2LwozFLd9Uw', t: 'Como jogar poker? Guia para iniciantes', ch: 'PokerStars Brasil', dur: '7:16', level: 'Iniciante', topic: 'Regras', slug: 'regras-texas-holdem' },
+  { id: 'A2GX3X2PM80', t: 'Regras e etiqueta do poker para iniciantes', ch: 'PokerStars Brasil', dur: '10:50', level: 'Iniciante', topic: 'Regras', slug: 'regras-texas-holdem' },
+  { id: 'a2O_DmqO6ow', t: 'Mãos de poker: lista e explicação dos rankings', ch: 'PokerStars Brasil', dur: '4:47', level: 'Iniciante', topic: 'Ranking de mãos', slug: 'ranking-de-maos' },
+  { id: 'AxT1ns_VUWM', t: 'Entenda posições e ranges na mesa de poker', ch: 'Rômulo Dórea | Poker Lucrativo', dur: '3:15', level: 'Iniciante', topic: 'Posições', slug: 'posicoes-na-mesa' },
+  { id: 'OuSTMbbSbLk', t: 'A matemática básica do poker (é mais simples do que você imagina)', ch: 'Rafael Moraes', dur: '13:01', level: 'Iniciante', topic: 'Matemática', slug: 'pot-odds-e-outs' },
+  { id: 's36u3zSxaU8', t: 'Como calcular pot odds? (+ tabela de odds)', ch: 'Gabriel Fagundes | Escola de Poker Grinder', dur: '20:42', level: 'Iniciante', topic: 'Matemática', slug: 'pot-odds-e-outs' },
+  { id: 'uKQYJd-PeII', t: 'Qual gestão de banca usar em torneios? Yuri “theNERDguy” responde', ch: 'Cortes da Reg Life', dur: '9:32', level: 'Iniciante', topic: 'Gestão de banca', slug: 'gestao-de-banca-erro' },
+  { id: 'kzadCUMi63o', t: 'Estratégia pré-flop: como construir seu range de open raise', ch: 'Gabriel Fagundes | Escola de Poker Grinder', dur: '18:35', level: 'Intermediário', topic: 'Pré-flop', slug: 'ranges-pre-flop-iniciantes' },
+  { id: '8UbeLCbv2eM', t: '5 erros básicos pré-flop', ch: 'PokerLAB · Marco Arruda', dur: '15:00', level: 'Intermediário', topic: 'Pré-flop', slug: 'ranges-pre-flop-iniciantes' },
+  { id: 'gVt73q6oUAE', t: 'Como c-betar no flop? O erro que você não pode cometer', ch: 'Gabriel Fagundes | Escola de Poker Grinder', dur: '19:54', level: 'Intermediário', topic: 'C-bet', slug: 'continuation-bet' },
+  { id: 'YhID9R4V86Y', t: 'O jeito certo de blefar no poker, com Yuri “theNERDguy”', ch: 'Cortes da Reg Life', dur: '8:33', level: 'Intermediário', topic: 'Blefe', slug: 'blefe-e-semiblefe' },
+  { id: 'NuytcmoHp4A', t: 'Como blefar no poker como um profissional', ch: 'PokerStars Brasil', dur: '5:49', level: 'Intermediário', topic: 'Blefe', slug: 'blefe-e-semiblefe' },
+  { id: '1go9IVF9YBk', t: 'Quais mãos dar 3-bet por valor e por blefe', ch: 'Gabriel Fagundes | Escola de Poker Grinder', dur: '31:58', level: 'Intermediário', topic: '3-bet', slug: 'quando-dar-3-bet' },
+  { id: 'hGceE-pVWBk', t: 'Os conceitos de poker que vão colocar seu jogo em outro nível', ch: 'Rafael Moraes', dur: '11:24', level: 'Intermediário', topic: 'Conceitos' },
+  { id: 'OeR50H3JSMY', t: 'Aula grátis de poker com Yuri “theNERDguy”', ch: 'Cortes da Reg Life', dur: '11:36', level: 'Intermediário', topic: 'Conceitos' },
+  { id: 'TMDE_yvMNNA', t: 'Como jogar em cada fase do torneio', ch: 'PokerLAB · Marcelo Fonseca', dur: '9:31', level: 'Avançado', topic: 'Torneios', slug: 'icm-e-bolha' },
+  { id: 'pnKVgSHYQxE', t: 'Como jogar na bolha do torneio', ch: 'Live Poker BR', dur: '4:04', level: 'Avançado', topic: 'ICM e bolha', slug: 'icm-e-bolha' },
+  { id: 'VR_wEC3Nhog', t: 'Aula de ICM e fator bolha (parte 1)', ch: 'Poker na Estrada · Ramon Ely', dur: '55:59', level: 'Avançado', topic: 'ICM e bolha', slug: 'icm-e-bolha' },
+  { id: '4fnUdJgl8cs', t: 'Push/fold: tabela para jogar com 15 BB ou menos', ch: 'Tayguera', dur: '23:01', level: 'Avançado', topic: 'Stack curto', slug: 'push-or-fold-stack-curto' },
+  { id: 'xNqyMY1EWK8', t: 'Visualizando o ICM no poker', ch: 'GTO Wizard', dur: '55:19', level: 'Avançado', topic: 'ICM e bolha', slug: 'icm-e-bolha', en: true }
+];
+const lessonCard = v => `
+  <div class="vcard reveal" data-cat="${v.topic}" data-level="${v.level}">
+    ${player(v, true)}
+    <div class="meta">${levelPill(v.level)}<span>${v.topic}</span><span>⏱ ${v.dur}</span></div>
+    <h3>${v.t}</h3>
+    <a class="yt" href="https://www.youtube.com/watch?v=${v.id}" target="_blank" rel="noopener">${v.ch} · ver no YouTube ↗</a>
+    ${v.slug && bySlug(v.slug) ? `<a class="lesson-link" href="#/materia/${v.slug}">Ler o tutorial: ${bySlug(v.slug).title} →</a>` : ''}
+  </div>`;
+
 VIEWS.videos = () => {
   const [feat, ...rest] = VIDEOS;
   const cats = ['Todos', ...new Set(rest.map(v => v.cat))];
@@ -2313,6 +2358,10 @@ VIEWS.videos = () => {
         <p style="margin-top:16px"><a class="btn ghost sm" href="https://www.youtube.com/watch?v=${feat.id}" target="_blank" rel="noopener">Abrir no YouTube ↗</a></p>
       </div>
     </div>
+    <div class="study-cta reveal" style="margin-bottom:34px">
+      <div><h3>Quer aprender a jogar melhor?</h3><p>Veja as ${LESSONS.length} aulas em vídeo, organizadas por nível e assunto.</p></div>
+      <a class="btn gold" href="#/aulas">Ver aulas de poker</a>
+    </div>
     <h2 class="sec-title reveal">Mais vídeos <span class="suit red">♦</span></h2>
     <div class="filters" data-filter="videos">${cats.map((c, i) => `<button type="button" class="${i ? '' : 'on'}" data-cat="${c}">${c}</button>`).join('')}</div>
     <div class="grid-3">${rest.map(v => `
@@ -2325,6 +2374,20 @@ VIEWS.videos = () => {
   </div></section>`;
 };
 
+VIEWS.aulas = () => {
+  const topics = ['Todos', ...new Set(LESSONS.map(v => v.topic))];
+  return `
+  ${pageHero('Aprenda poker', 'Aulas em vídeo', 'Uma seleção de aulas gratuitas em português, dos principais professores e canais de poker do Brasil, organizada do básico ao avançado.')}
+  <section><div class="container">
+    <div class="filters" data-filter="lessons">${topics.map((c, i) => `<button type="button" class="${i ? '' : 'on'}" data-cat="${c}">${c}</button>`).join('')}</div>
+    ${LEVELS.map((l, i) => `
+      <div class="lesson-level" data-lvl="${l}">
+        <h2 class="sec-title reveal">${l} <span class="suit ${i === 1 ? 'red' : ''}">${'♠♥♣'[i]}</span></h2>
+        <div class="grid-3">${LESSONS.filter(v => v.level === l).map(lessonCard).join('')}</div>
+      </div>`).join('')}
+    <p class="small" style="margin-top:26px">Os vídeos pertencem aos seus autores e são exibidos pelo player oficial do YouTube. Aulas marcadas com “EN” são em inglês.</p>
+  </div></section>`;
+};
 VIEWS['minha-banca'] = () => `
   ${pageHero('Ferramenta', 'Minha Banca', 'Registre cada torneio, acompanhe lucro, ROI e a evolução da sua banca. Os dados ficam salvos apenas neste navegador.')}
   <section><div class="container">
@@ -2385,9 +2448,11 @@ VIEWS.estrategia = () => {
     <div class="grid-3" id="stratGrid">${all.map(a => card(a).replace('class="card reveal"', `class="card reveal" data-cat="${a.level}"`)).join('')}</div>
   </div></section>
   <section><div class="container">
-    <div class="study-cta reveal">
-      <div><h3>Estude também com vídeos</h3><p>Aulas de ranges e gestão de banca com Jonathan Little, Daniel Negreanu e GTO Wizard.</p></div>
-      <a class="btn gold" href="#/videos">Ver vídeos de estratégia</a>
+    <h2 class="sec-title reveal">Aulas em vídeo <span class="suit">▶</span></h2>
+    <div class="grid-3">${LESSONS.filter(v => v.level === 'Iniciante').slice(0, 3).map(lessonCard).join('')}</div>
+    <div class="study-cta reveal" style="margin-top:26px">
+      <div><h3>${LESSONS.length} aulas gratuitas em vídeo</h3><p>Do básico ao avançado, com PokerStars Brasil, Rafael Moraes, Escola de Poker Grinder, PokerLAB e Yuri Martins.</p></div>
+      <a class="btn gold" href="#/aulas">Ver todas as aulas</a>
     </div>
   </div></section>`;
 };
@@ -2542,6 +2607,13 @@ document.addEventListener('keydown', e => {
 });
 
 SETUP.estrategia = () => setupFilters('levels', '#stratGrid .card');
+
+SETUP.aulas = () => {
+  setupFilters('lessons', '.vcard');
+  $('[data-filter="lessons"]').addEventListener('click', () => setTimeout(() => {
+    $$('.lesson-level', app).forEach(sec => { sec.hidden = !$$('.vcard:not(.hidden)', sec).length; });
+  }));
+};
 
 SETUP.fotos = () => {
   setupFilters('gallery', '.ph');
@@ -3974,6 +4046,7 @@ function route() {
   else if (CATS[view]) { arg = view; view = 'categoria'; }
   else if (view === 'materia') { key = CAT_ROUTE[bySlug(arg)?.cat] || null; }
   else if (view === 'jogador') key = 'jogadores';
+  else if (view === 'aulas') key = 'estrategia';
   else if (['calculadora', 'ranges', 'push-fold', 'solver', 'quiz', 'glossario', 'minha-banca'].includes(view)) key = 'ferramentas';
   else if (!VIEWS[view] || view === 'notFound') { view = 'notFound'; key = null; }
 
